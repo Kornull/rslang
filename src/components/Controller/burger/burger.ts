@@ -12,12 +12,18 @@ const clickBurger = (): void => {
     span.classList.remove('active');
     headerMenu.style.right = '-100%';
     shadowElement.style.left = '-100%';
+    linkNavigation.forEach((link: Element) => {
+      link.setAttribute('tabindex', '-1');
+    });
     document.body.classList.remove('active');
   } else {
     span.classList.add('active');
     headerMenu.style.right = '0%';
     shadowElement.style.left = '0%';
     document.body.classList.add('active');
+    linkNavigation.forEach((link: Element) => {
+      link.setAttribute('tabindex', '0');
+    });
   }
 };
 
