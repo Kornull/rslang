@@ -21,6 +21,7 @@ const clickBurger = (): void => {
     headerMenu.style.right = '0%';
     shadowElement.style.left = '0%';
     document.body.classList.add('active');
+    burger.blur();
     linkNavigation.forEach((link: Element) => {
       link.setAttribute('tabindex', '0');
     });
