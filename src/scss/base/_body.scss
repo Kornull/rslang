@@ -1,0 +1,6 @@
+.body {
+  outline: none;
+  &.active{
+    overflow: hidden;
+  }
+}
