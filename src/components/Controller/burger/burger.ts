@@ -6,7 +6,7 @@ const linkNavigation = document.querySelectorAll('.header__nav-link');
 const span = <HTMLElement>burger.lastChild;
 const headerMenu = <HTMLElement>document.querySelector('#header-menu');
 
-const closeBurger = () => {
+const closeBurgerMenu = () => {
   span.classList.remove('active');
   headerMenu.style.right = '-100%';
   shadowElement.style.left = '-100%';
@@ -16,9 +16,9 @@ const closeBurger = () => {
   document.body.classList.remove('active');
 };
 
-const clickBurger = (): void => {
+const openBurgerMenu = (): void => {
   if (span.classList.contains('active')) {
-    closeBurger();
+    closeBurgerMenu();
   } else {
     span.classList.add('active');
     headerMenu.style.right = '0%';
@@ -32,24 +32,24 @@ const clickBurger = (): void => {
 };
 
 (() => {
-  burger.addEventListener('click', clickBurger);
+  burger.addEventListener('click', openBurgerMenu);
   burger.addEventListener('keydown', (ev: KeyboardEvent): void => {
     const burgerElement = ev.target as HTMLElement;
     if (burgerElement.classList.contains('header__burger')) {
       const message = ev.key;
       if (message === 'Enter') {
-        clickBurger();
+        openBurgerMenu();
       }
     }
   });
-  shadowElement.addEventListener('click', clickBurger);
+  shadowElement.addEventListener('click', openBurgerMenu);
   linkNavigation.forEach((link: Element) => {
     link.addEventListener('click', (ev: Event) => {
       if (ev !== null) {
-        if (ev.type === 'click') clickBurger();
+        if (ev.type === 'click') openBurgerMenu();
       }
     });
   });
 })();
 
-window.addEventListener('resize', closeBurger);
+window.addEventListener('resize', closeBurgerMenu);
