@@ -4,11 +4,13 @@ const burger = <HTMLElement>document.querySelector('#burger');
 const shadowElement = <HTMLElement>document.querySelector('#shadow');
 const linkNavigation = document.querySelectorAll('.header__nav-link');
 const span = <HTMLElement>burger.lastChild;
-const headerMenu = <HTMLElement>document.querySelector('#header-menu');
+const headerMenuList = <HTMLElement>document.querySelector('#header-list');
+const headerNav = <HTMLElement>document.querySelector('#header-nav');
 
 const closeBurgerMenu = () => {
   span.classList.remove('active');
-  headerMenu.style.right = '-100%';
+  headerMenuList.style.right = '-100%';
+  headerNav.style.right = '-100%';
   shadowElement.style.left = '-100%';
   linkNavigation.forEach((link: Element) => {
     link.setAttribute('tabindex', '-1');
@@ -21,7 +23,8 @@ const openBurgerMenu = (): void => {
     closeBurgerMenu();
   } else {
     span.classList.add('active');
-    headerMenu.style.right = '0%';
+    headerMenuList.style.right = '0%';
+    headerNav.style.right = '0%';
     shadowElement.style.left = '0%';
     document.body.classList.add('active');
     burger.blur();

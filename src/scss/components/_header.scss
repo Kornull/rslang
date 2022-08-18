@@ -42,38 +42,48 @@
     text-shadow: 2px 0 $colorText, -2px 0 $colorText, 0 2px $colorText, 0 -2px $colorText, 1px 1px $colorText,
       -1px -1px $colorText, 1px -1px $colorText, -1px 1px $colorText;
   }
-  &__menu {
-    position: absolute;
-    top: 0;
-    right: -100%;
-    display: flex;
-    width: 20%;
-    height: 100%;
-    justify-content: center;
-    flex-direction: column;
-    background-color: $backgroundBurger;
-    z-index: 10;
+  .header__nav {
+    height: 100vh;
     overflow: auto;
-
-    transition: right 0.2s linear;
-    @media (max-width: 1200px) {
-      width: 30%;
+    position: fixed;
+    right: -100%;
+    top: 0;
+    transition: right .3s linear;
+    width: 25%;
+    z-index: 10;
+    &.active {
+      right: 0;
     }
     @media (max-width: 767px) {
       width: 50%;
     }
     @media (max-width: 480px) {
       width: 100%;
-      text-align: center;
-      display: flex;
-      align-items: center;
     }
+}
+  &__menu {
+    z-index: 10;
+    width: 100%;
+    transition: display 4s linear;
   }
   &__list {
     position: absolute;
-    top: 70px;
+    display: flex;
+    top: 0;
+    right: -100%;
     padding: 30px;
-    @media (max-width: 767px) {
+    padding-top: 70px;
+    width: 100%;
+    height: 100vh;
+    flex-direction: column;
+    background-color: $backgroundBurger;
+    z-index: 10;
+    overflow: auto;
+    transition: right .3s linear;
+    @media (max-width: 480px) {
+      text-align: center;
+      display: flex;
+      align-items: center;
     }
   }
 
