@@ -3,15 +3,22 @@ $colorText:#010101;
 $colorHeaderText:#ffffff;
 $colorLearnWord:#0004ff;
 $colorHardWord:#ff0000;
-$colorFocusHeader:#ff5e00;
+$colorFocusHeader: #f7ff01;
+$colorBurgerText: #c7c7c7;
 
-// Backgroun Color
-$backgroundHeader:#78bcf0;
-$backgroundFooter:#035a91;
-$backgroundBurger:#006cbe;
+// Background Color
+$backgroundHeader:#5fa3d6;
+$backgroundFooter:#4186b0;
+$backgroundBurger:#253745;
 $backgroundBody:#ebeff3;
+$backgroundShadow:#ffffff4a;
+
+// colors
+$colorWhite: #ffffff;
 
 // Font size
+$size28px: 28px;
+$size25px: 25px;
 $size21px: 21px;
 $size19px: 19px;
 $size16px: 16px;
@@ -20,4 +27,4 @@ $size14px: 14px;
 // Font family
 $fontRoboto: 'Roboto', sans-serif;
 $fontRobotoSlab:'Roboto Slab', serif;
-$fontMontserrat: 'Montserrat', serif;;
+$fontMontserrat: 'Montserrat', serif;
