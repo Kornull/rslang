@@ -12,9 +12,11 @@ $backgroundFooter:#104668;
 $backgroundBurger:#253745;
 $backgroundBody:#ebeff3;
 $backgroundShadow:#ffffff4a;
+$backgroundMain:#ffffffe4;
 
 // colors
 $colorWhite: #ffffff;
+$colorShadow:#000000;
 
 // Font size
 $size28px: 28px;
@@ -28,3 +30,10 @@ $size14px: 14px;
 $fontRoboto: 'Roboto', sans-serif;
 $fontRobotoSlab:'Roboto Slab', serif;
 $fontMontserrat: 'Montserrat', serif;
+
+// BreakPoints
+
+$breakpoint1200px: 1200px;
+$breakpoint768px: 768px;
+$breakpoint767px: 767px;
+$breakpoint480px: 480px;
