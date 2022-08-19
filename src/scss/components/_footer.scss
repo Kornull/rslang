@@ -1,0 +1,87 @@
+.footer {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 60px;
+  font-family: $fontMontserrat;
+  font-size: $size19px;
+  color: $colorWhite;
+  background-color: $backgroundFooter;
+  align-items: center;
+  padding: 0 10px;
+
+  &__wrapper {
+    display: flex;
+    justify-content: space-between;
+    @media (max-width: 480px) {
+      align-items: center;
+      flex-direction: column;
+      margin-top: 10px;
+    }
+  }
+  &__logo {
+    width: 60px;
+    height: 55px;
+  }
+  &__list {
+    display: flex;
+    width: 30%;
+    height: 40px;
+    justify-content: space-between;
+    align-items: center;
+    @media (max-width: 480px) {
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+      justify-content: center;
+    }
+  }
+  @media (max-width: 480px) {
+    min-height: 60px;
+    height: 180px;
+    align-items: center;
+    flex-direction: column;
+  }
+}
+.main {
+  min-height: calc(100vh - 120px);
+}
+
+.team {
+  width: 30%;
+  display: flex;
+  justify-content: space-between;
+  @media (max-width: 767px) {
+    width: 50%;
+  }
+  &__link-list {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
+    @media (max-width: 480px) {
+      flex-wrap: wrap;
+    }
+  }
+  &__link {
+    color: $colorWhite;
+    &:hover {
+      text-decoration: underline;
+    }
+
+    &:focus {
+      color: $colorFocusHeader;
+      text-decoration: underline;
+    }
+    @media (min-width: 768px) and (max-width: 1200px) {
+      font-size: $size16px;
+    }
+    @media (max-width: 767px) {
+      font-size: $size14px;
+      margin-right: 5px;
+    }
+    @media (max-width: 480px) {
+      font-size: $size19px;
+      margin-right: 5px;
+    }
+  }
+}
