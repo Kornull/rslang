@@ -13,7 +13,7 @@
   &__wrapper {
     display: flex;
     justify-content: space-between;
-    @media (max-width: $breakpoint480px) {
+    @media (max-width: $size480px) {
       align-items: center;
       flex-direction: column;
       margin-top: 10px;
@@ -29,13 +29,13 @@
     height: 40px;
     justify-content: space-between;
     align-items: center;
-    @media (max-width: 480px) {
+    @media (max-width: $size480px) {
       flex-wrap: wrap;
       margin-bottom: 40px;
       justify-content: center;
     }
   }
-  @media (max-width: $breakpoint480px) {
+  @media (max-width: $size480px) {
     min-height: 60px;
     height: 180px;
     align-items: center;
@@ -50,7 +50,7 @@
   width: 30%;
   display: flex;
   justify-content: space-between;
-  @media (max-width: $breakpoint767px) {
+  @media (max-width: $size767px) {
     width: 50%;
   }
   &__link-list {
@@ -58,7 +58,7 @@
     width: 100%;
     justify-content: space-around;
     align-items: center;
-    @media (max-width: $breakpoint480px) {
+    @media (max-width: $size480px) {
       flex-wrap: wrap;
     }
   }
@@ -72,14 +72,14 @@
       color: $colorFocusHeader;
       text-decoration: underline;
     }
-    @media (min-width: $breakpoint768px) and (max-width: $breakpoint1200px) {
+    @media (min-width: $size768px) and (max-width: $size1280px) {
       font-size: $size16px;
     }
-    @media (max-width: $breakpoint767px) {
+    @media (max-width: $size767px) {
       font-size: $size14px;
       margin-right: 5px;
     }
-    @media (max-width: $breakpoint480px) {
+    @media (max-width: $size480px) {
       font-size: $size19px;
       margin-right: 5px;
     }

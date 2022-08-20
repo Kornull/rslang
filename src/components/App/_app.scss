@@ -1,0 +1,25 @@
+@import '../../scss/base/_settings';
+
+.main {
+  position: relative;
+  width: 100%;
+  max-width: 1280px;
+  padding: 0 10px;
+  margin: 0 auto;
+  background: $backgroundMain;
+  box-shadow: 0 10px 55px $colorWhiteShadow;
+  &::before,
+  &::after {
+    position: absolute;
+    content: "";
+    height: 100%;
+    width: 250px;
+    top: 0;
+  }
+  &::before {
+     top:0;
+  }
+  &::after {
+    bottom: 0;
+  }
+}
