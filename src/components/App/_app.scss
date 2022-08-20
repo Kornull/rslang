@@ -7,7 +7,7 @@
   padding: 0 10px;
   margin: 0 auto;
   background: $backgroundMain;
-  box-shadow: 0 10px 55px $colorWhiteShadow;
+  box-shadow: -10px 0 55px $colorWhiteShadow, 10px 0 55px $colorWhiteShadow;
   &::before,
   &::after {
     position: absolute;

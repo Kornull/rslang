@@ -1,6 +1,8 @@
 import './_app.scss';
+import { main } from '../Templates/main-block';
+import createMainPage from '../View/main-page/main-page';
 
 export function App(): HTMLElement {
-  const main = <HTMLElement>document.querySelector('#main');
+  main.appendChild(createMainPage());
   return main;
 }
