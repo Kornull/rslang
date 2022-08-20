@@ -54,13 +54,13 @@
     &.active {
       right: 0;
     }
-    @media (min-width: 1200px) {
+    @media (min-width: $size1280px) {
       width: 20%;
     }
-    @media (max-width: 767px) {
+    @media (max-width: $size767px) {
       width: 50%;
     }
-    @media (max-width: 480px) {
+    @media (max-width: $size480px) {
       width: 100%;
     }
 }
@@ -83,7 +83,7 @@
     z-index: 10;
     overflow: auto;
     transition: right .3s linear;
-    @media (max-width: 480px) {
+    @media (max-width: $size480px) {
       text-align: center;
       display: flex;
       align-items: center;
@@ -125,7 +125,7 @@
       color: $colorFocusHeader;
       text-decoration: underline;
     }
-    @media (max-width: 767px) {
+    @media (max-width: $size767px) {
       font-size: $size28px;
     }
   }
@@ -134,7 +134,7 @@
 .list {
   &__nav {
     margin-bottom: 20px;
-    @media (max-width: 767px) {
+    @media (max-width: $size767px) {
       margin-bottom: 15px;
     }
   }

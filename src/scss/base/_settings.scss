@@ -8,13 +8,21 @@ $colorBurgerText: #c7c7c7;
 
 // Background Color
 $backgroundHeader:#5fa3d6;
-$backgroundFooter:#4186b0;
+$backgroundFooter:#104668;
 $backgroundBurger:#253745;
 $backgroundBody:#ebeff3;
 $backgroundShadow:#ffffff4a;
+$backgroundMain:#ffffffe4;
 
 // colors
 $colorWhite: #ffffff;
+$colorWhiteShadow:#b5b5b5;
+$colorWhiteTransparent:#ffffff9e;
+$colorYellow: #ffff00;
+$colorBlue:#90b7f0;
+$colorBlueText:#0066ff;
+$colorBlueDescriptionText:#013c94;
+$colorGreenHover: #528766;
 
 // Font size
 $size28px: 28px;
@@ -28,3 +36,9 @@ $size14px: 14px;
 $fontRoboto: 'Roboto', sans-serif;
 $fontRobotoSlab:'Roboto Slab', serif;
 $fontMontserrat: 'Montserrat', serif;
+
+// BreakPoints
+$size1280px: 1280px;
+$size768px: 768px;
+$size767px: 767px;
+$size480px: 480px;

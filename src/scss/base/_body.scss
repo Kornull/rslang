@@ -1,5 +1,7 @@
 .body {
   outline: none;
+  background-image: url('../img/london.jpg');
+  background-repeat:repeat;
   &.active{
     overflow: hidden;
   }
