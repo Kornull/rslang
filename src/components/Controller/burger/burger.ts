@@ -1,3 +1,4 @@
+import { clickIdLink } from './burger.utils';
 import './_burger.scss';
 
 const burger = <HTMLElement>document.querySelector('#burger');
@@ -48,6 +49,8 @@ const openBurgerMenu = (): void => {
   shadowElement.addEventListener('click', openBurgerMenu);
   linkNavigation.forEach((link: Element) => {
     link.addEventListener('click', (ev: Event) => {
+      const message = ev.target as HTMLElement;
+      clickIdLink(message.id);
       if (ev !== null) {
         if (ev.type === 'click') openBurgerMenu();
       }
