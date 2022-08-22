@@ -19,6 +19,7 @@ function createMainPageList() {
 
 function createMainPage() {
   const mainPage = <HTMLElement>createEl('div', main, ['main__page']);
+  mainPage.id = 'main-page';
   const mainPageAbout = <HTMLElement>createEl('div', mainPage, ['main__page-greetings']);
   const mainPageTitle = <HTMLElement>createEl('h1', mainPageAbout, ['main__page-title']);
 

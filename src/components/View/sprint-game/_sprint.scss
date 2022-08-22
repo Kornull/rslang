@@ -1,0 +1,25 @@
+@import '../../../scss/base/_settings';
+
+.sprint{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100%;
+  background: #5dcd64;
+  margin: 0 auto;
+  &__btns{
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    justify-content: space-between;
+    padding: 50px;
+    margin: 0 auto;
+    margin-bottom: 200px;
+  }
+  &__btn-group{
+    display: block;
+    width: 35px;
+    height: 35px;
+    border-radius: 3px;
+  }
+}
