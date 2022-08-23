@@ -2,6 +2,7 @@ import './_authorization.scss';
 import { createEl } from '../../Controller/createTagBlock';
 import { main } from '../../Templates/main-block';
 import User from '../../Controller/authorization/user';
+import { toggleButtons } from '../../Controller/authorization/authorization';
 
 const newUser = new User();
 async function userComp() {
@@ -23,20 +24,22 @@ function createLabel(inputType: string, inputName: string, classNames: string[],
 }
 
 function crateAuthorizationPage() {
-  // console.log('------------crateAuthorizationPage--------------');
   // main.innerHTML = '';
   const authPageBg = <HTMLElement>createEl('div', main, ['popup__bg', 'active']);
   const authPage = <HTMLElement>createEl('form', authPageBg, ['popup', 'active']);
-  createLabel('text', 'name', ['label__text'], 'Введите имя', authPage);
+  createLabel('text', 'name', ['label__text', 'name'], 'Введите имя', authPage);
   createLabel('email', 'email', ['label__text'], 'Введите адрес электронной почты', authPage);
   createLabel('password', 'password', ['label__text'], 'Введите пароль', authPage);
   const signInUpBtns = <HTMLElement>createEl('div', authPage, ['sign']);
-  const signInButton = createEl('button', signInUpBtns, ['btn', 'active'], { type: 'button' });
+  const signInButton = createEl('button', signInUpBtns, ['btn', 'active'], { type: 'button', id: 'sign-in-btn' });
   signInButton.innerText = 'Войти';
-  const signUpButton = createEl('button', signInUpBtns, ['btn'], { type: 'button' });
+  signInButton.addEventListener('click', (e) => toggleButtons(e.target as HTMLElement));
+  const signUpButton = createEl('button', signInUpBtns, ['btn'], { type: 'button', id: 'sign-up-btn' });
   signUpButton.innerText = 'Регистрация';
-  const signButton = createEl('button', authPage, ['btn'], { type: 'submit' });
+  signUpButton.addEventListener('click', (e) => toggleButtons(e.target as HTMLElement));
+  const signButton = createEl('button', authPage, ['btn'], { type: 'submit', id: 'submit' });
   signButton.innerText = 'Отправить';
+  signButton.addEventListener('click', (e) => toggleButtons(e.target as HTMLElement));
   return authPage;
 }
 

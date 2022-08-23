@@ -34,6 +34,9 @@
     font-weight: 500;
     color: $colorNonActiveText;
     margin-bottom: 5px;
+    &.disabled {
+      color: $colorDisabledText;
+    }
   }
   input {
     height: 45px;
