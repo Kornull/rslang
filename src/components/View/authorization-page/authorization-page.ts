@@ -1,6 +1,17 @@
 import './_authorization.scss';
 import { createEl } from '../../Controller/createTagBlock';
 import { main } from '../../Templates/main-block';
+import User from '../../Controller/authorization/user';
+
+const newUser = new User();
+async function userComp() {
+  // await newUser.createUser('M3', 'm3@m.com', '123456789');
+  await newUser.signIn('m@m.com', '123456789');
+  await newUser.getUser();
+  await newUser.getNewTokens();
+}
+
+userComp();
 
 function createLabel(inputType: string, inputName: string, classNames: string[], text: string, parent: HTMLElement): HTMLElement {
   const label = document.createElement('label');
