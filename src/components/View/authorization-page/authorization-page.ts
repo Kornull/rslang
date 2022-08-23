@@ -19,7 +19,6 @@ function createLabel(inputType: string, inputName: string, classNames: string[],
 function crateAuthorizationPage() {
   // main.innerHTML = '';
   const authPageBg = <HTMLElement>createEl('div', main, ['popup__bg', 'active']);
-  authPageBg.addEventListener('click', (e) => closePopup(e.target as HTMLElement));
   const authPage = <HTMLElement>createEl('form', authPageBg, ['popup', 'active']);
   createLabel('text', 'name', ['label__text', 'name', 'disabled'], 'Введите имя', authPage, true);
   createLabel('email', 'email', ['label__text'], 'Введите адрес электронной почты', authPage, false);
@@ -31,9 +30,21 @@ function crateAuthorizationPage() {
   const signUpButton = createEl('button', signInUpBtns, ['btn'], { type: 'button', id: 'sign-up-btn' });
   signUpButton.innerText = 'Регистрация';
   signUpButton.addEventListener('click', (e) => toggleButtons(e.target as HTMLElement));
-  const signButton = createEl('button', authPage, ['btn'], { type: 'submit', id: 'submit' });
+  const signButton = createEl('button', authPage, ['btn'], { type: 'button', id: 'submit' });
   signButton.innerText = 'Отправить';
-  signButton.addEventListener('click', () => signInRequest('s', 'd', 'dd', false));
+  signButton.addEventListener('click', () => signInRequest());
+  authPageBg.addEventListener('click', (e) => {
+    console.log('----- target :', e.target);
+    console.log('----- target contains :', !authPage.contains(e.target as HTMLElement));
+    if (!authPage.contains(e.target as HTMLElement)) {
+      closePopup();
+    }
+  });
+  // if ( === 200) {
+  //   closePopup();
+  // } else {
+  //   console.log('error handling');
+  // }
   return authPage;
 }
 

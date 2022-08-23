@@ -11,11 +11,7 @@ class User {
 
   refreshToken = '';
 
-  // constructor(email: string) {
-  //   this.email = email;
-  // }
-
-  async createUser(name: string, email: string, password: string) {
+  async createUser(name: string, email: string, password: string): Promise<number> {
     const rawResponse = await fetch(`${urlLink}users`, {
       method: 'POST',
       headers: {
@@ -28,14 +24,13 @@ class User {
       const content = await rawResponse.json();
       this.userName = content.name;
       this.userEmail = content.email;
-      console.log(this.userName, ' - ', this.userEmail);
-      // console.log('content response createUser -----', content);
     } else {
       console.log('createUser error: ', rawResponse.status, ', text: ', rawResponse.statusText);
     }
+    return Promise.resolve(rawResponse.status);
   }
 
-  async signIn(email: string, password: string) {
+  async signIn(email: string, password: string): Promise<number> {
     const rawResponse = await fetch(`${urlLink}signin`, {
       method: 'POST',
       headers: {
@@ -51,13 +46,10 @@ class User {
       this.token = content.token;
       this.refreshToken = content.refreshToken;
       this.userName = content.name;
-      console.log('token -', this.token);
-      console.log('refreshToken -', this.refreshToken);
-      console.log('userName -', this.userName);
-      // console.log('content response signIn -----', content);
     } else {
       console.log('signIn error: ', rawResponse.status, ', text: ', rawResponse.statusText);
     }
+    return Promise.resolve(rawResponse.status);
   }
 
   // withCredentials: true,
@@ -73,7 +65,6 @@ class User {
     });
     if (rawResponse.status === 200) {
       const content = await rawResponse.json();
-      console.log('content response getUser -----', content);
     } else {
       console.log('getUser error: ', rawResponse.status, ', text: ', rawResponse.statusText);
     }
@@ -94,12 +85,9 @@ class User {
       this.refreshToken = content.refreshToken;
       this.userId = content.userId;
       this.userName = content.name;
-      console.log('token -', this.token);
-      console.log('refreshToken -', this.refreshToken);
-      console.log('userName -', this.userName);
       // console.log('content response getUser -----', content);
     } else {
-      console.log('getUser error: ', rawResponse.status, ', text: ', rawResponse.statusText);
+      console.log('getNewTokens error: ', rawResponse.status, ', text: ', rawResponse.statusText);
     }
   }
 }
