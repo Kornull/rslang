@@ -46,6 +46,7 @@ class User {
       this.token = content.token;
       this.refreshToken = content.refreshToken;
       this.userName = content.name;
+      localStorage.setItem('user', 'true');
     } else {
       console.log('signIn error: ', rawResponse.status, ', text: ', rawResponse.statusText);
     }
@@ -65,6 +66,7 @@ class User {
     });
     if (rawResponse.status === 200) {
       const content = await rawResponse.json();
+      console.log('content response getUser -----', content);
     } else {
       console.log('getUser error: ', rawResponse.status, ', text: ', rawResponse.statusText);
     }
