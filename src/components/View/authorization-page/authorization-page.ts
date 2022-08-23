@@ -1,8 +1,7 @@
 import './_authorization.scss';
 import { createEl } from '../../Controller/createTagBlock';
 import { main } from '../../Templates/main-block';
-import User from '../../Controller/authorization/user';
-import { toggleButtons, signInRequest } from '../../Controller/authorization/authorization';
+import { toggleButtons, signInRequest, closePopup } from '../../Controller/authorization/authorization';
 
 function createLabel(inputType: string, inputName: string, classNames: string[], text: string, parent: HTMLElement, disabled: boolean): HTMLElement {
   const label = document.createElement('label');
@@ -20,6 +19,7 @@ function createLabel(inputType: string, inputName: string, classNames: string[],
 function crateAuthorizationPage() {
   // main.innerHTML = '';
   const authPageBg = <HTMLElement>createEl('div', main, ['popup__bg', 'active']);
+  authPageBg.addEventListener('click', (e) => closePopup(e.target as HTMLElement));
   const authPage = <HTMLElement>createEl('form', authPageBg, ['popup', 'active']);
   createLabel('text', 'name', ['label__text', 'name', 'disabled'], 'Введите имя', authPage, true);
   createLabel('email', 'email', ['label__text'], 'Введите адрес электронной почты', authPage, false);
@@ -37,7 +37,4 @@ function crateAuthorizationPage() {
   return authPage;
 }
 
-// function createPopUp () {
-
-// }
 export default crateAuthorizationPage;

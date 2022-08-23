@@ -29,6 +29,14 @@ export function toggleButtons(element: Element): void {
   }
 }
 
+export function closePopup(element: Element): void {
+  const popup = document.querySelector('.popup__bg');
+  const formFiled = <HTMLElement>document.querySelector('.popup');
+  if (!formFiled.contains(element)) {
+    popup?.remove();
+  }
+}
+
 export function signInRequest(name: string, email: string, password: string, signUp: boolean) {
   if (signUp) {
 
