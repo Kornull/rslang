@@ -1,8 +1,16 @@
 import User from './user';
 
-export function toggleButtons(element: Element): void {
-  console.log(element.id);
+const newUser = new User();
+async function userComp() {
+  // await newUser.createUser('M3', 'm3@m.com', '123456789');
+  await newUser.signIn('m@m.com', '123456789');
+  await newUser.getUser();
+  await newUser.getNewTokens();
+}
 
+userComp();
+
+export function toggleButtons(element: Element): void {
   const signIn = <HTMLElement>document.querySelector('#sign-in-btn');
   const signUp = <HTMLElement>document.querySelector('#sign-up-btn');
   const nameFiled = <HTMLElement>document.querySelector('label input[name="name"]');
@@ -18,6 +26,12 @@ export function toggleButtons(element: Element): void {
     signUp.classList.add('active');
     nameFiled.removeAttribute('disabled');
     nameFiledText.classList.remove('disabled');
+  }
+}
+
+export function signInRequest(name: string, email: string, password: string, signUp: boolean) {
+  if (signUp) {
+
   }
 }
 
