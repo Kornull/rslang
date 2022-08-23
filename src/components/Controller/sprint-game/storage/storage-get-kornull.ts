@@ -1,11 +1,11 @@
 import { App } from '../../../App/App';
 import { Page } from './type-storage';
 
-export function getLocalStorage(): void {
-  const theme = localStorage.getItem(Page.userPage);
+export function getLocalStorageApp(): void {
+  const page = localStorage.getItem(Page.userPage);
   if (localStorage.getItem(Page.userPage)) {
-    if (theme !== null && theme !== undefined) {
-      const id = theme.slice(1, -1);
+    if (page !== null && page !== undefined) {
+      const id = page.slice(1, -1);
       App(id);
     }
   } else {

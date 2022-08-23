@@ -1,8 +1,9 @@
 import './_sprint.scss';
 import { main } from '../../Templates/main-block';
 import { createEl } from '../../Controller/createTagBlock';
-import { Click } from './sprint-game.utils';
+import { Click, mixWords } from './sprint-game.utils';
 import { setLocalStorage } from '../../Controller/sprint-game/storage/storage-set-kornull';
+import { Page } from '../../Controller/sprint-game/storage/type-storage';
 
 enum TitleSprint {
   PreTitle = 'Для старта игры выберите уровень сложности',
@@ -33,7 +34,7 @@ function createButtons(el: HTMLElement, count: number) {
 
 export function createSprintGame() {
   main.innerHTML = '';
-  const sprintPage = <HTMLElement>createEl('div', main, ['sprint', 'sprint__game']);
+  const sprintPage = <HTMLElement>createEl('div', main, ['sprint', 'sprint__page']);
   sprintPage.id = 'sprint-page';
   const blockGame = <HTMLElement>createEl('div', sprintPage, ['sprint__game', 'game']);
   <HTMLElement>createEl('div', blockGame, ['game__timer']);
@@ -44,8 +45,10 @@ export function createSprintGame() {
   sprintWordEn.id = 'word-en';
   sprintWordRu.id = 'word-ru';
   createButtons(choiceButtons, CountButtons.Two);
+  mixWords(blockGame);
   return sprintPage;
 }
+
 function loading() {
   main.innerHTML = '';
   const sprintPreloadPage = <HTMLElement>createEl('div', main, ['sprint', 'sprint__game-preload']);
@@ -66,7 +69,7 @@ export function createPreSprintGamePage() {
     const { className } = message;
     Click(id, className);
     loading();
-    setLocalStorage('sprint-page');
+    setLocalStorage(Page.userPage, 'sprint-page');
   });
   const sprintButtonsBlock = <HTMLElement>createEl('div', sprintPreloadPage, ['sprint__btns']);
 
