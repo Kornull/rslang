@@ -46,7 +46,14 @@ class User {
       this.token = content.token;
       this.refreshToken = content.refreshToken;
       this.userName = content.name;
-      localStorage.setItem('user', 'true');
+      localStorage.setItem(
+        'userDataBasic',
+        JSON.stringify({
+          userId: this.userId,
+          token: this.token,
+          name: this.userName,
+        }),
+      );
     } else {
       console.log('signIn error: ', rawResponse.status, ', text: ', rawResponse.statusText);
     }
