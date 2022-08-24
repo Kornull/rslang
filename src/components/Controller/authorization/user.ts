@@ -94,6 +94,14 @@ class User {
       this.refreshToken = content.refreshToken;
       this.userId = content.userId;
       this.userName = content.name;
+      localStorage.setItem(
+        'userDataBasic',
+        JSON.stringify({
+          userId: this.userId,
+          token: this.token,
+          name: this.userName,
+        }),
+      );
       // console.log('content response getUser -----', content);
     } else {
       console.log('getNewTokens error: ', rawResponse.status, ', text: ', rawResponse.statusText);
