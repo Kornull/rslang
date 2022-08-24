@@ -1,7 +1,7 @@
 import './_sprint.scss';
 import { main } from '../../Templates/main-block';
 import { createEl } from '../../Controller/createTagBlock';
-import { Click, mixWords } from './sprint-game.utils';
+import { Click, createAudioButton, mixWords } from './sprint-game.utils';
 import { setLocalStorage } from '../../Controller/sprint-game/storage/storage-set-kornull';
 import { Page } from '../../Controller/sprint-game/storage/type-storage';
 
@@ -39,6 +39,9 @@ export function createSprintGame() {
   const blockGame = <HTMLElement>createEl('div', sprintPage, ['sprint__game', 'game']);
   const timer = <HTMLElement>createEl('div', blockGame, ['game__timer']);
   timer.innerHTML = '0:30';
+  const audioButton = <HTMLElement>createEl('div', blockGame, ['game__audio', 'sound-on']);
+  audioButton.style.backgroundImage = 'url(./assets/img/sound-on.png)';
+  audioButton.style.backgroundImage = 'url(./assets/img/sound-on.png)';
   const wordsSprint = <HTMLElement>createEl('div', blockGame, ['game__words']);
   const sprintWordEn = <HTMLElement>createEl('div', wordsSprint, ['game__word-en']);
   const sprintWordRu = <HTMLElement>createEl('div', wordsSprint, ['game__word-ru']);
@@ -48,6 +51,7 @@ export function createSprintGame() {
   createButtons(choiceButtons, CountButtons.Two);
   let time = 29;
   mixWords(blockGame);
+  createAudioButton(audioButton);
   const runTimer = setInterval(() => {
     if (time >= 10) timer.innerHTML = `0:${time}`;
     if (time < 10) timer.innerHTML = `0:0${time}`;

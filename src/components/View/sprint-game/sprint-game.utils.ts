@@ -11,6 +11,19 @@ enum KeysWords {
   Count = '0',
 }
 
+export function createAudioButton(audioButton: HTMLElement) {
+  audioButton.addEventListener('click', () => {
+    audioButton.classList.toggle('sound-on');
+    if (audioButton.classList.contains('sound-on')) {
+      audio.volume = 1;
+      audioButton.style.backgroundImage = 'url(./assets/img/sound-on.png)';
+    } else {
+      audio.volume = 0;
+      audioButton.style.backgroundImage = 'url(./assets/img/sound-off.png)';
+    }
+  });
+}
+
 enum SprintTagClass {
   GroupClass = 'sprint__btn-group',
 }
