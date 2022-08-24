@@ -37,7 +37,8 @@ export function createSprintGame() {
   const sprintPage = <HTMLElement>createEl('div', main, ['sprint', 'sprint__page']);
   sprintPage.id = 'sprint-page';
   const blockGame = <HTMLElement>createEl('div', sprintPage, ['sprint__game', 'game']);
-  <HTMLElement>createEl('div', blockGame, ['game__timer']);
+  const timer = <HTMLElement>createEl('div', blockGame, ['game__timer']);
+  timer.innerHTML = '0:30';
   const wordsSprint = <HTMLElement>createEl('div', blockGame, ['game__words']);
   const sprintWordEn = <HTMLElement>createEl('div', wordsSprint, ['game__word-en']);
   const sprintWordRu = <HTMLElement>createEl('div', wordsSprint, ['game__word-ru']);
@@ -45,7 +46,14 @@ export function createSprintGame() {
   sprintWordEn.id = 'word-en';
   sprintWordRu.id = 'word-ru';
   createButtons(choiceButtons, CountButtons.Two);
+  let time = 29;
   mixWords(blockGame);
+  const runTimer = setInterval(() => {
+    if (time >= 10) timer.innerHTML = `0:${time}`;
+    if (time < 10) timer.innerHTML = `0:0${time}`;
+    if (time === 0) clearInterval(runTimer);
+    time -= 1;
+  }, 1000);
   return sprintPage;
 }
 

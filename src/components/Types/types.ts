@@ -1,5 +1,5 @@
 // ONLY ALL TYPES (if they will);
-export type Word = {
+export type WordSettings = {
   id: string;
   group: number;
   page: number;

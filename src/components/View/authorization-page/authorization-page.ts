@@ -1,6 +1,7 @@
 import './_authorization.scss';
 import { createEl } from '../../Controller/createTagBlock';
 import { main } from '../../Templates/main-block';
+// eslint-disable-next-line import/no-cycle
 import { toggleButtons, signInRequest, closePopup } from '../../Controller/authorization/authorization';
 
 function createLabel(inputType: string, inputName: string, classNames: string[], text: string, parent: HTMLElement, disabled: boolean): HTMLElement {
@@ -34,8 +35,8 @@ function crateAuthorizationPage() {
   signButton.innerText = 'Отправить';
   signButton.addEventListener('click', () => signInRequest());
   authPageBg.addEventListener('click', (e) => {
-    console.log('----- target :', e.target);
-    console.log('----- target contains :', !authPage.contains(e.target as HTMLElement));
+    // console.log('----- target :', e.target);
+    // console.log('----- target contains :', !authPage.contains(e.target as HTMLElement));
     if (!authPage.contains(e.target as HTMLElement)) {
       closePopup();
     }

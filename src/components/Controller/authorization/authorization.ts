@@ -32,13 +32,13 @@ export async function signInRequest() {
   const isSignIn = document.querySelector('#sign-in-btn')?.classList.contains('active');
   // console.log(inName.value, ' - ', inEmail.value, ' - ', inPassword.value);
   if (isSignIn) {
-    console.log('--------------signIn---');
+    // console.log('--------------signIn---');
     const response = await appUser.signIn(inEmail.value, inPassword.value);
     if (response === 200) {
       closePopup();
     }
   } else {
-    console.log('--------------signUp---');
+    // console.log('--------------signUp---');
     const response = await appUser.createUser(inName.value, inEmail.value, inPassword.value);
     if (response === 200) {
       closePopup();

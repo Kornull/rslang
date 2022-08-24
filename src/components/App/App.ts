@@ -6,7 +6,6 @@ import User from '../Controller/authorization/user';
 // eslint-disable-next-line import/no-cycle
 import crateAuthorizationPage from '../View/authorization-page/authorization-page';
 
-
 export function App(idPage: string | null): void {
   if (idPage !== null) {
     main.innerHTML = '';
