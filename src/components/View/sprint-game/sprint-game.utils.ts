@@ -2,6 +2,7 @@ import { createListWords } from '../../Controller/sprint-game/get-words-to-sprin
 import { getLocalStorage, setLocalStorage } from '../../Controller/sprint-game/storage/storage-set-kornull';
 import { Key, WordSettings } from '../../Types/types';
 
+const audio = new Audio();
 enum KeysWords {
   EnglishWords = 'wordsObjectEn',
   RussianWords = 'wordsObjectRu',
@@ -19,11 +20,15 @@ function countNum(count: number, length: number): boolean {
 }
 
 function correctAnswer(): void {
+  audio.src = './assets/audio/correct.mp3';
+  audio.play();
   let num = Number(getLocalStorage(KeysWords.CorrectWord));
   setLocalStorage(KeysWords.CorrectWord, (num += 1).toString());
 }
 
 function wrongAnswer(): void {
+  audio.src = './assets/audio/wrong3.mp3';
+  audio.play();
   let num = Number(getLocalStorage(KeysWords.WrongWord));
   setLocalStorage(KeysWords.WrongWord, (num += 1).toString());
 }
