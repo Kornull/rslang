@@ -134,9 +134,9 @@ export const Click = async (id: string, className: string): Promise<void> => {
 };
 
 export function createStaticticSprint(block: HTMLElement) {
-  const correctNum = Number(getLocalStorage(KeysWords.CorrectWord)[0]);
-  const wrongNum = Number(getLocalStorage(KeysWords.WrongWord)[0]);
-  const guessedNum = Number(getLocalStorage(KeysWords.GuessedWord)[0]);
+  const correctNum = Number(getLocalStorage(KeysWords.CorrectWord));
+  const wrongNum = Number(getLocalStorage(KeysWords.WrongWord));
+  const guessedNum = Number(getLocalStorage(KeysWords.GuessedWord));
   const allCountWords = correctNum + wrongNum;
   const correct = <HTMLElement>block.querySelector('.sprint__statistic-correct');
   const wrong = <HTMLElement>block.querySelector('.sprint__statistic-wrong');
