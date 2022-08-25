@@ -1,7 +1,8 @@
 import './_sprint.scss';
 import { main } from '../../Templates/main-block';
 import { createEl } from '../../Controller/createTagBlock';
-import { Click, createAudioButton, mixWords } from './sprint-game.utils';
+// eslint-disable-next-line object-curly-newline
+import { Click, createAudioButton, createStaticticSprint, mixWords } from './sprint-game.utils';
 import { setLocalStorage } from '../../Controller/sprint-game/storage/storage-set-kornull';
 import { Page } from '../../Controller/sprint-game/storage/type-storage';
 
@@ -14,7 +15,7 @@ export enum CountButtons {
   Six = 6,
 }
 
-function createButtons(el: HTMLElement, count: number) {
+function createButtons(el: HTMLElement, count: number): void {
   for (let i = 1; i < count + 1; i++) {
     if (count > CountButtons.Two) {
       const btnSection = <HTMLElement>createEl('button', el, ['sprint__btn-group']);
@@ -32,7 +33,7 @@ function createButtons(el: HTMLElement, count: number) {
   }
 }
 
-export function createSprintGame() {
+export function createSprintGame(): HTMLElement {
   main.innerHTML = '';
   const sprintPage = <HTMLElement>createEl('div', main, ['sprint', 'sprint__page']);
   sprintPage.id = 'sprint-page';
@@ -55,13 +56,17 @@ export function createSprintGame() {
   const runTimer = setInterval(() => {
     if (time >= 10) timer.innerHTML = `0:${time}`;
     if (time < 10) timer.innerHTML = `0:0${time}`;
-    if (time === 0) clearInterval(runTimer);
+    if (time === 0) {
+      clearInterval(runTimer);
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
+      statisticGame();
+    }
     time -= 1;
   }, 1000);
   return sprintPage;
 }
 
-function loading() {
+function loading(): void {
   main.innerHTML = '';
   const sprintPreloadPage = <HTMLElement>createEl('div', main, ['sprint', 'sprint__game-preload']);
   <HTMLElement>createEl('div', sprintPreloadPage, ['spinner']);
@@ -70,7 +75,8 @@ function loading() {
   }, 7000);
 }
 
-export function createPreSprintGamePage() {
+export function createPreSprintGamePage(): HTMLElement {
+  main.innerHTML = '';
   const sprintPreloadPage = <HTMLElement>createEl('div', main, ['sprint', 'sprint__game-preload']);
   sprintPreloadPage.id = 'preload-sprint';
   const titleSprint = <HTMLElement>createEl('h1', sprintPreloadPage, ['sprint__title']);
@@ -87,4 +93,21 @@ export function createPreSprintGamePage() {
 
   createButtons(sprintButtonsBlock, CountButtons.Six);
   return sprintPreloadPage;
+}
+
+export function statisticGame(): HTMLElement {
+  main.innerHTML = '';
+  const sprintPageStat = <HTMLElement>createEl('div', main, ['sprint__statistic']);
+  const title = <HTMLElement>createEl('h1', sprintPageStat, ['sprint__statistic-title']);
+  title.innerHTML = 'Statistic - Sprint game';
+  <HTMLElement>createEl('div', sprintPageStat, ['sprint__statistic-correct']);
+  <HTMLElement>createEl('div', sprintPageStat, ['sprint__statistic-wrong']);
+  <HTMLElement>createEl('div', sprintPageStat, ['sprint__statistic-words']);
+  <HTMLElement>createEl('div', sprintPageStat, ['sprint__statistic-percent']);
+  <HTMLElement>createEl('div', sprintPageStat, ['sprint__statistic-percent--words']);
+  const statisticBtn = <HTMLElement>createEl('button', sprintPageStat, ['sprint__btn-close--stat']);
+  statisticBtn.innerHTML = 'Close page';
+  statisticBtn.addEventListener('click', createPreSprintGamePage);
+  createStaticticSprint(sprintPageStat);
+  return sprintPageStat;
 }

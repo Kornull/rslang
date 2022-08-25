@@ -7,6 +7,7 @@ enum KeysWords {
   EnglishWords = 'wordsObjectEn',
   RussianWords = 'wordsObjectRu',
   CorrectWord = 'correctWords',
+  GuessedWord = 'guessedWords',
   WrongWord = 'wrongWords',
   Count = '0',
 }
@@ -46,9 +47,15 @@ function wrongAnswer(): void {
   setLocalStorage(KeysWords.WrongWord, (num += 1).toString());
 }
 
+function guessedWord() {
+  let num = Number(getLocalStorage(KeysWords.GuessedWord));
+  setLocalStorage(KeysWords.GuessedWord, (num += 1).toString());
+}
+
 function removeCountAnswers(): void {
   setLocalStorage(KeysWords.CorrectWord, KeysWords.Count);
   setLocalStorage(KeysWords.WrongWord, KeysWords.Count);
+  setLocalStorage(KeysWords.GuessedWord, KeysWords.Count);
 }
 
 export function mixWords(blockGame: HTMLElement): void {
@@ -78,6 +85,7 @@ export function mixWords(blockGame: HTMLElement): void {
       case 'word-true':
         if (enWords[count].id === ruWords[randomCount].id) {
           correctAnswer();
+          guessedWord();
         } else {
           wrongAnswer();
         }
@@ -125,17 +133,19 @@ export const Click = async (id: string, className: string): Promise<void> => {
   setLocalStorage('wordsObjectRu', arrayWordsRu);
 };
 
-// audio: "files/28_3545.mp3"
-// audioExample: "files/28_3545_example.mp3"
-// audioMeaning: "files/28_3545_meaning.mp3"
-// group: 5
-// id: "5e9f5ee45eb9e72bc21b0278"
-// image: "files/28_3545.jpg"
-// page: 27
-// textExample: "The doctor can tell you every process that happens in one’s <b>guts</b>."
-// textExampleTranslate: "Врач может рассказать вам о каждом процессе, который происходит у вас в животе"
-// textMeaning: "The <i>guts</i> are all the organs inside a person or animal."
-// textMeaningTranslate: "Кишки - это все органы внутри человека или животного"
-// transcription: "[gʌts]"
-// word: "guts"
-// wordTranslate: "внутренности"
+export function createStaticticSprint(block: HTMLElement) {
+  const correctNum = Number(getLocalStorage(KeysWords.CorrectWord)[0]);
+  const wrongNum = Number(getLocalStorage(KeysWords.WrongWord)[0]);
+  const guessedNum = Number(getLocalStorage(KeysWords.GuessedWord)[0]);
+  const allCountWords = correctNum + wrongNum;
+  const correct = <HTMLElement>block.querySelector('.sprint__statistic-correct');
+  const wrong = <HTMLElement>block.querySelector('.sprint__statistic-wrong');
+  const words = <HTMLElement>block.querySelector('.sprint__statistic-words');
+  const percent = <HTMLElement>block.querySelector('.sprint__statistic-percent');
+  const percentWord = <HTMLElement>block.querySelector('.sprint__statistic-percent--words');
+  correct.innerHTML = `Правильных ответов - ${correctNum}`;
+  wrong.innerHTML = `Неправильных ответов - ${wrongNum}`;
+  words.innerHTML = `Угадано слов - ${guessedNum}`;
+  percent.innerHTML = `Общий процент правильных ответов - ${Math.trunc((correctNum / allCountWords) * 100)}%`;
+  percentWord.innerHTML = `Процент отгаданных слов - ${Math.trunc((guessedNum / allCountWords) * 100)}%`;
+}
