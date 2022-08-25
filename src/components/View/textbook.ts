@@ -7,6 +7,7 @@ import './_textbook.scss';
 
 const COUNT_GROUP = 6;
 const COUNT_PAGE_GROUP = 30;
+const USER = '63063fa733e8cf0016955287';
 
 function createButtonAudio(wordValue: Word): SVGSVGElement {
   const audioImg = <SVGSVGElement>document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -53,7 +54,7 @@ function renderCardWord(wordValue: Word): HTMLDivElement {
         statuslearn: 'true',
       },
     };
-    addWordUser('63063fa733e8cf0016955287', wordValue.id, wordVal);
+    addWordUser(USER, wordValue.id, wordVal);
   });
   const imgHard = <SVGSVGElement>document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   imgHard.classList.add('imgHard');
