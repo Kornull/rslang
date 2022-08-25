@@ -14,3 +14,15 @@ export interface Word {
   textMeaningTranslate: string;
   textExampleTranslate: string;
 }
+
+interface Optional {
+  statuslearn: string;
+  attempts?: number;
+  sucseessAttempts?: number;
+  newDate?: Date;
+}
+
+export interface WordValue {
+  difficulty: string;
+  optional: Optional;
+}

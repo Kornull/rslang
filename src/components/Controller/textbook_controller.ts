@@ -1,7 +1,7 @@
-import { words } from '../Templates/serve';
-import { Word } from '../Types/word';
-// eslint-disable-next-line import/no-cycle
-import { renderPageTextbook, renderPage } from '../View/textbook';
+import { words, urlLink } from '../Templates/serve';
+import { Word, WordValue } from '../Types/word';
+
+const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzMDYzZmE3MzNlOGNmMDAxNjk1NTI4NyIsImlhdCI6MTY2MTM2MTYwMCwiZXhwIjoxNjYxMzc2MDAwfQ.igCH2tbNTDn6hAwEfm3S8J5tgGZVUWK-5aKhRw5UesM';
 
 export async function getWords(group: number, page: number) {
   return (await fetch(`${words}?group=${group}&page=${page}`)).json();
@@ -12,11 +12,12 @@ export async function getListWords(group: number, page: number) {
   return listWords;
 }
 
-export async function createPage(): Promise<void> {
-  const main = <HTMLElement>document.querySelector('#main');
-  const page: HTMLElement = renderPage();
-  main.append(page);
-  const pageTextbook = <HTMLElement>document.querySelector('#page-textbook');
-  const wrapperPageTextbook = await renderPageTextbook();
-  pageTextbook.append(wrapperPageTextbook);
+export async function addWordUser(userId: string, wordId: string, word: WordValue) {
+  return (
+    await fetch(`${urlLink}users/${userId}/words/${wordId}`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` },
+      body: JSON.stringify(word),
+    })
+  ).json();
 }

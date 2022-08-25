@@ -8,14 +8,13 @@
 .group {
     display: flex;
     flex-direction: column;
-    padding-top: 20px;
+    padding-top: 60px;
     gap: 10px;
-    width: 10%;
 }
 
 .group__link {
-    width: 70px;
-    height: 70px;
+    width: 65px;
+    height: 65px;
     border-radius: 10px;
     padding: 15%;
     color: #fff;
@@ -30,23 +29,23 @@
 }
 
 .group-2 {
-    background-color: #9dcef4;
+    background-color: #bedff8;
 }
 
 .group-3 {
-    background-color: #64b4f0;
+    background-color: #9ed1f8;
 }
 
 .group-4 {
-    background-color: #47a9f3;
+    background-color: #8ac9f9;
 }
 
 .group-5 {
-    background-color: #329ced;
+    background-color: #73bff9;
 }
 
 .group-6 {
-    background-color: #1090f3;
+    background-color: #5db5f9;
 }
 
 .main-textbook {
@@ -63,10 +62,31 @@
     column-gap: 20px;
 }
 
+.nav-button {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    border: 2px solid #dfecf8;
+    background-color: #fff;
+}
+
+.nav-button_enabled {
+    cursor: pointer;
+
+    &:hover {
+        background-color: #dfecf8;
+        color: #fff;
+    }
+}
+
+.nav-button_disabled {
+    background-color: #dfecf8;
+}
+
 .wrapper-page-textbook {
-  display: flex;
-  flex-direction: column;
-  row-gap: 20px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
 }
 
 .cardWord {
@@ -77,8 +97,12 @@
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
 }
 
+.multimediaBlock {
+    width: 40%;
+}
+
 .imgBlock {
-    width: inherit;
+    width: 100%;
 }
 
 .imgWord {
@@ -86,13 +110,44 @@
     border-radius: 10px;
 }
 
+.buttonAdd {
+    display: flex;
+    justify-content: space-between;
+}
+
 .imgAudio {
     width: 40px;
     height: 40px;
     cursor: pointer;
+    fill: #03365d;
+}
+
+.imgLearn {
+    width: 25px;
+    height: 30px;
+    padding-top: 10px;
+    cursor: pointer;
+    fill: #03365d;
+}
+
+.imgHard {
+    width: 35px;
+    height: 35px;
+    padding-top: 5px;
+    cursor: pointer;
+    fill: #03365d;
+}
+
+.word {
+    padding: 0 10px;
 }
 
 .h3 {
     font-weight: bold;
     text-transform: capitalize;
+    font-size: 18px;
+}
+
+.h4 {
+    margin-bottom: 10px;
 }

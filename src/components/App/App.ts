@@ -1,4 +1,4 @@
-import { createPage } from '../Controller/textbook_controller';
+import { createPage } from '../View/textbook';
 import './_app.scss';
 
 export function App(): HTMLElement {
