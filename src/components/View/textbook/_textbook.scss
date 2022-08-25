@@ -1,3 +1,5 @@
+@import "../../../scss/base/settings";
+
 .textbook {
     display: flex;
     justify-content: space-around;
@@ -17,7 +19,7 @@
     height: 60px;
     border-radius: 10px;
     padding: 15%;
-    color: #fff;
+    color: $colorWhite;
     font-weight: bold;
     font-size: 24px;
     text-align: center;
@@ -25,27 +27,31 @@
 }
 
 .group-1 {
-    background-color: #dfecf8;
+    background-color: $colorGroup1;
 }
 
 .group-2 {
-    background-color: #bedff8;
+    background-color: $colorGroup2;
 }
 
 .group-3 {
-    background-color: #9ed1f8;
+    background-color: $colorGroup3;
 }
 
 .group-4 {
-    background-color: #8ac9f9;
+    background-color: $colorGroup4;
 }
 
 .group-5 {
-    background-color: #73bff9;
+    background-color: $colorGroup5;
 }
 
 .group-6 {
-    background-color: #5db5f9;
+    background-color: $colorGroup6;
+}
+
+.group-7 {
+    background-color: $colorGroup7;
 }
 
 .main-textbook {
@@ -66,21 +72,21 @@
     width: 40px;
     height: 40px;
     border-radius: 10px;
-    border: 2px solid #dfecf8;
-    background-color: #fff;
+    border: 2px solid $colorGroup1;
+    background-color: $colorWhite;
 }
 
 .nav-button_enabled {
     cursor: pointer;
 
     &:hover {
-        background-color: #dfecf8;
-        color: #fff;
+        background-color: $colorGroup1;
+        color: $colorWhite;
     }
 }
 
 .nav-button_disabled {
-    background-color: #dfecf8;
+    background-color: $colorGroup1;
 }
 
 .wrapper-page-textbook {
@@ -119,7 +125,7 @@
     width: 40px;
     height: 40px;
     cursor: pointer;
-    fill: #03365d;
+    fill: $colorMedia;
 }
 
 .imgLearn {
@@ -127,7 +133,7 @@
     height: 30px;
     padding-top: 10px;
     cursor: pointer;
-    fill: #03365d;
+    fill: $colorMedia;
 }
 
 .imgHard {
@@ -135,7 +141,7 @@
     height: 35px;
     padding-top: 5px;
     cursor: pointer;
-    fill: #03365d;
+    fill: $colorMedia;
 }
 
 .word {
