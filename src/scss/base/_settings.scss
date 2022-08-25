@@ -3,15 +3,34 @@ $colorText:#010101;
 $colorHeaderText:#ffffff;
 $colorLearnWord:#0004ff;
 $colorHardWord:#ff0000;
-$colorFocusHeader:#ff5e00;
+$colorFocusHeader: #f7ff01;
+$colorBurgerText: #c7c7c7;
+$colorNonActiveText: #727274;
+$colorDisabledText: #d1d2d4;
 
-// Backgroun Color
-$backgroundHeader:#78bcf0;
-$backgroundFooter:#035a91;
-$backgroundBurger:#006cbe;
+// Background Color
+$backgroundHeader:#5fa3d6;
+$backgroundFooter:#104668;
+$backgroundBurger:#253745;
 $backgroundBody:#ebeff3;
+$backgroundShadow:#ffffff4a;
+$backgroundMain:#ffffffe4;
+$backgroundPopup: #00000080;
+
+// colors
+$colorWhite: #ffffff;
+$colorWhiteShadow:#b5b5b5;
+$colorWhiteTransparent:#ffffff9e;
+$colorYellow: #ffff00;
+$colorBlue:#90b7f0;
+$colorBlueText:#0066ff;
+$colorBlueDescriptionText:#013c94;
+$colorGreenHover: #528766;
+$colorPopup: #104068;
 
 // Font size
+$size28px: 28px;
+$size25px: 25px;
 $size21px: 21px;
 $size19px: 19px;
 $size16px: 16px;
@@ -20,4 +39,10 @@ $size14px: 14px;
 // Font family
 $fontRoboto: 'Roboto', sans-serif;
 $fontRobotoSlab:'Roboto Slab', serif;
-$fontMontserrat: 'Montserrat', serif;;
+$fontMontserrat: 'Montserrat', serif;
+
+// BreakPoints
+$size1280px: 1280px;
+$size768px: 768px;
+$size767px: 767px;
+$size480px: 480px;

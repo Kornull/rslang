@@ -1,13 +1,13 @@
-import { addWordUser, getListWords } from '../Controller/textbook_controller';
-import { urlLink } from '../Templates/serve';
-import { Word, WordValue } from '../Types/word';
-import { createEl } from './create_element';
-import { getStorage, setStorage } from '../Controller/storage';
+import { getAggregatedWords, getListWords } from '../../Controller/textbook/textbook_controller';
+import { urlLink } from '../../Templates/serve';
+import { Word } from '../../Types/word';
+import { createEl } from '../create_element';
+import { getStorage, setStorage } from '../../Controller/storage';
 import './_textbook.scss';
+import User from '../../Controller/authorization/user';
 
 const COUNT_GROUP = 6;
 const COUNT_PAGE_GROUP = 30;
-const USER = '63063fa733e8cf0016955287';
 
 function createButtonAudio(wordValue: Word): SVGSVGElement {
   const audioImg = <SVGSVGElement>document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -48,13 +48,14 @@ function renderCardWord(wordValue: Word): HTMLDivElement {
   imgLearn.innerHTML = '<use xlink:href="./assets/img/checkmark.svg#check"></use>';
   buttonAdd.append(imgLearn);
   imgLearn.addEventListener('click', () => {
-    const wordVal: WordValue = {
-      difficulty: 'easy',
-      optional: {
-        statuslearn: 'true',
-      },
-    };
-    addWordUser(USER, wordValue.id, wordVal);
+    // const wordVal: WordValue = {
+    //   difficulty: 'easy',
+    //   optional: {
+    //     statuslearn: 'true',
+    //   },
+    // };
+    // const user: User = JSON.parse(getStorage('userDataBasic', ''));
+    // addWordUser(user, wordValue.id, wordVal);
   });
   const imgHard = <SVGSVGElement>document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   imgHard.classList.add('imgHard');
@@ -79,7 +80,14 @@ function renderCardWord(wordValue: Word): HTMLDivElement {
 export async function renderPageTextbook() {
   const currentGroup: string = getStorage('currentGroup', '0');
   const currentPage: string = getStorage('currentPage', '0');
-  const listWords: Word[] = await getListWords(+currentGroup, +currentPage);
+  console.log(getStorage('userDataBasic ', ''));
+  let listWords: Word[];
+  try {
+    const user: User = JSON.parse(getStorage('userDataBasic', ''));
+    listWords = await getAggregatedWords(+currentGroup, +currentPage, user);
+  } catch {
+    listWords = await getListWords(+currentGroup, +currentPage);
+  }
   const wrapperPageTextbook = <HTMLDivElement>createEl('div', undefined, ['wrapper-page-textbook'], { id: 'wrapper-page-textbook' });
   listWords.forEach((item) => {
     const cardWord = renderCardWord(item);
