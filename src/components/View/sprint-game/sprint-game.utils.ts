@@ -25,10 +25,6 @@ export function createAudioButton(audioButton: HTMLElement) {
   });
 }
 
-enum SprintTagClass {
-  GroupClass = 'sprint__btn-group',
-}
-
 function countNum(count: number, length: number): boolean {
   return count < length;
 }
@@ -112,30 +108,30 @@ export function mixWords(blockGame: HTMLElement): void {
   viewWords();
 }
 
-export const Click = async (id: string, className: string, num?: number): Promise<void> => {
+export const Click = (id: number, num?: number): void => {
   let arrayWords: WordSettings[] = [];
   const arrayWordsEn: object[] = [];
   const arrayWordsRu: object[] = [];
   if (num) {
-    createAllListWords(Number(id.split('').slice(-1)) - 1, num);
+    createAllListWords(id, num);
   } else {
-      if (className === SprintTagClass.GroupClass) {
-        createAllListWords(Number(id.split('').slice(-1)) - 1);
+    createAllListWords(id);
   }
-}
-  arrayWords = getLocalStorage('allListWords');
-  arrayWords.forEach((el: WordSettings) => {
-    const wordsEn: Key = {};
-    const wordsRu: Key = {};
-    wordsEn.id = el.id;
-    wordsEn.word = el.word;
-    wordsRu.id = el.id;
-    wordsRu.word = el.wordTranslate;
-    arrayWordsEn.push(wordsEn);
-    arrayWordsRu.push(wordsRu);
-  });
-  setLocalStorage('wordsObjectEn', arrayWordsEn);
-  setLocalStorage('wordsObjectRu', arrayWordsRu);
+  setTimeout(() => {
+    arrayWords = getLocalStorage('allListWords');
+    arrayWords.forEach((el: WordSettings) => {
+      const wordsEn: Key = {};
+      const wordsRu: Key = {};
+      wordsEn.id = el.id;
+      wordsEn.word = el.word;
+      wordsRu.id = el.id;
+      wordsRu.word = el.wordTranslate;
+      arrayWordsEn.push(wordsEn);
+      arrayWordsRu.push(wordsRu);
+    });
+    setLocalStorage('wordsObjectEn', arrayWordsEn);
+    setLocalStorage('wordsObjectRu', arrayWordsRu);
+  }, 5000);
 };
 
 export function createStaticticSprint(block: HTMLElement) {

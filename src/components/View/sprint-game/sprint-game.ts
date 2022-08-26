@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import './_sprint.scss';
 import { main } from '../../Templates/main-block';
 import { createEl } from '../../Controller/createTagBlock';
@@ -5,6 +6,7 @@ import { createEl } from '../../Controller/createTagBlock';
 import { Click, createAudioButton, createStaticticSprint, mixWords } from './sprint-game.utils';
 import { setLocalStorage } from '../../Controller/sprint-game/storage/storage-set-kornull';
 import { Page } from '../../Controller/sprint-game/storage/type-storage';
+import { createAllListWords } from '../../Controller/sprint-game/get-words-to-sprint';
 
 enum TitleSprint {
   PreTitle = 'Для старта игры выберите уровень сложности',
@@ -58,7 +60,6 @@ export function createSprintGame(): HTMLElement {
     if (time < 10) timer.innerHTML = `0:0${time}`;
     if (time === 0) {
       clearInterval(runTimer);
-      // eslint-disable-next-line @typescript-eslint/no-use-before-define
       statisticGame();
     }
     time -= 1;
@@ -84,9 +85,9 @@ export function createPreSprintGamePage(): HTMLElement {
   sprintPreloadPage.addEventListener('click', (ev: Event) => {
     const message = ev.target as HTMLElement;
     const { id } = message;
-    const { className } = message;
-    Click(id, className);
+    createAllListWords(Number(id.split('').slice(-1)) - 1);
     loading();
+    Click(Number(id.split('').slice(-1)) - 1);
     setLocalStorage(Page.userPage, 'sprint-page');
   });
   const sprintButtonsBlock = <HTMLElement>createEl('div', sprintPreloadPage, ['sprint__btns']);
