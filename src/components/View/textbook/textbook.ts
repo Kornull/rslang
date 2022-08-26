@@ -35,7 +35,7 @@ function createButtonAudio(wordValue: Word): SVGSVGElement {
 //   addWordUser(userId, wordId, { difficulty: 'hard' });
 // }
 
-function renderCardWord(wordValue: Word): HTMLDivElement {
+function renderCardWord(wordValue: Word, autorized: boolean): HTMLDivElement {
   const cardWord = <HTMLDivElement>createEl('div', undefined, ['cardWord', `group-${wordValue.group + 1}`], { id: `cardWord-${wordValue.id}` });
   const multimedia = <HTMLDivElement>createEl('div', cardWord, ['multimediaBlock']);
   const imgBlock = <HTMLDivElement>createEl('div', multimedia, ['imgBlock']);
@@ -43,24 +43,26 @@ function renderCardWord(wordValue: Word): HTMLDivElement {
   const buttonAdd = <HTMLDivElement>createEl('div', multimedia, ['buttonAdd']);
   const audioImg: SVGSVGElement = createButtonAudio(wordValue);
   buttonAdd.append(audioImg);
-  const imgLearn = <SVGSVGElement>document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-  imgLearn.classList.add('imgLearn');
-  imgLearn.innerHTML = '<use xlink:href="./assets/img/checkmark.svg#check"></use>';
-  buttonAdd.append(imgLearn);
-  imgLearn.addEventListener('click', () => {
-    // const wordVal: WordValue = {
-    //   difficulty: 'easy',
-    //   optional: {
-    //     statuslearn: 'true',
-    //   },
-    // };
-    // const user: User = JSON.parse(getStorage('userDataBasic', ''));
-    // addWordUser(user, wordValue.id, wordVal);
-  });
-  const imgHard = <SVGSVGElement>document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-  imgHard.classList.add('imgHard');
-  imgHard.innerHTML = '<use xlink:href="./assets/img/kettlebell.svg#kettlebell"></use>';
-  buttonAdd.append(imgHard);
+  if (autorized) {
+    const imgLearn = <SVGSVGElement>document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    imgLearn.classList.add('imgLearn');
+    imgLearn.innerHTML = '<use xlink:href="./assets/img/checkmark.svg#check"></use>';
+    buttonAdd.append(imgLearn);
+    imgLearn.addEventListener('click', () => {
+      // const wordVal: WordValue = {
+      //   difficulty: 'easy',
+      //   optional: {
+      //     statuslearn: 'true',
+      //   },
+      // };
+      // const user: User = JSON.parse(getStorage('userDataBasic', ''));
+      // addWordUser(user, wordValue.id, wordVal);
+    });
+    const imgHard = <SVGSVGElement>document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    imgHard.classList.add('imgHard');
+    imgHard.innerHTML = '<use xlink:href="./assets/img/kettlebell.svg#kettlebell"></use>';
+    buttonAdd.append(imgHard);
+  }
   const word = <HTMLDivElement>createEl('div', cardWord, ['word']);
   const wordLang = createEl('h3', word, ['h3']);
   wordLang.innerHTML = `${wordValue.word} (${wordValue.wordTranslate})`;
@@ -82,15 +84,18 @@ export async function renderPageTextbook() {
   const currentPage: string = getStorage('currentPage', '0');
   console.log(getStorage('userDataBasic ', ''));
   let listWords: Word[];
+  let autorized: boolean;
   try {
     const user: User = JSON.parse(getStorage('userDataBasic', ''));
     listWords = await getAggregatedWords(+currentGroup, +currentPage, user);
+    autorized = true;
   } catch {
     listWords = await getListWords(+currentGroup, +currentPage);
+    autorized = false;
   }
   const wrapperPageTextbook = <HTMLDivElement>createEl('div', undefined, ['wrapper-page-textbook'], { id: 'wrapper-page-textbook' });
   listWords.forEach((item) => {
-    const cardWord = renderCardWord(item);
+    const cardWord = renderCardWord(item, autorized);
     wrapperPageTextbook.append(cardWord);
   });
   return wrapperPageTextbook;
@@ -120,7 +125,7 @@ function createPrevPage(e: Event) {
   const currentPage: number = currentButton === 'prev' ? +getStorage('currentPage', '0') - 1 : 0;
   setStorage('currentPage', String(currentPage));
   drawPageTextbook();
-  if (currentPage === 0) {
+  if (currentPage <= 0) {
     const first = <HTMLButtonElement>document.querySelector('#first');
     const prev = <HTMLButtonElement>document.querySelector('#prev');
     disabledButton(first);
@@ -139,7 +144,7 @@ function createNextPage(e: Event) {
   const currentPage: number = currentButton === 'next' ? +getStorage('currentPage', '0') + 1 : COUNT_PAGE_GROUP - 1;
   setStorage('currentPage', String(currentPage));
   drawPageTextbook();
-  if (currentPage + 1 === COUNT_PAGE_GROUP) {
+  if (currentPage + 1 >= COUNT_PAGE_GROUP) {
     const next = <HTMLButtonElement>document.querySelector('#next');
     const last = <HTMLButtonElement>document.querySelector('#last');
     disabledButton(next);
@@ -154,17 +159,33 @@ function createNextPage(e: Event) {
 }
 
 export function renderPaginationButton() {
+  const pageNumber: number = +getStorage('currentPage', '0') + 1;
   const paginationTextbook = <HTMLDivElement>createEl('div', undefined, ['nav-textbook'], { id: 'nav-textbook' });
-  const prevAll = <HTMLButtonElement>createEl('button', paginationTextbook, ['nav-button', 'nav-button_disabled'], { id: 'first', disabled: 'true' });
+  const prevAll = <HTMLButtonElement>createEl('button', paginationTextbook, ['nav-button'], { id: 'first', disabled: 'true' });
   prevAll.innerText = '<<';
-  const prev = <HTMLButtonElement>createEl('button', paginationTextbook, ['nav-button', 'nav-button_disabled'], { id: 'prev', disabled: 'true' });
+  const prev = <HTMLButtonElement>createEl('button', paginationTextbook, ['nav-button'], { id: 'prev', disabled: 'true' });
   prev.innerText = '<';
+  if (pageNumber <= 1) {
+    disabledButton(prevAll);
+    disabledButton(prev);
+  } else {
+    enabledButton(prev);
+    enabledButton(prevAll);
+    prev.classList.add('nav-button_enabled');
+  }
   const currentPage = <HTMLButtonElement>createEl('button', paginationTextbook, ['nav-button'], { id: 'pageNumber' });
-  currentPage.innerText = String(+getStorage('currentPage', '0') + 1);
+  currentPage.innerText = String(pageNumber);
   const next = <HTMLButtonElement>createEl('button', paginationTextbook, ['nav-button', 'nav-button_enabled'], { id: 'next' });
   next.innerText = '>';
   const nextAll = <HTMLButtonElement>createEl('button', paginationTextbook, ['nav-button', 'nav-button_enabled'], { id: 'last' });
   nextAll.innerText = '>>';
+  if (pageNumber >= COUNT_PAGE_GROUP) {
+    disabledButton(next);
+    disabledButton(nextAll);
+  } else {
+    enabledButton(next);
+    enabledButton(nextAll);
+  }
   prevAll.addEventListener('click', createPrevPage);
   prev.addEventListener('click', createPrevPage);
   next.addEventListener('click', createNextPage);
