@@ -112,12 +112,14 @@ function disabledButton(currentButton: HTMLButtonElement) {
   const button = currentButton;
   button.disabled = true;
   button.classList.add('nav-button_disabled');
+  button.classList.remove('nav-button_enabled');
 }
 
 function enabledButton(currentButton: HTMLButtonElement) {
   const button = currentButton;
   button.disabled = false;
   button.classList.remove('nav-button_disabled');
+  button.classList.add('nav-button_enabled');
 }
 
 function createPrevPage(e: Event) {
