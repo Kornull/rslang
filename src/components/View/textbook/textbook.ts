@@ -82,7 +82,7 @@ function renderCardWord(wordValue: Word, autorized: boolean): HTMLDivElement {
 export async function renderPageTextbook() {
   const currentGroup: string = getStorage('currentGroup', '0');
   const currentPage: string = getStorage('currentPage', '0');
-  console.log(getStorage('userDataBasic ', ''));
+  // console.log(getStorage('userDataBasic ', ''));
   let listWords: Word[];
   let autorized: boolean;
   try {
