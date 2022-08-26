@@ -1,4 +1,4 @@
-import { createListWords } from '../../Controller/sprint-game/get-words-to-sprint';
+import { createAllListWords } from '../../Controller/sprint-game/get-words-to-sprint';
 import { getLocalStorage, setLocalStorage } from '../../Controller/sprint-game/storage/storage-set-kornull';
 import { Key, WordSettings } from '../../Types/types';
 
@@ -112,13 +112,18 @@ export function mixWords(blockGame: HTMLElement): void {
   viewWords();
 }
 
-export const Click = async (id: string, className: string): Promise<void> => {
+export const Click = async (id: string, className: string, num?: number): Promise<void> => {
   let arrayWords: WordSettings[] = [];
   const arrayWordsEn: object[] = [];
   const arrayWordsRu: object[] = [];
-  if (className === SprintTagClass.GroupClass) {
-    arrayWords = await createListWords(Number(id.split('').slice(-1)) - 1);
+  if (num) {
+    createAllListWords(Number(id.split('').slice(-1)) - 1, num);
+  } else {
+      if (className === SprintTagClass.GroupClass) {
+        createAllListWords(Number(id.split('').slice(-1)) - 1);
   }
+}
+  arrayWords = getLocalStorage('allListWords');
   arrayWords.forEach((el: WordSettings) => {
     const wordsEn: Key = {};
     const wordsRu: Key = {};

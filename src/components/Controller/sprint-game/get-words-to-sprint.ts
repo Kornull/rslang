@@ -1,5 +1,6 @@
 import { urlLink } from '../../Templates/serve';
-import { Key, Word } from './type';
+import { getLocalStorage,setLocalStorage } from './storage/storage-set-kornull';
+import { Key,Word } from './type';
 
 enum CountPages {
   pages = 30,
@@ -14,12 +15,13 @@ const randomGroupWords = (queryS: Key[] = []): string => {
 
 async function getTheWords(request: string) {
   const words = await fetch(`${urlLink}words/${request}`);
-  const res = await words.json();
+  const res: Word[] = await words.json();
   return res;
 }
 
-export const createListWords = async (num: number): Promise<Word[]> => {
-  const numberPage = Math.floor(Math.random() * CountPages.pages);
+export const createListWords = async (num: number, numberPage: number): Promise<void> => {
+  let words: Word[] = getLocalStorage('allListWords');
+  console.log('words', words);
   const groupWords: Key = {
     key: 'group',
     value: num,
@@ -29,5 +31,25 @@ export const createListWords = async (num: number): Promise<Word[]> => {
     value: numberPage,
   };
   const queryStr: string = randomGroupWords([pageWords, groupWords]);
-  return getTheWords(queryStr);
+  words = words.concat(await getTheWords(queryStr))
+  console.log('Words', words);
+  setLocalStorage('allListWords', words);
 };
+
+export function createAllListWords(numberGroup: number, numberUserPage?: number) {
+  setLocalStorage('allListWords', []);
+  let numberPage = Math.floor(Math.random() * CountPages.pages);
+  if (numberUserPage) numberPage = numberUserPage;
+  if (numberPage >= 5) {
+    for (let i = numberPage - 5; i < numberPage; i++) {
+      createListWords(numberGroup,i);
+      console.log(i);
+    }
+  }
+  if (numberPage < 5) {
+    for (let i = numberPage + 5; i > numberPage; i--) {
+      createListWords(numberGroup,i);
+      console.log(i);
+    }
+  }
+}
