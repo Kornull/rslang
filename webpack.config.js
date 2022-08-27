@@ -27,7 +27,7 @@ const plugins = () => {
     }),
     new CopyPlugin({
       patterns: [{
-        from: `img/*.svg`,
+        from: `img/**`,
         to: 'assets',
       }
       ]

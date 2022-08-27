@@ -35,8 +35,6 @@ function crateAuthorizationPage() {
   signButton.innerText = 'Отправить';
   signButton.addEventListener('click', () => signInRequest());
   authPageBg.addEventListener('click', (e) => {
-    console.log('----- target :', e.target);
-    console.log('----- target contains :', !authPage.contains(e.target as HTMLElement));
     if (!authPage.contains(e.target as HTMLElement)) {
       closePopup();
     }
