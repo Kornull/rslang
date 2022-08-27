@@ -8,6 +8,7 @@ import { setLocalStorage } from '../../Controller/sprint-game/storage/storage-se
 import { Page } from '../../Controller/sprint-game/storage/type-storage';
 import { createAllListWords } from '../../Controller/sprint-game/get-words-to-sprint';
 
+const listBurger = <HTMLElement>document.querySelector('#header-menu');
 enum TitleSprint {
   PreTitle = 'Для старта игры выберите уровень сложности',
 }
@@ -64,6 +65,9 @@ export function createSprintGame(): HTMLElement {
     }
     time -= 1;
   }, 1000);
+  listBurger.addEventListener('click', () => {
+    clearInterval(runTimer);
+  });
   return sprintPage;
 }
 

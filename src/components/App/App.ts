@@ -5,7 +5,9 @@ import createMainPage from '../View/main-page/main-page';
 import User from '../Controller/authorization/user';
 // eslint-disable-next-line import/no-cycle
 import crateAuthorizationPage from '../View/authorization-page/authorization-page';
+// import { getLocalStorage } from '../Controller/sprint-game/storage/storage-set-kornull';
 
+export const appUser = new User();
 export function App(idPage: string | null): void {
   if (idPage !== null) {
     main.innerHTML = '';
@@ -24,4 +26,4 @@ export function App(idPage: string | null): void {
   authPage.addEventListener('click', () => crateAuthorizationPage());
 }
 
-export const appUser = new User();
+// if (getLocalStorage('userDataBasic').userId) appUser.getUser();

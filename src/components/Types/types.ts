@@ -17,3 +17,13 @@ export type WordSettings = {
 };
 
 export type Key = Record<string, string>;
+
+export enum LocalKeys {
+  UserData = 'userDataBasic',
+}
+
+export type UserStat = {
+  name: string;
+  token: string;
+  userId: string;
+};

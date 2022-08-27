@@ -1,6 +1,6 @@
-import { createAllListWords } from '../../Controller/sprint-game/get-words-to-sprint';
+import { createAllListWords, getUserWord } from '../../Controller/sprint-game/get-words-to-sprint';
 import { getLocalStorage, setLocalStorage } from '../../Controller/sprint-game/storage/storage-set-kornull';
-import { Key, WordSettings } from '../../Types/types';
+import { Key, LocalKeys, WordSettings } from '../../Types/types';
 
 const audio = new Audio();
 enum KeysWords {
@@ -10,6 +10,13 @@ enum KeysWords {
   GuessedWord = 'guessedWords',
   WrongWord = 'wrongWords',
   Count = '0',
+}
+
+function userGameGuessed(wordId: string, status: boolean) {
+  if (getLocalStorage(LocalKeys.UserData)) {
+    // userWords(wordId);
+    getUserWord(wordId, status);
+  }
 }
 
 export function createAudioButton(audioButton: HTMLElement) {
@@ -82,8 +89,10 @@ export function mixWords(blockGame: HTMLElement): void {
         if (enWords[count].id === ruWords[randomCount].id) {
           correctAnswer();
           guessedWord();
+          userGameGuessed(enWords[count].id, true);
         } else {
           wrongAnswer();
+          userGameGuessed(enWords[count].id, false);
         }
         count++;
         if (countNum(count, enWords.length)) {
@@ -93,8 +102,10 @@ export function mixWords(blockGame: HTMLElement): void {
       case 'word-false':
         if (enWords[count].id !== ruWords[randomCount].id) {
           correctAnswer();
+          userGameGuessed(enWords[count].id, true);
         } else {
           wrongAnswer();
+          userGameGuessed(enWords[count].id, false);
         }
         count++;
         if (countNum(count, ruWords.length)) {
