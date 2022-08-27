@@ -205,14 +205,20 @@ function createMainTextbook() {
 
 function renderLinkGroup(): HTMLDivElement {
   const linkGroup = <HTMLDivElement>createEl('div', undefined, ['group']);
+  const groupLinkBlock = <HTMLDivElement>createEl('div', linkGroup, ['group__buttons']);
   for (let i = 1; i <= COUNT_GROUP; i++) {
-    const currentLinkGroup = <HTMLButtonElement>createEl('button', linkGroup, ['group__link', `group-${i}`], { id: `group-${i}` });
+    const currentLinkGroup = <HTMLButtonElement>createEl('button', groupLinkBlock, ['group__link', `group-${i}`], { id: `group-${i}` });
     currentLinkGroup.innerText = String(i);
     currentLinkGroup.addEventListener('click', () => {
       setStorage('currentGroup', String(i - 1));
       drawPageTextbook();
     });
   }
+  const gameLink = <HTMLDivElement>createEl('div', linkGroup, ['game__links']);
+  const sprint = <HTMLDivElement>createEl('div', gameLink, ['game__links-sprint', 'game__link'], { id: 'sprint-page' });
+  const audioGame = <HTMLDivElement>createEl('div', gameLink, ['game__links-audio', 'game__link'], { id: 'audiogame-page' });
+  sprint.innerHTML = 'Sprint';
+  audioGame.innerHTML = 'Audio-game';
   return linkGroup;
 }
 
