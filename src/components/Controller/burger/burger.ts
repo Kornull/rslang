@@ -7,6 +7,7 @@ const linkNavigation = document.querySelectorAll('.header__nav-link');
 const span = <HTMLElement>burger.lastChild;
 const headerMenuList = <HTMLElement>document.querySelector('#header-list');
 const headerNav = <HTMLElement>document.querySelector('#header-nav');
+const header = <HTMLElement>document.querySelector('.header');
 
 const closeBurgerMenu = () => {
   span.classList.remove('active');
@@ -36,6 +37,12 @@ const openBurgerMenu = (): void => {
 };
 
 (() => {
+  header.addEventListener('click', (ev) => {
+    const mess = ev.target as HTMLElement;
+    if (mess.id === 'logo') {
+      clickIdLink('main-page');
+    }
+  });
   burger.addEventListener('click', openBurgerMenu);
   burger.addEventListener('keydown', (ev: KeyboardEvent): void => {
     const burgerElement = ev.target as HTMLElement;

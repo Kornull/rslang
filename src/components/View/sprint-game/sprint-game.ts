@@ -9,6 +9,7 @@ import { Page } from '../../Controller/sprint-game/storage/type-storage';
 import { createAllListWords } from '../../Controller/sprint-game/get-words-to-sprint';
 
 const listBurger = <HTMLElement>document.querySelector('#header-menu');
+const header = document.querySelector('.header') as HTMLElement;
 enum TitleSprint {
   PreTitle = 'Для старта игры выберите уровень сложности',
 }
@@ -67,6 +68,12 @@ export function createSprintGame(): HTMLElement {
   }, 1000);
   listBurger.addEventListener('click', () => {
     clearInterval(runTimer);
+  });
+  header.addEventListener('click', (ev) => {
+    const message = ev.target as HTMLElement;
+    if (message.id === 'burger' || message.id === 'logo') {
+      clearInterval(runTimer);
+    }
   });
   return sprintPage;
 }

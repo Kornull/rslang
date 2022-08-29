@@ -1,4 +1,4 @@
-import { createAllListWords, getUserWord } from '../../Controller/sprint-game/get-words-to-sprint';
+import { createAllListWords, getGuessSprintWords, getUserWord } from '../../Controller/sprint-game/get-words-to-sprint';
 import { getLocalStorage, setLocalStorage } from '../../Controller/sprint-game/storage/storage-set-kornull';
 import { Key, LocalKeys, WordSettings } from '../../Types/types';
 
@@ -13,9 +13,9 @@ enum KeysWords {
 }
 
 function userGameGuessed(wordId: string, status: boolean) {
-  if (getLocalStorage(LocalKeys.UserData)) {
-    // userWords(wordId);
+  if (getLocalStorage(LocalKeys.UserData).userId) {
     getUserWord(wordId, status);
+    getGuessSprintWords(status);
   }
 }
 
@@ -73,7 +73,7 @@ export function mixWords(blockGame: HTMLElement): void {
 
   function viewWords() {
     const randomNum = Math.floor(Math.random() * ruWords.length);
-    if (count % randomNum === 0) {
+    if (randomNum % 3 === 0) {
       randomCount = Math.floor(Math.random() * ruWords.length);
     } else {
       randomCount = count;

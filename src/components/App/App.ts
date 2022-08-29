@@ -18,6 +18,9 @@ export function App(idPage: string | null): void {
     } else if (idPage === 'sprint-page') {
       main.append(createSprintGame());
     }
+    // else if (idPage === '#book-page') {
+    //   createPage();
+    // }
   } else {
     main.innerHTML = '';
     main.append(createMainPage());
@@ -27,3 +30,12 @@ export function App(idPage: string | null): void {
 }
 
 // if (getLocalStorage('userDataBasic').userId) appUser.getUser();
+
+// currentPage"1"
+// currentGroup "4"
+
+// const bookPage = <HTMLElement>document.querySelector('#book-page');
+// bookPage.addEventListener('click', () => {
+//   main.innerHTML = '';
+//   createPage();
+// });

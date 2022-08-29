@@ -12,6 +12,13 @@ type ExtraWordOption = {
     data?: string;
   };
 };
+type StatisticsUserWords = {
+  learnedWords: number;
+  optional: {
+    sprintDayGuess?: string;
+    sprintAllDayWords?: string;
+  };
+};
 
 const extraOptionUserWord: ExtraWordOption = {
   difficulty: 'easy',
@@ -21,9 +28,17 @@ const extraOptionUserWord: ExtraWordOption = {
     statusLearn: 'false',
   },
 };
-//
+
+const statisticsUserWords: StatisticsUserWords = {
+  learnedWords: 0,
+  optional: {
+    sprintDayGuess: '',
+    sprintAllDayWords: '',
+  },
+};
+
 let arr: Word[][] = [];
-const date = new Date();
+const user: UserStat = getLocalStorage(LocalKeys.UserData);
 
 enum CountPages {
   pages = 30,
@@ -76,8 +91,6 @@ export async function createAllListWords(numberGroup: number, numberUserPage?: n
 }
 
 async function userWords(wordId: string, params: object): Promise<void> {
-  const user: UserStat = getLocalStorage(LocalKeys.UserData);
-
   await fetch(`${urlLink}users/${user.userId}/words/${wordId}`, {
     method: 'POST',
     headers: {
@@ -89,8 +102,6 @@ async function userWords(wordId: string, params: object): Promise<void> {
 }
 
 const setUserWords = async (wordId: string, wordOption: object) => {
-  const user: UserStat = getLocalStorage(LocalKeys.UserData);
-
   await fetch(`${urlLink}users/${user.userId}/words/${wordId}`, {
     method: 'PUT',
     headers: {
@@ -102,17 +113,85 @@ const setUserWords = async (wordId: string, wordOption: object) => {
   });
 };
 
+const setLearnedUserWords = async (statisticsUser: StatisticsUserWords) => {
+  await fetch(`${urlLink}users/${user.userId}/statistics`, {
+    method: 'PUT',
+    headers: {
+      Authorization: `Bearer ${user.token}`,
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(statisticsUser),
+  });
+};
+
+export const getGuessSprintWords = async (boolean: boolean) => {
+  const responce = await fetch(`${urlLink}users/${user.userId}/statistics`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${user.token}`,
+      Accept: 'application/json',
+    },
+  });
+  if (responce.status === 404) {
+    statisticsUserWords.learnedWords = 1;
+    statisticsUserWords.optional.sprintDayGuess = '1';
+    setLearnedUserWords(statisticsUserWords);
+  } else {
+    const res: StatisticsUserWords = await responce.json();
+    if (!res.optional.sprintDayGuess && !res.optional.sprintAllDayWords) {
+      res.optional.sprintDayGuess = '1';
+      res.optional.sprintAllDayWords = '1';
+    }
+    let numberStatAll = Number(res.optional.sprintAllDayWords);
+    let numberStatDay = Number(res.optional.sprintDayGuess);
+    if (boolean) {
+      res.optional = {
+        sprintDayGuess: `${(numberStatDay += 1)}`,
+        sprintAllDayWords: `${(numberStatAll += 1)}`,
+      };
+    } else {
+      res.optional = {
+        sprintDayGuess: `${numberStatDay}`,
+        sprintAllDayWords: `${(numberStatAll += 1)}`,
+      };
+    }
+    setLearnedUserWords({ learnedWords: res.learnedWords, optional: res.optional });
+  }
+};
+
+setInterval(async () => {
+  if (getLocalStorage('timeDateReset') === `${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`) {
+    const responce = await fetch(`${urlLink}users/${user.userId}/statistics`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+        Accept: 'application/json',
+      },
+    });
+    const res: StatisticsUserWords = await responce.json();
+    res.optional = {
+      sprintDayGuess: '0',
+      sprintAllDayWords: '0',
+    };
+    setLearnedUserWords({ learnedWords: res.learnedWords, optional: res.optional });
+  }
+}, 1000);
+
 const statusTrue = async (wordOption: ExtraWordOption, wordId: string) => {
   wordOption.optional.gameGuessed += 1;
-  wordOption.optional.data = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
-  if (wordOption.difficulty === 'easy' && wordOption.optional.gameGuessed >= 3) wordOption.optional.statusLearn = 'true';
+  wordOption.optional.data = `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`;
+  if (wordOption.difficulty === 'easy' && wordOption.optional.gameGuessed >= 3) {
+    wordOption.optional.statusLearn = 'true';
+    setUserWords(wordId, { optional: wordOption.optional });
+  }
   if (wordOption.difficulty === 'hard' && wordOption.optional.gameGuessed >= 5) wordOption.optional.statusLearn = 'true';
   setUserWords(wordId, { optional: wordOption.optional });
 };
 
 const statusFalse = async (wordOption: ExtraWordOption, wordId: string) => {
   wordOption.optional.gameMistake += 1;
-  wordOption.optional.data = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+  wordOption.optional.data = `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`;
   if (wordOption.optional.statusLearn === 'true') {
     wordOption.optional.statusLearn = 'false';
     wordOption.optional.gameGuessed = 0;
@@ -121,7 +200,6 @@ const statusFalse = async (wordOption: ExtraWordOption, wordId: string) => {
 };
 
 export const getUserWord = async (wordId: string, status: boolean) => {
-  const user: UserStat = getLocalStorage(LocalKeys.UserData);
   const responce = await fetch(`${urlLink}users/${user.userId}/words/${wordId}`, {
     method: 'GET',
     headers: {
@@ -129,21 +207,24 @@ export const getUserWord = async (wordId: string, status: boolean) => {
       Accept: 'application/json',
     },
   });
-  const wordOption: ExtraWordOption = await responce.json();
   if (responce.status === 404) {
     if (status) {
       extraOptionUserWord.optional.gameGuessed = 1;
       extraOptionUserWord.optional.gameMistake = 0;
-      extraOptionUserWord.optional.data = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+      extraOptionUserWord.optional.data = `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`;
     } else {
       extraOptionUserWord.optional.gameGuessed = 0;
       extraOptionUserWord.optional.gameMistake = 1;
-      extraOptionUserWord.optional.data = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+      extraOptionUserWord.optional.data = `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`;
     }
     userWords(wordId, extraOptionUserWord);
   } else if (status) {
+    const wordOption: ExtraWordOption = await responce.json();
+
     statusTrue(wordOption, wordId);
   } else {
+    const wordOption: ExtraWordOption = await responce.json();
+
     statusFalse(wordOption, wordId);
   }
 };
