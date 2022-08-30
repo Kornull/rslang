@@ -25,6 +25,16 @@ export function closePopup(): void {
   popup?.remove();
 }
 
+function showMessage(message: string): void {
+  const messageField = <HTMLInputElement>document.querySelector('.popup-message');
+  const messageText = <HTMLInputElement>document.querySelector('.popup-message__text');
+  messageText.innerText = message;
+  messageField.classList.remove('disabled');
+  setTimeout(() => {
+    messageField.classList.add('disabled');
+  }, 3000);
+}
+
 export async function signInRequest() {
   const inName = <HTMLInputElement>document.querySelector('input[name="name"]');
   const inEmail = <HTMLInputElement>document.querySelector('input[name="email"]');
@@ -32,13 +42,16 @@ export async function signInRequest() {
   const isSignIn = document.querySelector('#sign-in-btn')?.classList.contains('active');
   // console.log(inName.value, ' - ', inEmail.value, ' - ', inPassword.value);
   if (isSignIn) {
-    console.log('--------------signIn---');
     const response = await appUser.signIn(inEmail.value, inPassword.value);
+    console.log('response signIn -', response);
     if (response === 200) {
       closePopup();
+    } else if (response === 403) {
+      showMessage('Неверный e-mail или пароль');
+    } else {
+      showMessage('Неизвестная ошибка входа');
     }
   } else {
-    console.log('--------------signUp---');
     const response = await appUser.createUser(inName.value, inEmail.value, inPassword.value);
     if (response === 200) {
       closePopup();

@@ -24,8 +24,6 @@ class User {
       const content = await rawResponse.json();
       this.userName = content.name;
       this.userEmail = content.email;
-    } else {
-      console.log('createUser error: ', rawResponse.status, ', text: ', rawResponse.statusText);
     }
     return Promise.resolve(rawResponse.status);
   }
@@ -54,30 +52,25 @@ class User {
           name: this.userName,
         }),
       );
-    } else {
-      console.log('signIn error: ', rawResponse.status, ', text: ', rawResponse.statusText);
     }
     return Promise.resolve(rawResponse.status);
   }
 
-  // withCredentials: true,
-
-  async getUser() {
-    const rawResponse = await fetch(`${urlLink}users/${this.userId}`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${this.token}`,
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    });
-    if (rawResponse.status === 200) {
-      const content = await rawResponse.json();
-      console.log('content response getUser -----', content);
-    } else {
-      console.log('getUser error: ', rawResponse.status, ', text: ', rawResponse.statusText);
-    }
-  }
+  // async getUser() {
+  //   const rawResponse = await fetch(`${urlLink}users/${this.userId}`, {
+  //     method: 'GET',
+  //     headers: {
+  //       Authorization: `Bearer ${this.token}`,
+  //       Accept: 'application/json',
+  //       'Content-Type': 'application/json',
+  //     },
+  //   });
+  //   if (rawResponse.status === 200) {
+  //     const content = await rawResponse.json();
+  //   } else {
+  //     console.log('getUser error: ', rawResponse.status, ', text: ', rawResponse.statusText);
+  //   }
+  // }
 
   async getNewTokens() {
     const rawResponse = await fetch(`${urlLink}users/${this.userId}/tokens`, {
