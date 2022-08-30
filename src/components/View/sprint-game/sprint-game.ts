@@ -3,7 +3,7 @@ import './_sprint.scss';
 import { main } from '../../Templates/main-block';
 import { createEl } from '../../Controller/createTagBlock';
 // eslint-disable-next-line object-curly-newline
-import { Click, createAudioButton, createStaticticSprint, mixWords } from './sprint-game.utils';
+import { Click, createAudioButton, createStaticticSprint, examEvent, mixWords } from './sprint-game.utils';
 import { setLocalStorage } from '../../Controller/sprint-game/storage/storage-set-kornull';
 import { Page } from '../../Controller/sprint-game/storage/type-storage';
 import { createAllListWords } from '../../Controller/sprint-game/get-words-to-sprint';
@@ -111,6 +111,15 @@ export function createPreSprintGamePage(): HTMLElement {
       createAllListWords(Number(id.split('').slice(-1)) - 1);
       loading();
       Click(Number(id.split('').slice(-1)) - 1);
+      setLocalStorage(Page.userPage, 'sprint-page');
+    }
+  });
+  window.addEventListener('keydown', (ev: KeyboardEvent) => {
+    const group = examEvent(ev);
+    if (group !== undefined) {
+      createAllListWords(group);
+      loading();
+      Click(group);
       setLocalStorage(Page.userPage, 'sprint-page');
     }
   });

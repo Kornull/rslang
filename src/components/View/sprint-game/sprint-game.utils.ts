@@ -176,3 +176,33 @@ export function createStaticticSprint(block: HTMLElement) {
   percent.innerHTML = `Количество ответов без ошибок - ${guessWordLengthGame}`;
   percentWord.innerHTML = `Процент отгаданных слов - ${Math.trunc((guessedNum / allCountWords) * 100)}%`;
 }
+
+export function examEvent(event: KeyboardEvent): number | undefined {
+  let numGroup = 0;
+  if (Number(event.key) > 0 && Number(event.key) <= 6) {
+    switch (event.key) {
+      case '1':
+        numGroup = 0;
+        break;
+      case '2':
+        numGroup = 1;
+        break;
+      case '3':
+        numGroup = 2;
+        break;
+      case '4':
+        numGroup = 3;
+        break;
+      case '5':
+        numGroup = 4;
+        break;
+      case '6':
+        numGroup = 5;
+        break;
+      default:
+        break;
+    }
+    return numGroup;
+  }
+  return undefined;
+}
