@@ -27,7 +27,9 @@ function createButtons(el: HTMLElement, count: number): void {
     if (count > CountButtons.Two) {
       const btnSection = <HTMLElement>createEl('button', el, ['sprint__btn-group']);
       btnSection.id = `words-${i}`;
-      btnSection.innerHTML = `${i}`;
+      const buttonSprint = <HTMLLinkElement>createEl('a', btnSection, ['sprint__goup-link'], { id: `words-${i}` });
+      buttonSprint.href = '#sprint-page';
+      buttonSprint.innerHTML = `${i}`;
     } else {
       const btnsChoice = <HTMLElement>createEl('button', el, [`game__btns-choise--${i % count === 0}`]);
       btnsChoice.id = `word-${i % count === 0}`;
@@ -42,7 +44,7 @@ function createButtons(el: HTMLElement, count: number): void {
 
 export function createSprintGame(): void {
   main.innerHTML = '';
-  const sprintPage = <HTMLElement>createEl('div', main, ['sprint', 'sprint__page']);
+  const sprintPage = <HTMLDivElement>createEl('div', main, ['sprint', 'sprint__page']);
   sprintPage.id = 'sprint-page';
   const blockGame = <HTMLElement>createEl('div', sprintPage, ['sprint__game', 'game']);
   const timer = <HTMLElement>createEl('div', blockGame, ['game__timer']);
