@@ -4,8 +4,7 @@ import { createPreSprintGamePage, createSprintGame } from '../View/sprint-game/s
 import createMainPage from '../View/main-page/main-page';
 import User from '../Controller/authorization/user';
 // eslint-disable-next-line import/no-cycle
-import crateAuthorizationPage from '../View/authorization-page/authorization-page';
-// import { getLocalStorage } from '../Controller/sprint-game/storage/storage-set-kornull';
+import createPopup from '../View/authorization-page/authorization-page';
 
 export const appUser = new User();
 export function App(idPage: string | null): void {
@@ -23,7 +22,8 @@ export function App(idPage: string | null): void {
     main.append(createMainPage());
   }
   const authPage = <HTMLElement>document.querySelector('#login');
-  authPage.addEventListener('click', () => crateAuthorizationPage());
+  authPage.addEventListener('click', () => createPopup());
+  return main;
 }
 
 // if (getLocalStorage('userDataBasic').userId) appUser.getUser();
