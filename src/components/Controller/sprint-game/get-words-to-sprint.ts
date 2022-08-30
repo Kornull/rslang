@@ -15,9 +15,9 @@ type ExtraWordOption = {
 type StatisticsUserWords = {
   learnedWords: number;
   optional: {
-    sprintDayGuess?: number;
-    sprintAllDayWords?: number;
-    sprintMaxGuessed?: number;
+    sprintDayGuess: number;
+    sprintAllDayWords: number;
+    sprintMaxGuessed: number;
     'data-0'?: object;
     'data-1'?: object;
     'data-2'?: object;
@@ -38,11 +38,11 @@ const extraOptionUserWord: ExtraWordOption = {
 };
 
 const statisticsUserWords: StatisticsUserWords = {
-  learnedWords: 0,
+  learnedWords: 1,
   optional: {
-    sprintDayGuess: 0,
-    sprintAllDayWords: 0,
-    sprintMaxGuessed: 0,
+    sprintDayGuess: 1,
+    sprintAllDayWords: 1,
+    sprintMaxGuessed: 1,
     'data-0': {},
     'data-1': {},
     'data-2': {},
@@ -158,7 +158,7 @@ export const getGuessSprintWords = async (boolean: boolean, lengthGuess: number)
     if (!res.optional.sprintDayGuess && !res.optional.sprintAllDayWords && !res.optional.sprintMaxGuessed) {
       res.optional.sprintDayGuess = 1;
       res.optional.sprintAllDayWords = 1;
-      res.optional.sprintMaxGuessed = 0;
+      res.optional.sprintMaxGuessed = 1;
     }
     let numberStatAll = Number(res.optional.sprintAllDayWords);
     let numberStatDay = Number(res.optional.sprintDayGuess);
@@ -245,9 +245,9 @@ export const getUserWord = async (wordId: string, status: boolean) => {
     });
     const res: StatisticsUserWords = await responce.json();
     res.optional = {
-      sprintDayGuess: 0,
-      sprintAllDayWords: 0,
-      sprintMaxGuessed: 0,
+      sprintDayGuess: 1,
+      sprintAllDayWords: 1,
+      sprintMaxGuessed: 1,
     };
     setLearnedUserWords({ learnedWords: res.learnedWords, optional: res.optional });
   }
