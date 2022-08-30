@@ -1,5 +1,6 @@
 import { createAllListWords, getGuessSprintWords, getUserWord } from '../../Controller/sprint-game/get-words-to-sprint';
 import { getLocalStorage, setLocalStorage } from '../../Controller/sprint-game/storage/storage-set-kornull';
+import { urlLink } from '../../Templates/serve';
 import { Key, LocalKeys, WordSettings } from '../../Types/types';
 
 const audio = new Audio();
@@ -9,8 +10,11 @@ enum KeysWords {
   CorrectWord = 'correctWords',
   GuessedWord = 'guessedWords',
   WrongWord = 'wrongWords',
+  Image = '#game-img',
   Count = '0',
 }
+
+let guessWordLengthGame = 0;
 
 function userGameGuessed(wordId: string, status: boolean, guessLength: number) {
   if (getLocalStorage(LocalKeys.UserData).userId) {
@@ -68,7 +72,7 @@ export function mixWords(blockGame: HTMLElement): void {
   let randomCount = count;
   const enWords = getLocalStorage(KeysWords.EnglishWords);
   const ruWords = getLocalStorage(KeysWords.RussianWords);
-
+  const image = <HTMLImageElement>blockGame.querySelector(KeysWords.Image);
   const en = <HTMLElement>blockGame.querySelector('#word-en');
   const ru = <HTMLElement>blockGame.querySelector('#word-ru');
 
@@ -79,6 +83,7 @@ export function mixWords(blockGame: HTMLElement): void {
     } else {
       randomCount = count;
     }
+    image.src = `${urlLink}${enWords[count].image}`;
     en.innerHTML = `${enWords[count].word}`;
     ru.innerHTML = `${ruWords[randomCount].word}`;
   }
@@ -89,6 +94,10 @@ export function mixWords(blockGame: HTMLElement): void {
       case 'word-true':
         if (enWords[count].id === ruWords[randomCount].id) {
           lengthGuessed++;
+          if (lengthGuessed !== 0) guessWordLengthGame = lengthGuessed;
+          if (lengthGuessed >= 0) {
+            guessWordLengthGame = Math.max(guessWordLengthGame, lengthGuessed);
+          }
           correctAnswer();
           guessedWord();
           userGameGuessed(enWords[count].id, true, lengthGuessed);
@@ -140,6 +149,7 @@ export const Click = (id: number, num?: number): void => {
       const wordsRu: Key = {};
       wordsEn.id = el.id;
       wordsEn.word = el.word;
+      wordsEn.image = el.image;
       wordsRu.id = el.id;
       wordsRu.word = el.wordTranslate;
       arrayWordsEn.push(wordsEn);
@@ -163,6 +173,6 @@ export function createStaticticSprint(block: HTMLElement) {
   correct.innerHTML = `Правильных ответов - ${correctNum}`;
   wrong.innerHTML = `Неправильных ответов - ${wrongNum}`;
   words.innerHTML = `Угадано слов - ${guessedNum}`;
-  percent.innerHTML = `Общий процент правильных ответов - ${Math.trunc((correctNum / allCountWords) * 100)}%`;
+  percent.innerHTML = `Количество ответов без ошибок - ${guessWordLengthGame}`;
   percentWord.innerHTML = `Процент отгаданных слов - ${Math.trunc((guessedNum / allCountWords) * 100)}%`;
 }

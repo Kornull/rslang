@@ -53,7 +53,7 @@ const statisticsUserWords: StatisticsUserWords = {
   },
 };
 
-let arr: Word[][] = [];
+let wordsArr: Word[][] = [];
 const user: UserStat = getLocalStorage(LocalKeys.UserData);
 
 enum CountPages {
@@ -84,14 +84,14 @@ export const createListWords = async (num: number, numberPage: number): Promise<
   };
   const queryStr: string = randomGroupWords([pageWords, groupWords]);
   const a = await getTheWords(queryStr);
-  arr.push(a);
-  const arr2: Word[] = arr.flat();
-  setLocalStorage('allListWords', arr2);
+  wordsArr.push(a);
+  const wordsArrCopy: Word[] = wordsArr.flat();
+  setLocalStorage('allListWords', wordsArrCopy);
 };
 
 export async function createAllListWords(numberGroup: number, numberUserPage?: number) {
   setLocalStorage('allListWords', []);
-  arr = [];
+  wordsArr = [];
   let numberPage = Math.floor(Math.random() * CountPages.pages);
   if (numberUserPage) numberPage = numberUserPage;
   if (numberPage >= 5) {

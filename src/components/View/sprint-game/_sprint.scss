@@ -62,34 +62,48 @@
     justify-content: space-between;
     padding: 50px;
     margin: 0 auto;
-    margin-bottom: 200px;
+    margin-bottom: 80px;
   }
+  &__regulation {
+    width: 80%;
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+    font-family: $fontRoboto;
+    font-size: $size21px;
+    color: $colorRed;
+    span {
+      font-weight: bold;
+    }
+  }
+
   &__btn-group {
     display: block;
     width: 35px;
     height: 35px;
     border-radius: 3px;
   }
-  &__statistic{
+  &__statistic {
     display: flex;
     flex-direction: column;
-    background: rgb(255, 255, 255);
+    background: $colorWhite;
     width: 100%;
+    height: 100vh;
   }
   &__statistic-percent--words,
   &__statistic-words,
   &__statistic-correct,
   &__statistic-wrong,
-  &__statistic-percent{
+  &__statistic-percent {
     text-align: center;
     width: 50%;
     margin: 0 auto;
     margin-bottom: 25px;
   }
-  &__statistic-title{
+  &__statistic-title {
     width: 100%;
     margin: 0 auto;
-    max-width: 350px ;
+    max-width: 350px;
     margin-top: 200px;
     margin-bottom: 50px;
     text-align: center;
@@ -98,7 +112,7 @@
     font-weight: bold;
     font-style: italic;
   }
-  &__btn-close--stat{
+  &__btn-close--stat {
     display: block;
     margin: 0 auto;
     background: #000;
@@ -122,7 +136,7 @@
   margin: 0 auto;
   margin-top: 50px;
   background: rgb(216, 216, 216);
-  &__timer{
+  &__timer {
     width: 80px;
     height: 40px;
     margin: 0 auto;
@@ -134,7 +148,7 @@
     text-align: center;
     padding: 5px;
   }
-  &__audio{
+  &__audio {
     position: absolute;
     top: 5px;
     left: 5px;
@@ -145,25 +159,38 @@
     background-position: center;
     background-repeat: no-repeat;
   }
+  &__img-block {
+    width: 150px;
+    height: 150px;
+    margin: 0 auto;
+    margin-bottom: 50px;
+    overflow: hidden;
+    // border-radius: 50%;
+    .game__img{
+      width: 100%;
+      border: 3px solid $colorWhite;
+      border-radius: 25px;
+      object-fit:cover;
+    }
+  }
   &__word-en,
-  &__word-ru{
+  &__word-ru {
     width: 100%;
     max-width: 200px;
     height: 50px;
     background: #000;
-    color:$colorWhite;
+    color: $colorWhite;
     margin: 0 auto;
     margin-bottom: 30px;
     text-align: center;
   }
-  &__btns-choise{
+  &__btns-choise {
     width: 100%;
     max-width: 300px;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
     margin-bottom: 20px;
-
   }
   &__btns-choise--false,
   &__btns-choise--true {
@@ -174,12 +201,12 @@
     font-family: $fontRoboto;
     font-size: $size19px;
     font-weight: bold;
-    color: $colorWhite
+    color: $colorWhite;
   }
-  &__btns-choise--false{
-  background-color:$colorRed;
+  &__btns-choise--false {
+    background-color: $colorRed;
   }
-  &__btns-choise--true{
+  &__btns-choise--true {
     background-color: $colorSalat;
   }
 }
