@@ -15,8 +15,16 @@ type ExtraWordOption = {
 type StatisticsUserWords = {
   learnedWords: number;
   optional: {
-    sprintDayGuess?: string;
-    sprintAllDayWords?: string;
+    sprintDayGuess?: number;
+    sprintAllDayWords?: number;
+    sprintMaxGuessed?: number;
+    'data-0'?: object;
+    'data-1'?: object;
+    'data-2'?: object;
+    'data-3'?: object;
+    'data-4'?: object;
+    'data-5'?: object;
+    'data-6'?: object;
   };
 };
 
@@ -32,8 +40,16 @@ const extraOptionUserWord: ExtraWordOption = {
 const statisticsUserWords: StatisticsUserWords = {
   learnedWords: 0,
   optional: {
-    sprintDayGuess: '',
-    sprintAllDayWords: '',
+    sprintDayGuess: 0,
+    sprintAllDayWords: 0,
+    sprintMaxGuessed: 0,
+    'data-0': {},
+    'data-1': {},
+    'data-2': {},
+    'data-3': {},
+    'data-4': {},
+    'data-5': {},
+    'data-6': {},
   },
 };
 
@@ -125,7 +141,7 @@ const setLearnedUserWords = async (statisticsUser: StatisticsUserWords) => {
   });
 };
 
-export const getGuessSprintWords = async (boolean: boolean) => {
+export const getGuessSprintWords = async (boolean: boolean, lengthGuess: number) => {
   const responce = await fetch(`${urlLink}users/${user.userId}/statistics`, {
     method: 'GET',
     headers: {
@@ -135,48 +151,38 @@ export const getGuessSprintWords = async (boolean: boolean) => {
   });
   if (responce.status === 404) {
     statisticsUserWords.learnedWords = 1;
-    statisticsUserWords.optional.sprintDayGuess = '1';
+    statisticsUserWords.optional.sprintDayGuess = 1;
     setLearnedUserWords(statisticsUserWords);
   } else {
     const res: StatisticsUserWords = await responce.json();
-    if (!res.optional.sprintDayGuess && !res.optional.sprintAllDayWords) {
-      res.optional.sprintDayGuess = '1';
-      res.optional.sprintAllDayWords = '1';
+    res.learnedWords = 1;
+    if (!res.optional.sprintDayGuess && !res.optional.sprintAllDayWords && !res.optional.sprintMaxGuessed) {
+      res.optional.sprintDayGuess = 1;
+      res.optional.sprintAllDayWords = 1;
+      res.optional.sprintMaxGuessed = 0;
     }
     let numberStatAll = Number(res.optional.sprintAllDayWords);
     let numberStatDay = Number(res.optional.sprintDayGuess);
+    let maxLengthGuess = 0;
+    if (typeof res.optional.sprintMaxGuessed === 'number') {
+      maxLengthGuess = Math.max(lengthGuess, res.optional.sprintMaxGuessed);
+    }
     if (boolean) {
       res.optional = {
-        sprintDayGuess: `${(numberStatDay += 1)}`,
-        sprintAllDayWords: `${(numberStatAll += 1)}`,
+        sprintDayGuess: (numberStatDay += 1),
+        sprintAllDayWords: (numberStatAll += 1),
+        sprintMaxGuessed: maxLengthGuess,
       };
     } else {
       res.optional = {
-        sprintDayGuess: `${numberStatDay}`,
-        sprintAllDayWords: `${(numberStatAll += 1)}`,
+        sprintDayGuess: numberStatDay,
+        sprintAllDayWords: (numberStatAll += 1),
+        sprintMaxGuessed: maxLengthGuess,
       };
     }
     setLearnedUserWords({ learnedWords: res.learnedWords, optional: res.optional });
   }
 };
-
-setInterval(async () => {
-  if (getLocalStorage('timeDateReset') === `${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`) {
-    const responce = await fetch(`${urlLink}users/${user.userId}/statistics`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${user.token}`,
-        Accept: 'application/json',
-      },
-    });
-    const res: StatisticsUserWords = await responce.json();
-    res.optional = {
-      sprintDayGuess: '0',
-      sprintAllDayWords: '0',
-    };
-    setLearnedUserWords({ learnedWords: res.learnedWords, optional: res.optional });
-  }
-}, 1000);
 
 const statusTrue = async (wordOption: ExtraWordOption, wordId: string) => {
   wordOption.optional.gameGuessed += 1;
@@ -228,3 +234,22 @@ export const getUserWord = async (wordId: string, status: boolean) => {
     statusFalse(wordOption, wordId);
   }
 };
+
+(async () => {
+  if (getLocalStorage('timeDateReset') !== `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`) {
+    const responce = await fetch(`${urlLink}users/${user.userId}/statistics`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+        Accept: 'application/json',
+      },
+    });
+    const res: StatisticsUserWords = await responce.json();
+    res.optional = {
+      sprintDayGuess: 0,
+      sprintAllDayWords: 0,
+      sprintMaxGuessed: 0,
+    };
+    setLearnedUserWords({ learnedWords: res.learnedWords, optional: res.optional });
+  }
+})();

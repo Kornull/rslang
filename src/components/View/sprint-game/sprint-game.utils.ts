@@ -12,10 +12,10 @@ enum KeysWords {
   Count = '0',
 }
 
-function userGameGuessed(wordId: string, status: boolean) {
+function userGameGuessed(wordId: string, status: boolean, guessLength: number) {
   if (getLocalStorage(LocalKeys.UserData).userId) {
     getUserWord(wordId, status);
-    getGuessSprintWords(status);
+    getGuessSprintWords(status, guessLength);
   }
 }
 
@@ -63,6 +63,7 @@ function removeCountAnswers(): void {
 
 export function mixWords(blockGame: HTMLElement): void {
   removeCountAnswers();
+  let lengthGuessed = 0;
   let count = 0;
   let randomCount = count;
   const enWords = getLocalStorage(KeysWords.EnglishWords);
@@ -87,12 +88,14 @@ export function mixWords(blockGame: HTMLElement): void {
     switch (message.id) {
       case 'word-true':
         if (enWords[count].id === ruWords[randomCount].id) {
+          lengthGuessed++;
           correctAnswer();
           guessedWord();
-          userGameGuessed(enWords[count].id, true);
+          userGameGuessed(enWords[count].id, true, lengthGuessed);
         } else {
+          lengthGuessed = 0;
           wrongAnswer();
-          userGameGuessed(enWords[count].id, false);
+          userGameGuessed(enWords[count].id, false, lengthGuessed);
         }
         count++;
         if (countNum(count, enWords.length)) {
@@ -101,11 +104,13 @@ export function mixWords(blockGame: HTMLElement): void {
         break;
       case 'word-false':
         if (enWords[count].id !== ruWords[randomCount].id) {
+          lengthGuessed++;
           correctAnswer();
-          userGameGuessed(enWords[count].id, true);
+          userGameGuessed(enWords[count].id, true, lengthGuessed);
         } else {
+          lengthGuessed = 0;
           wrongAnswer();
-          userGameGuessed(enWords[count].id, false);
+          userGameGuessed(enWords[count].id, false, lengthGuessed);
         }
         count++;
         if (countNum(count, ruWords.length)) {
@@ -142,7 +147,7 @@ export const Click = (id: number, num?: number): void => {
     });
     setLocalStorage('wordsObjectEn', arrayWordsEn);
     setLocalStorage('wordsObjectRu', arrayWordsRu);
-  }, 5000);
+  }, 6000);
 };
 
 export function createStaticticSprint(block: HTMLElement) {

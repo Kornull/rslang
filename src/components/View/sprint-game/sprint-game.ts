@@ -71,7 +71,7 @@ export function createSprintGame(): HTMLElement {
   });
   header.addEventListener('click', (ev) => {
     const message = ev.target as HTMLElement;
-    if (message.id === 'burger' || message.id === 'logo') {
+    if (message.id === 'logo') {
       clearInterval(runTimer);
     }
   });
