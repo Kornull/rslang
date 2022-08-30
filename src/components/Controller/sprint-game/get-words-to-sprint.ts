@@ -1,32 +1,8 @@
+/* eslint-disable object-curly-newline */
 import { urlLink } from '../../Templates/serve';
-import { LocalKeys, UserStat } from '../../Types/types';
+import { ExtraWordOption, LocalKeys, StatisticsUserWords, UserStat } from '../../Types/types';
 import { getLocalStorage, setLocalStorage } from './storage/storage-set-kornull';
 import { Key, Word } from './type';
-
-type ExtraWordOption = {
-  difficulty: string;
-  optional: {
-    gameGuessed: number;
-    gameMistake: number;
-    statusLearn: string;
-    data?: string;
-  };
-};
-type StatisticsUserWords = {
-  learnedWords: number;
-  optional: {
-    sprintDayGuess: number;
-    sprintAllDayWords: number;
-    sprintMaxGuessed: number;
-    'data-0'?: object;
-    'data-1'?: object;
-    'data-2'?: object;
-    'data-3'?: object;
-    'data-4'?: object;
-    'data-5'?: object;
-    'data-6'?: object;
-  };
-};
 
 const extraOptionUserWord: ExtraWordOption = {
   difficulty: 'easy',

@@ -27,3 +27,29 @@ export type UserStat = {
   token: string;
   userId: string;
 };
+
+export type StatisticsUserWords = {
+  learnedWords: number;
+  optional: {
+    sprintDayGuess: number;
+    sprintAllDayWords: number;
+    sprintMaxGuessed: number;
+    'data-0'?: object;
+    'data-1'?: object;
+    'data-2'?: object;
+    'data-3'?: object;
+    'data-4'?: object;
+    'data-5'?: object;
+    'data-6'?: object;
+  };
+};
+
+export type ExtraWordOption = {
+  difficulty: string;
+  optional: {
+    gameGuessed: number;
+    gameMistake: number;
+    statusLearn: string;
+    data?: string;
+  };
+};
