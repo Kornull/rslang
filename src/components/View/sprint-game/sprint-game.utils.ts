@@ -43,14 +43,18 @@ function countNum(count: number, length: number): boolean {
 
 function correctAnswer(): void {
   audio.src = './assets/audio/correct.mp3';
-  audio.play();
+  setTimeout(() => {
+    audio.play();
+  });
   let num = Number(getLocalStorage(KeysWords.CorrectWord));
   setLocalStorage(KeysWords.CorrectWord, (num += 1).toString());
 }
 
 function wrongAnswer(): void {
   audio.src = './assets/audio/wrong3.mp3';
-  audio.play();
+  setTimeout(() => {
+    audio.play();
+  });
   let num = Number(getLocalStorage(KeysWords.WrongWord));
   setLocalStorage(KeysWords.WrongWord, (num += 1).toString());
 }
@@ -150,10 +154,7 @@ export function mixWords(blockGame: HTMLElement): void {
       }
     }
   });
-  //   window.removeEventListener('keydown', () => {
-  //     clickGameButtons('word-false');
-  //     clickGameButtons('word-true');
-  // });
+  viewWords();
 }
 
 export const Click = (id: number, num?: number): void => {
