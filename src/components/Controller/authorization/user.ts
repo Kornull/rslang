@@ -112,9 +112,8 @@ class User {
           name: this.userName,
         }),
       );
-      // console.log('content response getUser -----', content);
     } else {
-      console.log('getNewTokens error: ', rawResponse.status, ', text: ', rawResponse.statusText);
+      this.logOut();
     }
   }
 }
