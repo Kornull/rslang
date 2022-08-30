@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import './_sprint.scss';
-import { main } from '../../Templates/main-block';
+import { body, main } from '../../Templates/main-block';
 import { createEl } from '../../Controller/createTagBlock';
 // eslint-disable-next-line object-curly-newline
 import { Click, createAudioButton, createStaticticSprint, examEvent, mixWords } from './sprint-game.utils';
@@ -115,12 +115,16 @@ export function createPreSprintGamePage(): HTMLElement {
     }
   });
   window.addEventListener('keydown', (ev: KeyboardEvent) => {
-    const group = examEvent(ev);
-    if (group !== undefined) {
-      createAllListWords(group);
-      loading();
-      Click(group);
-      setLocalStorage(Page.userPage, 'sprint-page');
+    if (body.classList.contains('active')) {
+      ev.stopPropagation();
+    } else {
+      const group = examEvent(ev);
+      if (group !== undefined) {
+        createAllListWords(group);
+        loading();
+        Click(group);
+        setLocalStorage(Page.userPage, 'sprint-page');
+      }
     }
   });
   const sprintButtonsBlock = <HTMLElement>createEl('div', sprintPreloadPage, ['sprint__btns']);

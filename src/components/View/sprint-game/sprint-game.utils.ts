@@ -1,5 +1,6 @@
 import { createAllListWords, getGuessSprintWords, getUserWord } from '../../Controller/sprint-game/get-words-to-sprint';
 import { getLocalStorage, setLocalStorage } from '../../Controller/sprint-game/storage/storage-set-kornull';
+import { body } from '../../Templates/main-block';
 import { urlLink } from '../../Templates/serve';
 import { Key, LocalKeys, WordSettings } from '../../Types/types';
 
@@ -135,15 +136,19 @@ export function mixWords(blockGame: HTMLElement): void {
     clickGameButtons(idElement);
   });
   window.addEventListener('keydown', (ev: KeyboardEvent) => {
-    switch (ev.key) {
-      case 'ArrowRight':
-        clickGameButtons('word-true');
-        break;
-      case 'ArrowLeft':
-        clickGameButtons('word-false');
-        break;
-      default:
-        break;
+    if (body.classList.contains('active')) {
+      ev.stopPropagation();
+    } else {
+      switch (ev.key) {
+        case 'ArrowRight':
+          clickGameButtons('word-true');
+          break;
+        case 'ArrowLeft':
+          clickGameButtons('word-false');
+          break;
+        default:
+          break;
+      }
     }
   });
   viewWords();
