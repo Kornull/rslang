@@ -91,7 +91,7 @@ function loading(): void {
   }, 7000);
   header.addEventListener('click', (ev) => {
     const message = ev.target as HTMLElement;
-    if (message.id === 'logo') {
+    if (message.id === 'logo' || message.classList[0] === 'header__nav-link') {
       clearTimeout(timeSleep);
     }
   });
