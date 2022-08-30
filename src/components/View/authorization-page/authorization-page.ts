@@ -1,3 +1,5 @@
+// eslint-disable-next-line import/no-cycle
+import { appUser } from '../../App/App';
 import './_authorization.scss';
 import { createEl } from '../../Controller/createTagBlock';
 import { main } from '../../Templates/main-block';
@@ -45,14 +47,33 @@ function crateAuthorizationPage() {
       closePopup();
     }
   });
-
-  // if ( === 200) {
-  //   closePopup();
-  // } else {
-  //   console.log('error handling');
-  // }
-
   return authPage;
 }
 
-export default crateAuthorizationPage;
+function createLogoutPage() {
+  const authPageBg = <HTMLElement>createEl('div', main, ['popup__bg', 'active']);
+  const authPage = <HTMLElement>createEl('form', authPageBg, ['popup', 'active']);
+  const signOutButton = createEl('button', authPage, ['btn'], { type: 'button', id: 'log-out' });
+  signOutButton.innerText = 'Выйти';
+
+  signOutButton.addEventListener('click', () => {
+    appUser.logOut();
+    closePopup();
+  });
+
+  authPageBg.addEventListener('click', (e) => {
+    if (!authPage.contains(e.target as HTMLElement)) {
+      closePopup();
+    }
+  });
+}
+
+function createPopup(): void {
+  if (JSON.parse(localStorage.getItem('userDataBasic') as string).name) {
+    createLogoutPage();
+  } else {
+    crateAuthorizationPage();
+  }
+}
+
+export default createPopup;

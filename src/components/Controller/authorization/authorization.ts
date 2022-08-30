@@ -32,7 +32,7 @@ function showMessage(message: string): void {
   messageField.classList.remove('disabled');
   setTimeout(() => {
     messageField.classList.add('disabled');
-  }, 3000);
+  }, 3500);
 }
 
 export async function signInRequest() {
@@ -43,7 +43,6 @@ export async function signInRequest() {
   // console.log(inName.value, ' - ', inEmail.value, ' - ', inPassword.value);
   if (isSignIn) {
     const response = await appUser.signIn(inEmail.value, inPassword.value);
-    console.log('response signIn -', response);
     if (response === 200) {
       closePopup();
     } else if (response === 403) {
@@ -55,6 +54,10 @@ export async function signInRequest() {
     const response = await appUser.createUser(inName.value, inEmail.value, inPassword.value);
     if (response === 200) {
       closePopup();
+    } else if (response === 422) {
+      showMessage('Неверный e-mail или пароль');
+    } else {
+      showMessage('Неизвестная ошибка регистрации');
     }
   }
   // console.log('signIn response - ', response.resolve);

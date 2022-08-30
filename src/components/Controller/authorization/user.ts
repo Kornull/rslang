@@ -56,6 +56,15 @@ class User {
     return Promise.resolve(rawResponse.status);
   }
 
+  logOut(): void {
+    this.userEmail = '';
+    this.userId = '';
+    this.token = '';
+    this.refreshToken = '';
+    this.userName = '';
+    localStorage.setItem('userDataBasic', JSON.stringify({}));
+  }
+
   // async getUser() {
   //   const rawResponse = await fetch(`${urlLink}users/${this.userId}`, {
   //     method: 'GET',
