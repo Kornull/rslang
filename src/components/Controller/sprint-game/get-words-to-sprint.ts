@@ -150,7 +150,6 @@ export const getGuessSprintWords = async (boolean: boolean, lengthGuess: number)
     },
   });
   if (responce.status === 404) {
-    statisticsUserWords.learnedWords = 1;
     statisticsUserWords.optional.sprintDayGuess = 1;
     setLearnedUserWords(statisticsUserWords);
   } else {
