@@ -150,7 +150,10 @@ export function mixWords(blockGame: HTMLElement): void {
       }
     }
   });
-  viewWords();
+  //   window.removeEventListener('keydown', () => {
+  //     clickGameButtons('word-false');
+  //     clickGameButtons('word-true');
+  // });
 }
 
 export const Click = (id: number, num?: number): void => {

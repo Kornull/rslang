@@ -9,12 +9,12 @@ import crateAuthorizationPage from '../View/authorization-page/authorization-pag
 
 export const appUser = new User();
 export function App(idPage: string | null): void {
-  function hashView() {
-    window.addEventListener('hashchange', () => {
-      const hash = window.location.hash.slice(1);
-      App(hash);
-    });
-  }
+  // function hashView() {
+  //   window.addEventListener('hashchange', () => {
+  //     const hash = window.location.hash.slice(1);
+  //     App(hash);
+  //   });
+  // }
   const footer = <HTMLElement>document.querySelector('.footer');
   if (idPage !== null) {
     main.innerHTML = '';
@@ -25,13 +25,10 @@ export function App(idPage: string | null): void {
     }
     if (idPage === 'main-page') {
       createMainPage();
-      hashView();
     } else if (idPage === 'preload-sprint') {
       createPreSprintGamePage();
-      hashView();
     } else if (idPage === 'sprint-page') {
       createSprintGame();
-      hashView();
     }
     // else if (idPage === '#book-page') {
     //   createPage();
@@ -41,6 +38,7 @@ export function App(idPage: string | null): void {
     main.append(createMainPage());
   }
 
+  // hashView();
   const authPage = <HTMLElement>document.querySelector('#login');
   authPage.addEventListener('click', () => crateAuthorizationPage);
 }

@@ -27,7 +27,7 @@ function createButtons(el: HTMLElement, count: number): void {
     if (count > CountButtons.Two) {
       const btnSection = <HTMLElement>createEl('button', el, ['sprint__btn-group']);
       btnSection.id = `words-${i}`;
-      const buttonSprint = <HTMLLinkElement>createEl('a', btnSection, ['sprint__goup-link'], { id: `words-${i}` });
+      const buttonSprint = <HTMLLinkElement>createEl('a', btnSection, ['sprint__group-link'], { id: `words-${i}` });
       buttonSprint.href = '#sprint-page';
       buttonSprint.innerHTML = `${i}`;
     } else {
@@ -109,7 +109,8 @@ export function createPreSprintGamePage(): HTMLElement {
     const message = ev.target as HTMLElement;
     const { id } = message;
     const classBlock = message.classList;
-    if (classBlock[0] === 'sprint__btn-group') {
+    if (classBlock[0] === 'sprint__group-link') {
+      ev.preventDefault();
       createAllListWords(Number(id.split('').slice(-1)) - 1);
       loading();
       Click(Number(id.split('').slice(-1)) - 1);
