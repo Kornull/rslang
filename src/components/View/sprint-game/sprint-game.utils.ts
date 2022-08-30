@@ -94,7 +94,6 @@ export function mixWords(blockGame: HTMLElement): void {
       case 'word-true':
         if (enWords[count].id === ruWords[randomCount].id) {
           lengthGuessed++;
-          if (lengthGuessed !== 0) guessWordLengthGame = lengthGuessed;
           if (lengthGuessed >= 0) {
             guessWordLengthGame = Math.max(guessWordLengthGame, lengthGuessed);
           }
