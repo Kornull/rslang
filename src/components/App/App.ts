@@ -18,7 +18,7 @@ export function App(idPage: string | null): void {
       footer.style.display = 'flex';
     }
     if (idPage === 'main-page') {
-      main.append(createMainPage());
+      createMainPage();
     } else if (idPage === 'preload-sprint') {
       createPreSprintGamePage();
     } else if (idPage === 'sprint-page') {

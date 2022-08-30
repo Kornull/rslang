@@ -16,14 +16,14 @@ enum KeysWords {
 
 let guessWordLengthGame = 0;
 
-function userGameGuessed(wordId: string, status: boolean, guessLength: number) {
+function userGameGuessed(wordId: string, status: boolean, guessLength: number): void {
   if (getLocalStorage(LocalKeys.UserData).userId) {
     getUserWord(wordId, status);
     getGuessSprintWords(status, guessLength);
   }
 }
 
-export function createAudioButton(audioButton: HTMLElement) {
+export function createAudioButton(audioButton: HTMLElement): void {
   audioButton.addEventListener('click', () => {
     audioButton.classList.toggle('sound-on');
     if (audioButton.classList.contains('sound-on')) {
@@ -54,7 +54,7 @@ function wrongAnswer(): void {
   setLocalStorage(KeysWords.WrongWord, (num += 1).toString());
 }
 
-function guessedWord() {
+function guessedWord(): void {
   let num = Number(getLocalStorage(KeysWords.GuessedWord));
   setLocalStorage(KeysWords.GuessedWord, (num += 1).toString());
 }
@@ -88,9 +88,8 @@ export function mixWords(blockGame: HTMLElement): void {
     ru.innerHTML = `${ruWords[randomCount].word}`;
   }
 
-  blockGame.addEventListener('click', (ev: Event) => {
-    const message = ev.target as HTMLElement;
-    switch (message.id) {
+  function clickGameButtons(elementId: string) {
+    switch (elementId) {
       case 'word-true':
         if (enWords[count].id === ruWords[randomCount].id) {
           lengthGuessed++;
@@ -129,6 +128,23 @@ export function mixWords(blockGame: HTMLElement): void {
       default:
         break;
     }
+  }
+  blockGame.addEventListener('click', (ev: Event) => {
+    const message = ev.target as HTMLElement;
+    const idElement = message.id;
+    clickGameButtons(idElement);
+  });
+  window.addEventListener('keydown', (ev: KeyboardEvent) => {
+    switch (ev.key) {
+      case 'ArrowRight':
+        clickGameButtons('word-true');
+        break;
+      case 'ArrowLeft':
+        clickGameButtons('word-false');
+        break;
+      default:
+        break;
+    }
   });
   viewWords();
 }
@@ -160,7 +176,7 @@ export const Click = (id: number, num?: number): void => {
   }, 6000);
 };
 
-export function createStaticticSprint(block: HTMLElement) {
+export function createStaticticSprint(block: HTMLElement): void {
   const correctNum = Number(getLocalStorage(KeysWords.CorrectWord));
   const wrongNum = Number(getLocalStorage(KeysWords.WrongWord));
   const guessedNum = Number(getLocalStorage(KeysWords.GuessedWord));
@@ -179,6 +195,7 @@ export function createStaticticSprint(block: HTMLElement) {
 
 export function examEvent(event: KeyboardEvent): number | undefined {
   let numGroup = 0;
+
   if (Number(event.key) > 0 && Number(event.key) <= 6) {
     switch (event.key) {
       case '1':
