@@ -1,15 +1,23 @@
 import { urlLink } from '../../Templates/serve';
 
 class User {
-  userName = '';
+  userName: string;
 
-  userEmail = '';
+  userEmail: string;
 
-  userId = '';
+  userId: string;
 
-  token = '';
+  token: string;
 
-  refreshToken = '';
+  refreshToken: string;
+
+  constructor() {
+    this.userName = '';
+    this.userEmail = '';
+    this.userId = '';
+    this.token = '';
+    this.refreshToken = '';
+  }
 
   async createUser(name: string, email: string, password: string): Promise<number> {
     const rawResponse = await fetch(`${urlLink}users`, {
