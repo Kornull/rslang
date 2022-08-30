@@ -1,6 +1,9 @@
+// eslint-disable-next-line import/no-cycle
+import { appUser } from '../../App/App';
 import './_authorization.scss';
 import { createEl } from '../../Controller/createTagBlock';
 import { main } from '../../Templates/main-block';
+// eslint-disable-next-line import/no-cycle
 import { toggleButtons, signInRequest, closePopup } from '../../Controller/authorization/authorization';
 
 function createLabel(inputType: string, inputName: string, classNames: string[], text: string, parent: HTMLElement, disabled: boolean): HTMLElement {
@@ -32,20 +35,45 @@ function crateAuthorizationPage() {
   signUpButton.addEventListener('click', (e) => toggleButtons(e.target as HTMLElement));
   const signButton = createEl('button', authPage, ['btn'], { type: 'button', id: 'submit' });
   signButton.innerText = 'Отправить';
+
+  const popupMessageField = createEl('div', authPage, ['popup-message', 'disabled']);
+  const popupMessage = createEl('span', popupMessageField, ['popup-message__text']);
+  popupMessage.innerText = 'Что-то пошло не так...';
+
   signButton.addEventListener('click', () => signInRequest());
+
   authPageBg.addEventListener('click', (e) => {
-    console.log('----- target :', e.target);
-    console.log('----- target contains :', !authPage.contains(e.target as HTMLElement));
     if (!authPage.contains(e.target as HTMLElement)) {
       closePopup();
     }
   });
-  // if ( === 200) {
-  //   closePopup();
-  // } else {
-  //   console.log('error handling');
-  // }
   return authPage;
 }
 
-export default crateAuthorizationPage;
+function createLogoutPage() {
+  const authPageBg = <HTMLElement>createEl('div', main, ['popup__bg', 'active']);
+  const authPage = <HTMLElement>createEl('form', authPageBg, ['popup', 'active']);
+  const signOutButton = createEl('button', authPage, ['btn'], { type: 'button', id: 'log-out' });
+  signOutButton.innerText = 'Выйти';
+
+  signOutButton.addEventListener('click', () => {
+    appUser.logOut();
+    closePopup();
+  });
+
+  authPageBg.addEventListener('click', (e) => {
+    if (!authPage.contains(e.target as HTMLElement)) {
+      closePopup();
+    }
+  });
+}
+
+function createPopup(): void {
+  if (JSON.parse(localStorage.getItem('userDataBasic') as string).name) {
+    createLogoutPage();
+  } else {
+    crateAuthorizationPage();
+  }
+}
+
+export default createPopup;

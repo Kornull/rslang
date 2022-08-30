@@ -1,15 +1,23 @@
 import { urlLink } from '../../Templates/serve';
 
 class User {
-  userName = '';
+  userName: string;
 
-  userEmail = '';
+  userEmail: string;
 
-  userId = '';
+  userId: string;
 
-  token = '';
+  token: string;
 
-  refreshToken = '';
+  refreshToken: string;
+
+  constructor() {
+    this.userName = '';
+    this.userEmail = '';
+    this.userId = '';
+    this.token = '';
+    this.refreshToken = '';
+  }
 
   async createUser(name: string, email: string, password: string): Promise<number> {
     const rawResponse = await fetch(`${urlLink}users`, {
@@ -24,8 +32,6 @@ class User {
       const content = await rawResponse.json();
       this.userName = content.name;
       this.userEmail = content.email;
-    } else {
-      console.log('createUser error: ', rawResponse.status, ', text: ', rawResponse.statusText);
     }
     return Promise.resolve(rawResponse.status);
   }
@@ -54,30 +60,34 @@ class User {
           name: this.userName,
         }),
       );
-    } else {
-      console.log('signIn error: ', rawResponse.status, ', text: ', rawResponse.statusText);
     }
     return Promise.resolve(rawResponse.status);
   }
 
-  // withCredentials: true,
-
-  async getUser() {
-    const rawResponse = await fetch(`${urlLink}users/${this.userId}`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${this.token}`,
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    });
-    if (rawResponse.status === 200) {
-      const content = await rawResponse.json();
-      console.log('content response getUser -----', content);
-    } else {
-      console.log('getUser error: ', rawResponse.status, ', text: ', rawResponse.statusText);
-    }
+  logOut(): void {
+    this.userEmail = '';
+    this.userId = '';
+    this.token = '';
+    this.refreshToken = '';
+    this.userName = '';
+    localStorage.setItem('userDataBasic', JSON.stringify({}));
   }
+
+  // async getUser() {
+  //   const rawResponse = await fetch(`${urlLink}users/${this.userId}`, {
+  //     method: 'GET',
+  //     headers: {
+  //       Authorization: `Bearer ${this.token}`,
+  //       Accept: 'application/json',
+  //       'Content-Type': 'application/json',
+  //     },
+  //   });
+  //   if (rawResponse.status === 200) {
+  //     const content = await rawResponse.json();
+  //   } else {
+  //     console.log('getUser error: ', rawResponse.status, ', text: ', rawResponse.statusText);
+  //   }
+  // }
 
   async getNewTokens() {
     const rawResponse = await fetch(`${urlLink}users/${this.userId}/tokens`, {
@@ -102,9 +112,8 @@ class User {
           name: this.userName,
         }),
       );
-      // console.log('content response getUser -----', content);
     } else {
-      console.log('getNewTokens error: ', rawResponse.status, ', text: ', rawResponse.statusText);
+      this.logOut();
     }
   }
 }
