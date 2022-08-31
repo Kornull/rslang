@@ -25,11 +25,11 @@ export enum CountButtons {
 function createButtons(el: HTMLElement, count: number): void {
   for (let i = 1; i < count + 1; i++) {
     if (count > CountButtons.Two) {
-      const btnSection = <HTMLElement>createEl('button', el, ['sprint__btn-group']);
+      const btnSection = <HTMLLinkElement>createEl('a', el, ['sprint__btn-group']);
       btnSection.id = `words-${i}`;
-      const buttonSprint = <HTMLLinkElement>createEl('a', btnSection, ['sprint__group-link'], { id: `words-${i}` });
-      buttonSprint.href = '#sprint-page';
-      buttonSprint.innerHTML = `${i}`;
+      // const buttonSprint = <HTMLLinkElement>createEl('a', btnSection, ['sprint__group-link'], { id: `words-${i}` });
+      btnSection.href = '#sprint-page';
+      btnSection.innerHTML = `${i}`;
     } else {
       const btnsChoice = <HTMLElement>createEl('button', el, [`game__btns-choise--${i % count === 0}`]);
       btnsChoice.id = `word-${i % count === 0}`;

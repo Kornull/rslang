@@ -5,9 +5,10 @@
   flex-direction: column;
   width: 100%;
   height: 100vh;
-  background: #5dcd64;
   margin: 0 auto;
   &__game-preload {
+    padding-top: 50px;
+    text-align: center;
     // link: https://codepen.io/takeradi/pen/MyawBN
     .spinner {
       position: absolute;
@@ -53,16 +54,20 @@
     margin: 0 auto;
     margin-top: 40px;
     font-family: $fontMontserrat;
-    color: $colorBlueText;
+    color: #150757;
   }
   &__btns {
+    display: flex;
+    flex-wrap: wrap;
     width: 100%;
     max-width: 400px;
-    display: flex;
     justify-content: space-between;
     padding: 50px;
     margin: 0 auto;
     margin-bottom: 80px;
+  //   @media(max-width: $size480px){
+  //     width: 70%;
+  //   }
   }
   &__regulation {
     width: 80%;
@@ -82,6 +87,21 @@
     width: 35px;
     height: 35px;
     border-radius: 3px;
+    text-align: center;
+    padding: 5px;
+    border: 1px solid $colorRed;
+    color:black;
+    background: #ece5e5;
+    transition: border .2s linear, color .2s linear, background .2s linear, box-shadow .2s linear;
+    &:hover {
+      border: 1px solid $colorWhite;
+      color:$colorBlueSaturated;
+      background: $colorYellow;
+      box-shadow: 0 0 10px $colorBlueSaturated;;
+    }
+    @media(max-width: $size380px) {
+      margin: 10px;
+    }
   }
   &__statistic {
     display: flex;
@@ -135,7 +155,7 @@
   width: 80%;
   margin: 0 auto;
   margin-top: 50px;
-  background: rgb(216, 216, 216);
+  background: #d8d8d8;
   &__timer {
     width: 80px;
     height: 40px;

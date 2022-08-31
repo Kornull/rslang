@@ -53,3 +53,10 @@ export type ExtraWordOption = {
     data?: string;
   };
 };
+
+export enum IdPages {
+  MainID = 'main-page',
+  SprintID = 'sprint-page',
+  BookID = 'book-page',
+  PreloaSprintID = 'preload-sprint',
+}
