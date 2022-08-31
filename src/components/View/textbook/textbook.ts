@@ -1,13 +1,15 @@
-import { getAggregatedWords, getListWords } from '../../Controller/textbook/textbook_controller';
+import * as controllerTextbook from '../../Controller/textbook/textbook';
 import { urlLink } from '../../Templates/serve';
-import { Word } from '../../Types/word';
+import { Word, WordAggregated } from '../../Types/word';
 import { createEl } from '../create_element';
-import { getStorage, setStorage } from '../../Controller/storage';
+import { getLocalStorage, getStorage, setStorage } from '../../Controller/storage';
 import './_textbook.scss';
 import User from '../../Controller/authorization/user';
+import { updateHardWord, updateLearnWord } from './util';
 
 const COUNT_GROUP = 6;
 const COUNT_PAGE_GROUP = 30;
+const USER: User = getLocalStorage('userDataBasic');
 
 function createButtonAudio(wordValue: Word): SVGSVGElement {
   const audioImg = <SVGSVGElement>document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -31,11 +33,7 @@ function createButtonAudio(wordValue: Word): SVGSVGElement {
   return audioImg;
 }
 
-// function addWordLearned(userId: string, wordId: string) {
-//   addWordUser(userId, wordId, { difficulty: 'hard' });
-// }
-
-function renderCardWord(wordValue: Word, autorized: boolean): HTMLDivElement {
+async function renderCardWord(wordValue: Word, autorized: boolean, type: string): Promise<HTMLDivElement> {
   const cardWord = <HTMLDivElement>createEl('div', undefined, ['cardWord', `group-${wordValue.group + 1}`], { id: `cardWord-${wordValue.id}` });
   const multimedia = <HTMLDivElement>createEl('div', cardWord, ['multimediaBlock']);
   const imgBlock = <HTMLDivElement>createEl('div', multimedia, ['imgBlock']);
@@ -48,20 +46,18 @@ function renderCardWord(wordValue: Word, autorized: boolean): HTMLDivElement {
     imgLearn.classList.add('imgLearn');
     imgLearn.innerHTML = '<use xlink:href="./assets/img/checkmark.svg#check"></use>';
     buttonAdd.append(imgLearn);
-    imgLearn.addEventListener('click', () => {
-      // const wordVal: WordValue = {
-      //   difficulty: 'easy',
-      //   optional: {
-      //     statuslearn: 'true',
-      //   },
-      // };
-      // const user: User = JSON.parse(getStorage('userDataBasic', ''));
-      // addWordUser(user, wordValue.id, wordVal);
-    });
+    imgLearn.addEventListener('click', () => updateLearnWord(wordValue, cardWord, USER));
     const imgHard = <SVGSVGElement>document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     imgHard.classList.add('imgHard');
     imgHard.innerHTML = '<use xlink:href="./assets/img/kettlebell.svg#kettlebell"></use>';
+    imgHard.addEventListener('click', () => updateHardWord(wordValue, cardWord, USER));
     buttonAdd.append(imgHard);
+    if (type === 'learned') {
+      cardWord.classList.add('cardLearned');
+    }
+    if (type === 'hard') {
+      cardWord.classList.add('cardHard');
+    }
   }
   const word = <HTMLDivElement>createEl('div', cardWord, ['word']);
   const wordLang = createEl('h3', word, ['h3']);
@@ -79,25 +75,68 @@ function renderCardWord(wordValue: Word, autorized: boolean): HTMLDivElement {
   return cardWord;
 }
 
+async function renderCardsAutorizedUser(currentGroup: string, currentPage: string, wrapperPageTextbook: HTMLDivElement): Promise<void> {
+  const autorized = true;
+  let cardWord: HTMLDivElement;
+  const listWordsAggr: Array<WordAggregated> = await controllerTextbook.getAggregateWordsUser(USER, +currentGroup, +currentPage);
+  listWordsAggr.forEach(async (item) => {
+    const word: Word = {
+      // eslint-disable-next-line no-underscore-dangle
+      id: item._id,
+      group: item.group,
+      page: item.page,
+      word: item.word,
+      image: item.image,
+      audio: item.audio,
+      audioMeaning: item.audioMeaning,
+      audioExample: item.audioExample,
+      textMeaning: item.textMeaning,
+      textExample: item.textExample,
+      transcription: item.transcription,
+      wordTranslate: item.wordTranslate,
+      textMeaningTranslate: item.textMeaningTranslate,
+      textExampleTranslate: item.textExampleTranslate,
+    };
+    let type = '';
+    if (item.userWord) {
+      if (item.userWord.difficulty === 'hard') type = 'hard';
+      else if (item.userWord.difficulty === 'easy' && item.userWord.optional?.statuslearn === 'true') {
+        type = 'learned';
+      }
+    }
+    cardWord = await renderCardWord(word, autorized, type);
+    if (item.userWord) {
+      cardWord.setAttribute('data-wordUser', 'true');
+      if (item.userWord.difficulty === 'hard') {
+        cardWord.setAttribute('data-WordHard', 'true');
+      } else if (item.userWord.difficulty === 'easy' && item.userWord.optional?.statuslearn === 'true') {
+        cardWord.setAttribute('data-WordLearned', 'true');
+      }
+    }
+    wrapperPageTextbook.append(cardWord);
+  });
+}
+
+async function renderCardsNoAutorizedUser(currentGroup: string, currentPage: string, wrapperPageTextbook: HTMLDivElement): Promise<void> {
+  const autorized = false;
+  let cardWord: HTMLDivElement;
+  const listWords: Word[] = await controllerTextbook.getListWords(+currentGroup, +currentPage);
+  listWords.forEach(async (item) => {
+    cardWord = await renderCardWord(item, autorized, '');
+    wrapperPageTextbook.append(cardWord);
+  });
+}
+
 export async function renderPageTextbook() {
   const currentGroup: string = getStorage('currentGroup', '0');
   const currentPage: string = getStorage('currentPage', '0');
-  // console.log(getStorage('userDataBasic ', ''));
-  let listWords: Word[];
-  let autorized: boolean;
-  try {
-    const user: User = JSON.parse(getStorage('userDataBasic', ''));
-    listWords = await getAggregatedWords(+currentGroup, +currentPage, user);
-    autorized = true;
-  } catch {
-    listWords = await getListWords(+currentGroup, +currentPage);
-    autorized = false;
-  }
+  const user: User = getLocalStorage('userDataBasic');
   const wrapperPageTextbook = <HTMLDivElement>createEl('div', undefined, ['wrapper-page-textbook'], { id: 'wrapper-page-textbook' });
-  listWords.forEach((item) => {
-    const cardWord = renderCardWord(item, autorized);
-    wrapperPageTextbook.append(cardWord);
-  });
+  if (user.userId) {
+    renderCardsAutorizedUser(currentGroup, currentPage, wrapperPageTextbook);
+  } else {
+    renderCardsNoAutorizedUser(currentGroup, currentPage, wrapperPageTextbook);
+  }
   return wrapperPageTextbook;
 }
 
@@ -206,19 +245,26 @@ function createMainTextbook() {
 function renderLinkGroup(): HTMLDivElement {
   const linkGroup = <HTMLDivElement>createEl('div', undefined, ['group']);
   const groupLinkBlock = <HTMLDivElement>createEl('div', linkGroup, ['group__buttons']);
-  for (let i = 1; i <= COUNT_GROUP; i++) {
+  const countGroup = USER.userId ? COUNT_GROUP + 1 : COUNT_GROUP;
+  for (let i = 1; i <= countGroup; i++) {
     const currentLinkGroup = <HTMLButtonElement>createEl('button', groupLinkBlock, ['group__link', `group-${i}`], { id: `group-${i}` });
     currentLinkGroup.innerText = String(i);
     currentLinkGroup.addEventListener('click', () => {
       setStorage('currentGroup', String(i - 1));
+      setStorage('currentPage', String(0));
+      const currentPage = <HTMLElement>document.querySelector('#pageNumber');
+      currentPage.innerHTML = '1';
+      // if (countGroup !== COUNT_GROUP) {
       drawPageTextbook();
     });
   }
-  const gameLink = <HTMLDivElement>createEl('div', linkGroup, ['game__links']);
-  const sprint = <HTMLDivElement>createEl('div', gameLink, ['game__links-sprint', 'game__link'], { id: 'sprint-page' });
-  const audioGame = <HTMLDivElement>createEl('div', gameLink, ['game__links-audio', 'game__link'], { id: 'audiogame-page' });
-  sprint.innerHTML = 'Sprint';
-  audioGame.innerHTML = 'Audio-game';
+  if (USER.userId) {
+    const gameLink = <HTMLDivElement>createEl('div', linkGroup, ['game__links']);
+    const sprint = <HTMLDivElement>createEl('div', gameLink, ['game__links-sprint', 'game__link'], { id: 'sprint-page' });
+    const audioGame = <HTMLDivElement>createEl('div', gameLink, ['game__links-audio', 'game__link'], { id: 'audiogame-page' });
+    sprint.innerHTML = 'Sprint';
+    audioGame.innerHTML = 'Audio-game';
+  }
   return linkGroup;
 }
 
