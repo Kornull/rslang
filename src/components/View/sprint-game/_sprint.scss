@@ -176,6 +176,7 @@
   margin-top: 50px;
   background: #d8d8d8;
   border-radius: 15px;
+  box-shadow: 0 0  15px 10px $colorWhite;
   &__timer {
     position: relative;
     width: 80px;
@@ -235,10 +236,15 @@
       border-width: 2px;
       border-style: solid;
       border-color: $colorRed;
+      transition:
+      background-color .1s linear,
+      border-color .1s linear,
+      box-shadow .1s linear;
     }
     .dotted.active{
       background-color: $colorRed;
       border-color: $colorWhite;
+      box-shadow: 0 0 10px $colorRed;
     }
   }
   &__word-en,
@@ -315,8 +321,4 @@
       box-shadow: 0 0 5px $colorBlueSaturated;
       background-color: #b81414;
   }
-}
-
-.dotted .active{
-
 }
