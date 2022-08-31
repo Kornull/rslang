@@ -230,11 +230,15 @@
     .dotted{
       height: 100%;
       width: 20px;
-      background: $colorWhite;
+      background-color: $colorWhite;
       border-radius: 50%;
       border-width: 2px;
       border-style: solid;
       border-color: $colorRed;
+    }
+    .dotted.active{
+      background-color: $colorRed;
+      border-color: $colorWhite;
     }
   }
   &__word-en,
@@ -311,4 +315,8 @@
       box-shadow: 0 0 5px $colorBlueSaturated;
       background-color: #b81414;
   }
+}
+
+.dotted .active{
+
 }

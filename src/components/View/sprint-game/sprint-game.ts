@@ -4,8 +4,6 @@ import { body, main } from '../../Templates/main-block';
 import { createEl } from '../../Controller/createTagBlock';
 // eslint-disable-next-line object-curly-newline, import/no-cycle
 import { Click, createAudioButton, createStaticticSprint, examEvent, mixWords } from './sprint-game.utils';
-import { setLocalStorage } from '../../Controller/sprint-game/storage/storage-set-kornull';
-import { PageKey } from '../../Controller/sprint-game/storage/type-storage';
 import { createAllListWords } from '../../Controller/sprint-game/get-words-to-sprint';
 // eslint-disable-next-line import/no-cycle
 import { App } from '../../App/App';
@@ -18,6 +16,7 @@ enum TitleSprint {
   PreButton = 'Для старта игры выберите уровень сложности',
 }
 
+let arrayDotted: HTMLDivElement[] = [];
 export enum CountButtons {
   Two = 2,
   Six = 6,
@@ -43,12 +42,14 @@ function createButtons(el: HTMLElement, count: number): void {
 }
 
 function createDotteds(block: HTMLDivElement) {
+  arrayDotted = [];
   for (let i = 1; i < 4; i++) {
-    <HTMLDivElement>createEl('div', block, [`game__dotted-${i}`, 'dotted'], { id: `game-dot-${i}` });
+    const a = <HTMLDivElement>createEl('div', block, [`game__dotted-${i}`, 'dotted'], { id: `game-dot-${i}` });
+    arrayDotted.push(a);
   }
 }
 
-export function createSprintGame(): void {
+export const createSprintGame = () => {
   main.innerHTML = '';
   const sprintPage = <HTMLDivElement>createEl('div', main, ['sprint', 'sprint__page']);
   sprintPage.id = 'sprint-page';
@@ -70,7 +71,6 @@ export function createSprintGame(): void {
   createDotteds(sprintDotted);
   createButtons(choiceButtons, CountButtons.Two);
   let time = 29;
-  mixWords(blockGame);
   createAudioButton(audioButton);
   const runTimer = setInterval(() => {
     const hash = window.location.hash.slice(1);
@@ -92,7 +92,10 @@ export function createSprintGame(): void {
       clearInterval(runTimer);
     }
   });
-}
+  header.removeEventListener('click', createSprintGame);
+  listBurger.removeEventListener('click', createSprintGame);
+  mixWords(blockGame, arrayDotted);
+};
 
 function loading(): void {
   main.innerHTML = '';
@@ -124,7 +127,6 @@ export function createPreSprintGamePage(): HTMLElement {
       createAllListWords(Number(id.split('').slice(-1)) - 1);
       loading();
       Click(Number(id.split('').slice(-1)) - 1);
-      setLocalStorage(PageKey.userPage, 'sprint-page');
     }
   });
   body.onkeydown = (ev: KeyboardEvent) => {
@@ -136,29 +138,13 @@ export function createPreSprintGamePage(): HTMLElement {
         createAllListWords(group);
         loading();
         Click(group);
-        setLocalStorage(PageKey.userPage, 'sprint-page');
       }
     }
   };
 
-  // body.addEventListener('keydown', (ev: KeyboardEvent) => {
-  //   console.log(';r')
-  //   if (body.classList.contains('active')) {
-  //     ev.stopPropagation();
-  //   } else {
-  //     const group = examEvent(ev);
-  //     if (group !== undefined) {
-  //       createAllListWords(group);
-  //       loading();
-  //       Click(group);
-  //       setLocalStorage(PageKey.userPage, 'sprint-page');
-  //     }
-  //   }
-  // });
   const sprintButtonsBlock = <HTMLElement>createEl('div', sprintPreloadPage, ['sprint__btns']);
   const sprintRegulation = <HTMLElement>createEl('div', sprintPreloadPage, ['sprint__regulation'], { id: 'regulation-sprint' });
   sprintRegulation.innerHTML = `${TitleSprint.SprintPerulation}`;
-
   createButtons(sprintButtonsBlock, CountButtons.Six);
   return sprintPreloadPage;
 }
@@ -182,7 +168,7 @@ export function statisticGame(): void {
   statisticBtnPreGame.innerHTML = 'Close page';
   statisticBtnMainPage.innerHTML = 'Main page';
   statisticBtnPreGame.addEventListener('click', () => {
-    createPreSprintGamePage();
+    App(IdPages.PreloaSprintID);
   });
   statisticBtnMainPage.addEventListener('click', () => {
     App(IdPages.MainID);

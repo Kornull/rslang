@@ -19,6 +19,7 @@ enum KeysWords {
 }
 
 let guessWordLengthGame = 0;
+let numberDotted = 0;
 
 function userGameGuessed(wordId: string, status: boolean, guessLength: number): void {
   if (getLocalStorage(LocalKeys.UserData).userId) {
@@ -73,7 +74,30 @@ function removeCountAnswers(): void {
   setLocalStorage(KeysWords.GuessedWord, KeysWords.Count);
 }
 
-export function mixWords(blockGame: HTMLElement): void {
+function colorDotted(blockDotted: HTMLDivElement[], numberDot: number) {
+  if (numberDot === 0) {
+    blockDotted.forEach((elDot: HTMLDivElement) => {
+      elDot.classList.remove('active');
+    });
+  } else if (numberDot === 1) {
+    blockDotted.forEach((elDot: HTMLDivElement) => {
+      elDot.classList.remove('active');
+    });
+    blockDotted.forEach((elDot: HTMLDivElement) => {
+      if (Number(elDot.id.slice(-1)) === numberDot) {
+        elDot.classList.add('active');
+      }
+    });
+  } else {
+    blockDotted.forEach((elDot: HTMLDivElement) => {
+      if (Number(elDot.id.slice(-1)) === numberDot) {
+        elDot.classList.add('active');
+      }
+    });
+  }
+}
+
+export function mixWords(blockGame: HTMLElement, blockDotted: HTMLDivElement[]): void {
   removeCountAnswers();
   let lengthGuessed = 0;
   let count = 0;
@@ -100,18 +124,22 @@ export function mixWords(blockGame: HTMLElement): void {
     switch (elementId) {
       case 'word-true':
         if (enWords[count].id === ruWords[randomCount].id) {
-          // console.log(enWords[count].id, ruWords[count].id)
           lengthGuessed++;
+          numberDotted++;
           if (lengthGuessed >= 0) {
             guessWordLengthGame = Math.max(guessWordLengthGame, lengthGuessed);
           }
           correctAnswer();
           guessedWord();
           userGameGuessed(enWords[count].id, true, lengthGuessed);
+          colorDotted(blockDotted, numberDotted);
+          if (numberDotted === 3) numberDotted = 0;
         } else {
           lengthGuessed = 0;
+          numberDotted = 0;
           wrongAnswer();
           userGameGuessed(enWords[count].id, false, lengthGuessed);
+          colorDotted(blockDotted, numberDotted);
         }
         count++;
         if (countNum(count, enWords.length)) {
@@ -121,12 +149,17 @@ export function mixWords(blockGame: HTMLElement): void {
       case 'word-false':
         if (enWords[count].id !== ruWords[randomCount].id) {
           lengthGuessed++;
+          numberDotted++;
           correctAnswer();
           userGameGuessed(enWords[count].id, true, lengthGuessed);
+          colorDotted(blockDotted, numberDotted);
+          if (numberDotted === 3) numberDotted = 0;
         } else {
           lengthGuessed = 0;
+          numberDotted = 0;
           wrongAnswer();
           userGameGuessed(enWords[count].id, false, lengthGuessed);
+          colorDotted(blockDotted, numberDotted);
         }
         count++;
         break;
