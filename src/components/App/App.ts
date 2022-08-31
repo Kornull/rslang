@@ -6,7 +6,11 @@ import createMainPage from '../View/main-page/main-page';
 import { IdPages } from '../Types/types';
 import { setLocalStorage } from '../Controller/sprint-game/storage/storage-set-kornull';
 import { PageKey } from '../Controller/sprint-game/storage/type-storage';
+// eslint-disable-next-line import/no-cycle
+import createPopup from '../View/authorization-page/authorization-page';
+import User from '../Controller/authorization/user';
 
+export const appUser = new User();
 export function App(idPage: string | null): void {
   const footer = <HTMLElement>document.querySelector('.footer');
   if (idPage !== null) {
@@ -40,6 +44,9 @@ export function App(idPage: string | null): void {
   } else {
     App(IdPages.MainID);
   }
+
+  const authPage = <HTMLElement>document.querySelector('#login');
+  authPage.addEventListener('click', createPopup);
 }
 
 // if (getLocalStorage('userDataBasic').userId) appUser.getUser();
