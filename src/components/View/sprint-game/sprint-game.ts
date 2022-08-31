@@ -2,13 +2,14 @@
 import './_sprint.scss';
 import { body, main } from '../../Templates/main-block';
 import { createEl } from '../../Controller/createTagBlock';
-// eslint-disable-next-line object-curly-newline
+// eslint-disable-next-line object-curly-newline, import/no-cycle
 import { Click, createAudioButton, createStaticticSprint, examEvent, mixWords } from './sprint-game.utils';
 import { setLocalStorage } from '../../Controller/sprint-game/storage/storage-set-kornull';
-import { Page } from '../../Controller/sprint-game/storage/type-storage';
+import { PageKey } from '../../Controller/sprint-game/storage/type-storage';
 import { createAllListWords } from '../../Controller/sprint-game/get-words-to-sprint';
 // eslint-disable-next-line import/no-cycle
 import { App } from '../../App/App';
+import { IdPages } from '../../Types/types';
 
 const listBurger = <HTMLElement>document.querySelector('#header-menu');
 const header = document.querySelector('.header') as HTMLElement;
@@ -27,7 +28,6 @@ function createButtons(el: HTMLElement, count: number): void {
     if (count > CountButtons.Two) {
       const btnSection = <HTMLLinkElement>createEl('a', el, ['sprint__btn-group']);
       btnSection.id = `words-${i}`;
-      // const buttonSprint = <HTMLLinkElement>createEl('a', btnSection, ['sprint__group-link'], { id: `words-${i}` });
       btnSection.href = '#sprint-page';
       btnSection.innerHTML = `${i}`;
     } else {
@@ -39,6 +39,12 @@ function createButtons(el: HTMLElement, count: number): void {
         btnsChoice.innerHTML = 'No';
       }
     }
+  }
+}
+
+function createDotteds(block: HTMLDivElement) {
+  for (let i = 1; i < 4; i++) {
+    <HTMLDivElement>createEl('div', block, [`game__dotted-${i}`, 'dotted'], { id: `game-dot-${i}` });
   }
 }
 
@@ -54,23 +60,27 @@ export function createSprintGame(): void {
   audioButton.style.backgroundImage = 'url(./assets/img/sound-on.png)';
   const wordsimg = <HTMLElement>createEl('div', blockGame, ['game__img-block']);
   <HTMLImageElement>createEl('img', wordsimg, ['game__img'], { id: 'game-img' });
+  const sprintDotted = <HTMLDivElement>createEl('div', blockGame, ['game__dotted']);
   const wordsSprint = <HTMLElement>createEl('div', blockGame, ['game__words']);
   const sprintWordEn = <HTMLElement>createEl('div', wordsSprint, ['game__word-en']);
   const sprintWordRu = <HTMLElement>createEl('div', wordsSprint, ['game__word-ru']);
   const choiceButtons = <HTMLElement>createEl('div', blockGame, ['game__btns-choise']);
   sprintWordEn.id = 'word-en';
   sprintWordRu.id = 'word-ru';
+  createDotteds(sprintDotted);
   createButtons(choiceButtons, CountButtons.Two);
   let time = 29;
   mixWords(blockGame);
   createAudioButton(audioButton);
   const runTimer = setInterval(() => {
+    const hash = window.location.hash.slice(1);
     if (time >= 10) timer.innerHTML = `0:${time}`;
     if (time < 10) timer.innerHTML = `0:0${time}`;
     if (time === 0) {
       clearInterval(runTimer);
-      statisticGame();
+      App(IdPages.SprintStatiD);
     }
+    if (hash !== IdPages.SprintID) clearInterval(runTimer);
     time -= 1;
   }, 1000);
   listBurger.addEventListener('click', () => {
@@ -89,7 +99,7 @@ function loading(): void {
   const sprintPreloadPage = <HTMLElement>createEl('div', main, ['sprint', 'sprint__game-preload']);
   <HTMLElement>createEl('div', sprintPreloadPage, ['spinner']);
   const timeSleep = setTimeout(() => {
-    App('sprint-page');
+    App(IdPages.SprintID);
   }, 7000);
   header.addEventListener('click', (ev) => {
     const message = ev.target as HTMLElement;
@@ -109,16 +119,16 @@ export function createPreSprintGamePage(): HTMLElement {
     const message = ev.target as HTMLElement;
     const { id } = message;
     const classBlock = message.classList;
-    if (classBlock[0] === 'sprint__group-link') {
+    if (classBlock[0] === 'sprint__btn-group') {
       ev.preventDefault();
       createAllListWords(Number(id.split('').slice(-1)) - 1);
       loading();
       Click(Number(id.split('').slice(-1)) - 1);
-      setLocalStorage(Page.userPage, 'sprint-page');
+      setLocalStorage(PageKey.userPage, 'sprint-page');
     }
   });
-  window.addEventListener('keydown', (ev: KeyboardEvent) => {
-    if (body.classList.contains('active')) {
+  body.onkeydown = (ev: KeyboardEvent) => {
+    if (body.classList.contains('active') || ev.repeat === true) {
       ev.stopPropagation();
     } else {
       const group = examEvent(ev);
@@ -126,10 +136,25 @@ export function createPreSprintGamePage(): HTMLElement {
         createAllListWords(group);
         loading();
         Click(group);
-        setLocalStorage(Page.userPage, 'sprint-page');
+        setLocalStorage(PageKey.userPage, 'sprint-page');
       }
     }
-  });
+  };
+
+  // body.addEventListener('keydown', (ev: KeyboardEvent) => {
+  //   console.log(';r')
+  //   if (body.classList.contains('active')) {
+  //     ev.stopPropagation();
+  //   } else {
+  //     const group = examEvent(ev);
+  //     if (group !== undefined) {
+  //       createAllListWords(group);
+  //       loading();
+  //       Click(group);
+  //       setLocalStorage(PageKey.userPage, 'sprint-page');
+  //     }
+  //   }
+  // });
   const sprintButtonsBlock = <HTMLElement>createEl('div', sprintPreloadPage, ['sprint__btns']);
   const sprintRegulation = <HTMLElement>createEl('div', sprintPreloadPage, ['sprint__regulation'], { id: 'regulation-sprint' });
   sprintRegulation.innerHTML = `${TitleSprint.SprintPerulation}`;
@@ -140,7 +165,7 @@ export function createPreSprintGamePage(): HTMLElement {
 
 export function statisticGame(): void {
   main.innerHTML = '';
-  const sprintPageStat = <HTMLElement>createEl('div', main, ['sprint__statistic']);
+  const sprintPageStat = <HTMLElement>createEl('div', main, ['sprint__statistic'], { id: 'srpint-statistic' });
   const title = <HTMLElement>createEl('h1', sprintPageStat, ['sprint__statistic-title']);
   title.innerHTML = 'Statistic - Sprint game';
   <HTMLElement>createEl('div', sprintPageStat, ['sprint__statistic-correct']);
@@ -148,10 +173,19 @@ export function statisticGame(): void {
   <HTMLElement>createEl('div', sprintPageStat, ['sprint__statistic-words']);
   <HTMLElement>createEl('div', sprintPageStat, ['sprint__statistic-percent']);
   <HTMLElement>createEl('div', sprintPageStat, ['sprint__statistic-percent--words']);
-  <HTMLElement>createEl('div', sprintPageStat, ['sprint__statistic-percent--words']);
+  const buttonsStat = <HTMLElement>createEl('div', sprintPageStat, ['sprint__statistic-buttons']);
 
-  const statisticBtn = <HTMLElement>createEl('button', sprintPageStat, ['sprint__btn-close--stat']);
-  statisticBtn.innerHTML = 'Close page';
-  statisticBtn.addEventListener('click', createPreSprintGamePage);
+  const statisticBtnPreGame = <HTMLLinkElement>createEl('a', buttonsStat, ['sprint__btn-close--stat-preload']);
+  const statisticBtnMainPage = <HTMLLinkElement>createEl('a', buttonsStat, ['sprint__btn-close--stat-main']);
+  statisticBtnPreGame.href = `#${IdPages.PreloaSprintID}`;
+  statisticBtnMainPage.href = `#${IdPages.MainID}`;
+  statisticBtnPreGame.innerHTML = 'Close page';
+  statisticBtnMainPage.innerHTML = 'Main page';
+  statisticBtnPreGame.addEventListener('click', () => {
+    createPreSprintGamePage();
+  });
+  statisticBtnMainPage.addEventListener('click', () => {
+    App(IdPages.MainID);
+  });
   createStaticticSprint(sprintPageStat);
 }

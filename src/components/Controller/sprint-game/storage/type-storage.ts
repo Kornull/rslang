@@ -1,3 +1,3 @@
-export enum Page {
+export enum PageKey {
   userPage = 'userPageNow',
 }

@@ -1,9 +1,9 @@
 import { App } from '../../../App/App';
-import { Page } from './type-storage';
+import { PageKey } from './type-storage';
 
 export function getLocalStorageApp(): void {
-  const page = localStorage.getItem(Page.userPage);
-  if (localStorage.getItem(Page.userPage)) {
+  const page = localStorage.getItem(PageKey.userPage);
+  if (localStorage.getItem(PageKey.userPage)) {
     if (page !== null && page !== undefined) {
       const id = page.slice(1, -1);
       App(id);

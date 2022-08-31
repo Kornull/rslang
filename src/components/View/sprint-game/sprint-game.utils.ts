@@ -1,8 +1,11 @@
+// eslint-disable-next-line import/no-cycle
+import { App } from '../../App/App';
 import { createAllListWords, getGuessSprintWords, getUserWord } from '../../Controller/sprint-game/get-words-to-sprint';
 import { getLocalStorage, setLocalStorage } from '../../Controller/sprint-game/storage/storage-set-kornull';
 import { body } from '../../Templates/main-block';
 import { urlLink } from '../../Templates/serve';
-import { Key, LocalKeys, WordSettings } from '../../Types/types';
+// eslint-disable-next-line object-curly-newline
+import { IdPages, Key, LocalKeys, WordSettings } from '../../Types/types';
 
 const audio = new Audio();
 enum KeysWords {
@@ -93,10 +96,11 @@ export function mixWords(blockGame: HTMLElement): void {
     ru.innerHTML = `${ruWords[randomCount].word}`;
   }
 
-  function clickGameButtons(elementId: string) {
+  function clickGameButtons(elementId?: string) {
     switch (elementId) {
       case 'word-true':
         if (enWords[count].id === ruWords[randomCount].id) {
+          // console.log(enWords[count].id, ruWords[count].id)
           lengthGuessed++;
           if (lengthGuessed >= 0) {
             guessWordLengthGame = Math.max(guessWordLengthGame, lengthGuessed);
@@ -125,35 +129,58 @@ export function mixWords(blockGame: HTMLElement): void {
           userGameGuessed(enWords[count].id, false, lengthGuessed);
         }
         count++;
-        if (countNum(count, ruWords.length)) {
-          viewWords();
-        }
         break;
       default:
         break;
+    }
+    if (countNum(count, ruWords.length)) {
+      viewWords();
+    } else {
+      App(IdPages.SprintStatiD);
     }
   }
   blockGame.addEventListener('click', (ev: Event) => {
     const message = ev.target as HTMLElement;
     const idElement = message.id;
-    clickGameButtons(idElement);
+    if (idElement === 'word-true' || idElement === 'word-false') clickGameButtons(idElement);
   });
-  window.addEventListener('keydown', (ev: KeyboardEvent) => {
-    if (body.classList.contains('active')) {
+  const btnTrueSprint = <HTMLButtonElement>blockGame.querySelector('#word-true');
+  const btnFalseSprint = <HTMLButtonElement>blockGame.querySelector('#word-false');
+
+  function trueButton() {
+    clickGameButtons('word-true');
+    btnTrueSprint.classList.add('active');
+    setTimeout(() => {
+      btnTrueSprint.classList.remove('active');
+    }, 200);
+  }
+  function falseButton() {
+    clickGameButtons('word-false');
+    btnFalseSprint.classList.add('active');
+    setTimeout(() => {
+      btnFalseSprint.classList.remove('active');
+    }, 200);
+  }
+  body.onkeydown = (ev: KeyboardEvent) => {
+    if (body.classList.contains('active') || window.location.hash.slice(1) !== IdPages.SprintID || ev.repeat === true) {
       ev.stopPropagation();
     } else {
+      ev.stopPropagation();
       switch (ev.key) {
         case 'ArrowRight':
-          clickGameButtons('word-true');
+          ev.preventDefault();
+          ev.stopPropagation();
+          trueButton();
           break;
         case 'ArrowLeft':
-          clickGameButtons('word-false');
+          ev.preventDefault();
+          ev.stopPropagation();
+          falseButton();
           break;
         default:
-          break;
       }
     }
-  });
+  };
   viewWords();
 }
 
@@ -203,7 +230,6 @@ export function createStaticticSprint(block: HTMLElement): void {
 
 export function examEvent(event: KeyboardEvent): number | undefined {
   let numGroup = 0;
-
   if (Number(event.key) > 0 && Number(event.key) <= 6) {
     switch (event.key) {
       case '1':
