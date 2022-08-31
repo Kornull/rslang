@@ -22,8 +22,7 @@ export function App(idPage: string | null): void {
     main.append(createMainPage());
   }
   const authPage = <HTMLElement>document.querySelector('#login');
-  authPage.addEventListener('click', () => createPopup());
-  return main;
+  authPage.addEventListener('click', createPopup);
 }
 
 // if (getLocalStorage('userDataBasic').userId) appUser.getUser();
