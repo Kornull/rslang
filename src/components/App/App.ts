@@ -9,12 +9,12 @@ import crateAuthorizationPage from '../View/authorization-page/authorization-pag
 
 export const appUser = new User();
 export function App(idPage: string | null): void {
-  // function hashView() {
-  //   window.addEventListener('hashchange', () => {
-  //     const hash = window.location.hash.slice(1);
-  //     App(hash);
-  //   });
-  // }
+  function hashView() {
+    window.addEventListener('hashchange', () => {
+      const hash = window.location.hash.slice(1);
+      App(hash);
+    });
+  }
   const footer = <HTMLElement>document.querySelector('.footer');
   if (idPage !== null) {
     main.innerHTML = '';
@@ -38,9 +38,11 @@ export function App(idPage: string | null): void {
     main.append(createMainPage());
   }
 
-  // hashView();
+  hashView();
   const authPage = <HTMLElement>document.querySelector('#login');
-  authPage.addEventListener('click', () => crateAuthorizationPage);
+  authPage.addEventListener('click', () => {
+    crateAuthorizationPage()
+  });
 }
 
 // if (getLocalStorage('userDataBasic').userId) appUser.getUser();
