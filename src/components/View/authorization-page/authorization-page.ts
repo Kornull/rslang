@@ -5,6 +5,8 @@ import { createEl } from '../../Controller/createTagBlock';
 import { main } from '../../Templates/main-block';
 // eslint-disable-next-line import/no-cycle
 import { toggleButtons, signInRequest, closePopup } from '../../Controller/authorization/authorization';
+import { getLocalStorage } from '../../Controller/sprint-game/storage/storage-set-kornull';
+import { LocalKeys } from '../../Types/types';
 
 function createLabel(inputType: string, inputName: string, classNames: string[], text: string, parent: HTMLElement, disabled: boolean): HTMLElement {
   const label = document.createElement('label');
@@ -69,7 +71,7 @@ function createLogoutPage() {
 }
 
 function createPopup(): void {
-  if (JSON.parse(localStorage.getItem('userDataBasic') as string) !== null) {
+  if (getLocalStorage(LocalKeys.UserData).userId) {
     createLogoutPage();
   } else {
     crateAuthorizationPage();

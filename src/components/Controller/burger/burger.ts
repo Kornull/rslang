@@ -1,4 +1,6 @@
+import { IdPages } from '../../Types/types';
 import { clickIdLink } from './burger.utils';
+
 import './_burger.scss';
 
 const burger = <HTMLElement>document.querySelector('#burger');
@@ -39,8 +41,8 @@ const openBurgerMenu = (): void => {
 (() => {
   header.addEventListener('click', (ev) => {
     const mess = ev.target as HTMLElement;
-    if (mess.id === 'logo') {
-      clickIdLink('main-page');
+    if (mess.id === IdPages.LogoIt) {
+      clickIdLink(IdPages.MainID);
     }
   });
   burger.addEventListener('click', openBurgerMenu);
