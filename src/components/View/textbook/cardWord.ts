@@ -2,7 +2,7 @@ import { getAggregateWordsUser, getListHardWord, getListWords } from '../../Cont
 import { urlLink } from '../../Templates/serve';
 import { Word, WordAggregated } from '../../Types/word';
 import { createEl } from '../create_element';
-import { COUNT_GROUP, isAutorized, USER } from './textbook';
+import { COUNT_GROUP, USER } from './util';
 import { updateHardWord, updateLearnWord } from './word';
 
 function createButtonAudio(wordValue: Word): SVGSVGElement {
@@ -35,7 +35,7 @@ export async function renderCardWord(wordValue: Word, type: string): Promise<HTM
   const buttonAdd = <HTMLDivElement>createEl('div', multimedia, ['buttonAdd']);
   const audioImg: SVGSVGElement = createButtonAudio(wordValue);
   buttonAdd.append(audioImg);
-  if (isAutorized()) {
+  if (USER.userId) {
     const imgLearn = <SVGSVGElement>document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     imgLearn.classList.add('imgLearn');
     imgLearn.innerHTML = '<use xlink:href="./assets/img/checkmark.svg#check"></use>';
@@ -69,7 +69,7 @@ export async function renderCardWord(wordValue: Word, type: string): Promise<HTM
   return cardWord;
 }
 
-async function renderCardsNoAutorizedUser(currentGroup: string, currentPage: string, wrapperPageTextbook: HTMLDivElement): Promise<void> {
+export async function renderCardsNoAutorizedUser(currentGroup: string, currentPage: string, wrapperPageTextbook: HTMLDivElement): Promise<void> {
   let cardWord: HTMLDivElement;
   const listWords: Word[] = await getListWords(+currentGroup, +currentPage);
   listWords.forEach(async (item) => {

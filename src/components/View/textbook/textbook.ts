@@ -2,17 +2,8 @@ import { createEl } from '../create_element';
 import { getLocalStorage, getStorage, setStorage } from '../../Controller/storage';
 import './_textbook.scss';
 import User from '../../Controller/authorization/user';
-// eslint-disable-next-line import/no-cycle
-import { renderCardsAutorizedUser } from './cardWord';
-
-export const COUNT_GROUP = 6;
-const COUNT_PAGE_GROUP = 30;
-export const USER: User = getLocalStorage('userDataBasic');
-
-export function isAutorized() {
-  if (!USER.userId) return false;
-  return true;
-}
+import { renderCardsAutorizedUser, renderCardsNoAutorizedUser } from './cardWord';
+import { COUNT_GROUP, COUNT_PAGE_GROUP, USER } from './util';
 
 export async function renderPageTextbook() {
   const currentGroup: string = getStorage('currentGroup', '0');
@@ -22,7 +13,7 @@ export async function renderPageTextbook() {
   if (user.userId) {
     renderCardsAutorizedUser(currentGroup, currentPage, wrapperPageTextbook);
   } else {
-    renderCardsAutorizedUser(currentGroup, currentPage, wrapperPageTextbook);
+    renderCardsNoAutorizedUser(currentGroup, currentPage, wrapperPageTextbook);
   }
   return wrapperPageTextbook;
 }

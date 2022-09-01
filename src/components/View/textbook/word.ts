@@ -2,8 +2,7 @@ import User from '../../Controller/authorization/user';
 import { getStorage } from '../../Controller/storage';
 import { createWordUser, updateWordUser } from '../../Controller/textbook/textbook';
 import { Word, WordValue } from '../../Types/word';
-// eslint-disable-next-line import/no-cycle
-import { COUNT_GROUP } from './textbook';
+import { COUNT_GROUP } from './util';
 
 function createParamUserWord(cardWord: HTMLElement): WordValue {
   const isLearnedWord = cardWord.getAttribute('data-WordLearned');
