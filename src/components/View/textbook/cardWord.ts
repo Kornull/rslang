@@ -1,8 +1,10 @@
+import User from '../../Controller/authorization/user';
+import { getLocalStorage, setStorage } from '../../Controller/storage';
 import { getAggregateWordsUser, getListHardWord, getListWords } from '../../Controller/textbook/textbook';
 import { urlLink } from '../../Templates/serve';
 import { Word, WordAggregated } from '../../Types/word';
 import { createEl } from '../create_element';
-import { COUNT_GROUP, USER } from './util';
+import { COUNT_GROUP } from './util';
 import { updateHardWord, updateLearnWord } from './word';
 
 function createButtonAudio(wordValue: Word): SVGSVGElement {
@@ -35,16 +37,17 @@ export async function renderCardWord(wordValue: Word, type: string): Promise<HTM
   const buttonAdd = <HTMLDivElement>createEl('div', multimedia, ['buttonAdd']);
   const audioImg: SVGSVGElement = createButtonAudio(wordValue);
   buttonAdd.append(audioImg);
-  if (USER.userId) {
+  const user: User = getLocalStorage('userDataBasic');
+  if (user.userId) {
     const imgLearn = <SVGSVGElement>document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     imgLearn.classList.add('imgLearn');
     imgLearn.innerHTML = '<use xlink:href="./assets/img/checkmark.svg#check"></use>';
     buttonAdd.append(imgLearn);
-    imgLearn.addEventListener('click', () => updateLearnWord(wordValue, cardWord, USER));
+    imgLearn.addEventListener('click', () => updateLearnWord(wordValue, cardWord, user));
     const imgHard = <SVGSVGElement>document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     imgHard.classList.add('imgHard');
     imgHard.innerHTML = '<use xlink:href="./assets/img/kettlebell.svg#kettlebell"></use>';
-    imgHard.addEventListener('click', () => updateHardWord(wordValue, cardWord, USER));
+    imgHard.addEventListener('click', () => updateHardWord(wordValue, cardWord, user));
     buttonAdd.append(imgHard);
     if (type === 'learned') {
       cardWord.classList.add('cardLearned');
@@ -81,10 +84,16 @@ export async function renderCardsNoAutorizedUser(currentGroup: string, currentPa
 export async function renderCardsAutorizedUser(currentGroup: string, currentPage: string, wrapperPageTextbook: HTMLDivElement): Promise<void> {
   let cardWord: HTMLDivElement;
   let listWord: Array<WordAggregated>;
+  const user: User = getLocalStorage('userDataBasic');
   try {
-    if (Number(currentGroup) < COUNT_GROUP) listWord = await getAggregateWordsUser(USER, +currentGroup, +currentPage);
-    else listWord = await getListHardWord(USER);
+    if (Number(currentGroup) < COUNT_GROUP) listWord = await getAggregateWordsUser(user, +currentGroup, +currentPage);
+    else listWord = await getListHardWord(user);
   } catch {
+    setStorage('userDataBasic', '{}');
+    const buttonGroup = <HTMLElement>document.querySelector('#group-7');
+    buttonGroup.classList.add('display-none');
+    const gameLinks = <HTMLElement>document.querySelector('.game__links');
+    gameLinks.classList.add('display-none');
     renderCardsNoAutorizedUser(currentGroup, currentPage, wrapperPageTextbook);
     return;
   }

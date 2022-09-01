@@ -3,7 +3,7 @@ import { getLocalStorage, getStorage, setStorage } from '../../Controller/storag
 import './_textbook.scss';
 import User from '../../Controller/authorization/user';
 import { renderCardsAutorizedUser, renderCardsNoAutorizedUser } from './cardWord';
-import { COUNT_GROUP, COUNT_PAGE_GROUP, USER } from './util';
+import { COUNT_GROUP, COUNT_PAGE_GROUP } from './util';
 
 export async function renderPageTextbook() {
   const currentGroup: string = getStorage('currentGroup', '0');
@@ -112,7 +112,8 @@ function createMainTextbook() {
 function renderLinkGroup(): HTMLDivElement {
   const linkGroup = <HTMLDivElement>createEl('div', undefined, ['group']);
   const groupLinkBlock = <HTMLDivElement>createEl('div', linkGroup, ['group__buttons']);
-  const countGroup = USER.userId ? COUNT_GROUP + 1 : COUNT_GROUP;
+  const user: User = getLocalStorage('userDataBasic');
+  const countGroup = user.userId ? COUNT_GROUP + 1 : COUNT_GROUP;
   for (let i = 1; i <= countGroup; i++) {
     const currentLinkGroup = <HTMLButtonElement>createEl('button', groupLinkBlock, ['group__link', `group-${i}`], { id: `group-${i}` });
     currentLinkGroup.innerText = String(i);
@@ -124,7 +125,7 @@ function renderLinkGroup(): HTMLDivElement {
       drawPageTextbook();
     });
   }
-  if (USER.userId) {
+  if (user.userId) {
     const gameLink = <HTMLDivElement>createEl('div', linkGroup, ['game__links']);
     const sprint = <HTMLDivElement>createEl('div', gameLink, ['game__links-sprint', 'game__link'], { id: 'sprint-page' });
     const audioGame = <HTMLDivElement>createEl('div', gameLink, ['game__links-audio', 'game__link'], { id: 'audiogame-page' });
