@@ -125,13 +125,12 @@ function renderLinkGroup(): HTMLDivElement {
       drawPageTextbook();
     });
   }
-  if (user.userId) {
-    const gameLink = <HTMLDivElement>createEl('div', linkGroup, ['game__links']);
-    const sprint = <HTMLDivElement>createEl('div', gameLink, ['game__links-sprint', 'game__link'], { id: 'sprint-page' });
-    const audioGame = <HTMLDivElement>createEl('div', gameLink, ['game__links-audio', 'game__link'], { id: 'audiogame-page' });
-    sprint.innerHTML = 'Sprint';
-    audioGame.innerHTML = 'Audio-game';
-  }
+  const gameLink = <HTMLDivElement>createEl('div', linkGroup, ['game__links']);
+  const sprint = <HTMLDivElement>createEl('div', gameLink, ['game__links-sprint', 'game__link'], { id: 'sprint-page' });
+  const audioGame = <HTMLDivElement>createEl('div', gameLink, ['game__links-audio', 'game__link'], { id: 'audiogame-page' });
+  sprint.innerHTML = 'Sprint';
+  audioGame.innerHTML = 'Audio-game';
+
   return linkGroup;
 }
 

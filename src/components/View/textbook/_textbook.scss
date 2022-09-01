@@ -14,7 +14,7 @@
   padding-top: 60px;
   flex-wrap: wrap-reverse;
   width: 100%;
-  justify-content: space-between;
+  justify-content: space-around;
   margin-bottom: 20px;
   &__buttons {
     display: flex;
@@ -25,7 +25,8 @@
       margin-bottom: 20px;
     }
     @media (max-width: $size768px) {
-      gap: 12px;
+      flex-wrap: wrap;
+      gap: 15px;
     }
     @media (max-width: $size480px) {
       gap: 12px;
@@ -223,7 +224,7 @@
   flex-wrap: wrap;
   gap:20px ;
   text-align: center;
-  @media (max-width: 786px) {
+  @media (max-width: 968px) {
     justify-content: center;
     width: 90%;
     margin: 0 auto;
