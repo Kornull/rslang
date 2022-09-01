@@ -69,7 +69,7 @@ function createLogoutPage() {
 }
 
 function createPopup(): void {
-  if (JSON.parse(localStorage.getItem('userDataBasic') as string).name) {
+  if (JSON.parse(localStorage.getItem('userDataBasic') as string) !== null) {
     createLogoutPage();
   } else {
     crateAuthorizationPage();
