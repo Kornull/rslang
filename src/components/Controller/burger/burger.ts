@@ -1,3 +1,6 @@
+import { IdPages } from '../../Types/types';
+import { clickIdLink } from './burger.utils';
+
 import './_burger.scss';
 
 const burger = <HTMLElement>document.querySelector('#burger');
@@ -6,6 +9,7 @@ const linkNavigation = document.querySelectorAll('.header__nav-link');
 const span = <HTMLElement>burger.lastChild;
 const headerMenuList = <HTMLElement>document.querySelector('#header-list');
 const headerNav = <HTMLElement>document.querySelector('#header-nav');
+const header = <HTMLElement>document.querySelector('.header');
 
 const closeBurgerMenu = () => {
   span.classList.remove('active');
@@ -35,6 +39,12 @@ const openBurgerMenu = (): void => {
 };
 
 (() => {
+  header.addEventListener('click', (ev) => {
+    const mess = ev.target as HTMLElement;
+    if (mess.id === IdPages.LogoIt) {
+      clickIdLink(IdPages.MainID);
+    }
+  });
   burger.addEventListener('click', openBurgerMenu);
   burger.addEventListener('keydown', (ev: KeyboardEvent): void => {
     const burgerElement = ev.target as HTMLElement;
@@ -48,6 +58,8 @@ const openBurgerMenu = (): void => {
   shadowElement.addEventListener('click', openBurgerMenu);
   linkNavigation.forEach((link: Element) => {
     link.addEventListener('click', (ev: Event) => {
+      const message = ev.target as HTMLElement;
+      clickIdLink(message.id);
       if (ev !== null) {
         if (ev.type === 'click') openBurgerMenu();
       }

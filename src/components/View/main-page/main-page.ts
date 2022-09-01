@@ -4,7 +4,7 @@ import { createEl } from '../../Controller/createTagBlock';
 import { main } from '../../Templates/main-block';
 import { TextForTheBlock } from './main-page.utils';
 
-function createMainPageList() {
+function createMainPageList(): HTMLElement {
   const aboutApp = <HTMLElement>createEl('div', main, ['main__page-about']);
   const mainList = <HTMLElement>createEl('ul', aboutApp, ['main__list']);
   for (let i = Count.Zero; i < Count.Max; i++) {
@@ -17,8 +17,9 @@ function createMainPageList() {
   return aboutApp;
 }
 
-function createMainPage() {
+function createMainPage(): HTMLElement {
   const mainPage = <HTMLElement>createEl('div', main, ['main__page']);
+  mainPage.id = 'main-page';
   const mainPageAbout = <HTMLElement>createEl('div', mainPage, ['main__page-greetings']);
   const mainPageTitle = <HTMLElement>createEl('h1', mainPageAbout, ['main__page-title']);
 

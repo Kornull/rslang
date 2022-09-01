@@ -31,6 +31,13 @@ const plugins = () => {
         to: 'assets',
       }
       ]
+    }),
+    new CopyPlugin({
+      patterns: [{
+        from: `audio/**`,
+        to: 'assets',
+      }
+      ]
     })
   ];
 };

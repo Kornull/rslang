@@ -89,4 +89,21 @@
     color:$colorPopup;
     transition: 0.5s all;
   }
+  .popup-message {
+    height: 98%;
+    width: 98%;
+    top: 1%;
+    left: 1%;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: $colorWhite;
+    .popup-message__text {
+      text-align: center;
+    }
+    &.disabled {
+      display: none;
+    }
+  }
 }
