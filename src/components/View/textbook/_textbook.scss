@@ -6,6 +6,7 @@
   flex-direction: column;
   max-width: 1200px;
   margin: 0 auto;
+  padding-bottom: 20px;
 }
 
 .group {
@@ -92,6 +93,10 @@
   top: 0;
   margin: 10px auto;
   column-gap: 20px;
+}
+
+.nav-textbook-display-none {
+  display: none;
 }
 
 .nav-button {

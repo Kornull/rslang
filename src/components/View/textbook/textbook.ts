@@ -78,8 +78,10 @@ async function renderCardWord(wordValue: Word, autorized: boolean, type: string)
 async function renderCardsAutorizedUser(currentGroup: string, currentPage: string, wrapperPageTextbook: HTMLDivElement): Promise<void> {
   const autorized = true;
   let cardWord: HTMLDivElement;
-  const listWordsAggr: Array<WordAggregated> = await controllerTextbook.getAggregateWordsUser(USER, +currentGroup, +currentPage);
-  listWordsAggr.forEach(async (item) => {
+  let listWord: Array<WordAggregated>;
+  if (Number(currentGroup) < COUNT_GROUP) listWord = await controllerTextbook.getAggregateWordsUser(USER, +currentGroup, +currentPage);
+  else listWord = await controllerTextbook.getListHardWord(USER);
+  listWord.forEach(async (item) => {
     const word: Word = {
       // eslint-disable-next-line no-underscore-dangle
       id: item._id,
@@ -145,6 +147,11 @@ export async function drawPageTextbook() {
   const wrapperPageTextbook = await renderPageTextbook();
   pageTextbook.innerHTML = '';
   pageTextbook.append(wrapperPageTextbook);
+  const currentGroup: string = getStorage('currentGroup', '0');
+  const pagination = <HTMLElement>document.querySelector('#nav-textbook');
+  if (Number(currentGroup) === COUNT_GROUP) {
+    pagination.classList.add('nav-textbook-display-none');
+  } else pagination.classList.remove('nav-textbook-display-none');
 }
 
 function disabledButton(currentButton: HTMLButtonElement) {
@@ -254,7 +261,6 @@ function renderLinkGroup(): HTMLDivElement {
       setStorage('currentPage', String(0));
       const currentPage = <HTMLElement>document.querySelector('#pageNumber');
       currentPage.innerHTML = '1';
-      // if (countGroup !== COUNT_GROUP) {
       drawPageTextbook();
     });
   }
