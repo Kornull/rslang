@@ -33,7 +33,12 @@ function createButtonAudio(wordValue: Word): SVGSVGElement {
   return audioImg;
 }
 
-async function renderCardWord(wordValue: Word, autorized: boolean, type: string): Promise<HTMLDivElement> {
+function isAutorized() {
+  if (!USER.userId) return false;
+  return true;
+}
+
+async function renderCardWord(wordValue: Word, type: string): Promise<HTMLDivElement> {
   const cardWord = <HTMLDivElement>createEl('div', undefined, ['cardWord', `group-${wordValue.group + 1}`], { id: `cardWord-${wordValue.id}` });
   const multimedia = <HTMLDivElement>createEl('div', cardWord, ['multimediaBlock']);
   const imgBlock = <HTMLDivElement>createEl('div', multimedia, ['imgBlock']);
@@ -41,7 +46,7 @@ async function renderCardWord(wordValue: Word, autorized: boolean, type: string)
   const buttonAdd = <HTMLDivElement>createEl('div', multimedia, ['buttonAdd']);
   const audioImg: SVGSVGElement = createButtonAudio(wordValue);
   buttonAdd.append(audioImg);
-  if (autorized) {
+  if (isAutorized()) {
     const imgLearn = <SVGSVGElement>document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     imgLearn.classList.add('imgLearn');
     imgLearn.innerHTML = '<use xlink:href="./assets/img/checkmark.svg#check"></use>';
@@ -75,12 +80,25 @@ async function renderCardWord(wordValue: Word, autorized: boolean, type: string)
   return cardWord;
 }
 
+async function renderCardsNoAutorizedUser(currentGroup: string, currentPage: string, wrapperPageTextbook: HTMLDivElement): Promise<void> {
+  let cardWord: HTMLDivElement;
+  const listWords: Word[] = await controllerTextbook.getListWords(+currentGroup, +currentPage);
+  listWords.forEach(async (item) => {
+    cardWord = await renderCardWord(item, '');
+    wrapperPageTextbook.append(cardWord);
+  });
+}
+
 async function renderCardsAutorizedUser(currentGroup: string, currentPage: string, wrapperPageTextbook: HTMLDivElement): Promise<void> {
-  const autorized = true;
   let cardWord: HTMLDivElement;
   let listWord: Array<WordAggregated>;
-  if (Number(currentGroup) < COUNT_GROUP) listWord = await controllerTextbook.getAggregateWordsUser(USER, +currentGroup, +currentPage);
-  else listWord = await controllerTextbook.getListHardWord(USER);
+  try {
+    if (Number(currentGroup) < COUNT_GROUP) listWord = await controllerTextbook.getAggregateWordsUser(USER, +currentGroup, +currentPage);
+    else listWord = await controllerTextbook.getListHardWord(USER);
+  } catch {
+    renderCardsNoAutorizedUser(currentGroup, currentPage, wrapperPageTextbook);
+    return;
+  }
   listWord.forEach(async (item) => {
     const word: Word = {
       // eslint-disable-next-line no-underscore-dangle
@@ -106,7 +124,7 @@ async function renderCardsAutorizedUser(currentGroup: string, currentPage: strin
         type = 'learned';
       }
     }
-    cardWord = await renderCardWord(word, autorized, type);
+    cardWord = await renderCardWord(word, type);
     if (item.userWord) {
       cardWord.setAttribute('data-wordUser', 'true');
       if (item.userWord.difficulty === 'hard') {
@@ -115,16 +133,6 @@ async function renderCardsAutorizedUser(currentGroup: string, currentPage: strin
         cardWord.setAttribute('data-WordLearned', 'true');
       }
     }
-    wrapperPageTextbook.append(cardWord);
-  });
-}
-
-async function renderCardsNoAutorizedUser(currentGroup: string, currentPage: string, wrapperPageTextbook: HTMLDivElement): Promise<void> {
-  const autorized = false;
-  let cardWord: HTMLDivElement;
-  const listWords: Word[] = await controllerTextbook.getListWords(+currentGroup, +currentPage);
-  listWords.forEach(async (item) => {
-    cardWord = await renderCardWord(item, autorized, '');
     wrapperPageTextbook.append(cardWord);
   });
 }
@@ -168,23 +176,33 @@ function enabledButton(currentButton: HTMLButtonElement) {
   button.classList.add('nav-button_enabled');
 }
 
+function updateButtonPagination(currentPage: number) {
+  const first = <HTMLButtonElement>document.querySelector('#first');
+  const prev = <HTMLButtonElement>document.querySelector('#prev');
+  const next = <HTMLButtonElement>document.querySelector('#next');
+  const last = <HTMLButtonElement>document.querySelector('#last');
+  enabledButton(next);
+  enabledButton(last);
+  enabledButton(first);
+  enabledButton(prev);
+  if (currentPage <= 0) {
+    disabledButton(first);
+    disabledButton(prev);
+  }
+  if (currentPage + 1 >= COUNT_PAGE_GROUP) {
+    disabledButton(next);
+    disabledButton(last);
+  }
+  const pageNumber = <HTMLButtonElement>document.querySelector('#pageNumber');
+  pageNumber.innerText = String(currentPage + 1);
+}
+
 function createPrevPage(e: Event) {
   const currentButton: string = (e.currentTarget as HTMLButtonElement).id;
   const currentPage: number = currentButton === 'prev' ? +getStorage('currentPage', '0') - 1 : 0;
   setStorage('currentPage', String(currentPage));
   drawPageTextbook();
-  if (currentPage <= 0) {
-    const first = <HTMLButtonElement>document.querySelector('#first');
-    const prev = <HTMLButtonElement>document.querySelector('#prev');
-    disabledButton(first);
-    disabledButton(prev);
-  }
-  const next = <HTMLButtonElement>document.querySelector('#next');
-  const last = <HTMLButtonElement>document.querySelector('#last');
-  enabledButton(next);
-  enabledButton(last);
-  const pageNumber = <HTMLButtonElement>document.querySelector('#pageNumber');
-  pageNumber.innerText = String(currentPage + 1);
+  updateButtonPagination(currentPage);
 }
 
 function createNextPage(e: Event) {
@@ -192,18 +210,7 @@ function createNextPage(e: Event) {
   const currentPage: number = currentButton === 'next' ? +getStorage('currentPage', '0') + 1 : COUNT_PAGE_GROUP - 1;
   setStorage('currentPage', String(currentPage));
   drawPageTextbook();
-  if (currentPage + 1 >= COUNT_PAGE_GROUP) {
-    const next = <HTMLButtonElement>document.querySelector('#next');
-    const last = <HTMLButtonElement>document.querySelector('#last');
-    disabledButton(next);
-    disabledButton(last);
-  }
-  const first = <HTMLButtonElement>document.querySelector('#first');
-  const prev = <HTMLButtonElement>document.querySelector('#prev');
-  enabledButton(first);
-  enabledButton(prev);
-  const pageNumber = <HTMLButtonElement>document.querySelector('#pageNumber');
-  pageNumber.innerText = String(currentPage + 1);
+  updateButtonPagination(currentPage);
 }
 
 export function renderPaginationButton() {
@@ -213,27 +220,12 @@ export function renderPaginationButton() {
   prevAll.innerText = '<<';
   const prev = <HTMLButtonElement>createEl('button', paginationTextbook, ['nav-button'], { id: 'prev', disabled: 'true' });
   prev.innerText = '<';
-  if (pageNumber <= 1) {
-    disabledButton(prevAll);
-    disabledButton(prev);
-  } else {
-    enabledButton(prev);
-    enabledButton(prevAll);
-    prev.classList.add('nav-button_enabled');
-  }
   const currentPage = <HTMLButtonElement>createEl('button', paginationTextbook, ['nav-button'], { id: 'pageNumber' });
   currentPage.innerText = String(pageNumber);
   const next = <HTMLButtonElement>createEl('button', paginationTextbook, ['nav-button', 'nav-button_enabled'], { id: 'next' });
   next.innerText = '>';
   const nextAll = <HTMLButtonElement>createEl('button', paginationTextbook, ['nav-button', 'nav-button_enabled'], { id: 'last' });
   nextAll.innerText = '>>';
-  if (pageNumber >= COUNT_PAGE_GROUP) {
-    disabledButton(next);
-    disabledButton(nextAll);
-  } else {
-    enabledButton(next);
-    enabledButton(nextAll);
-  }
   prevAll.addEventListener('click', createPrevPage);
   prev.addEventListener('click', createPrevPage);
   next.addEventListener('click', createNextPage);
@@ -257,10 +249,10 @@ function renderLinkGroup(): HTMLDivElement {
     const currentLinkGroup = <HTMLButtonElement>createEl('button', groupLinkBlock, ['group__link', `group-${i}`], { id: `group-${i}` });
     currentLinkGroup.innerText = String(i);
     currentLinkGroup.addEventListener('click', () => {
+      const currentPage = 0;
       setStorage('currentGroup', String(i - 1));
-      setStorage('currentPage', String(0));
-      const currentPage = <HTMLElement>document.querySelector('#pageNumber');
-      currentPage.innerHTML = '1';
+      setStorage('currentPage', String(currentPage));
+      updateButtonPagination(currentPage);
       drawPageTextbook();
     });
   }
@@ -287,5 +279,7 @@ export function createPage(): void {
   const main = <HTMLElement>document.querySelector('#main');
   const page: HTMLElement = renderPage();
   main.append(page);
+  const pageNumber: number = +getStorage('currentPage', '0');
+  updateButtonPagination(pageNumber);
   drawPageTextbook();
 }
