@@ -74,11 +74,12 @@ export async function createAllListWords(numberGroup: number, numberUserPage?: n
     for (let i = numberPage - 5; i < numberPage; i++) {
       createListWords(numberGroup, i);
     }
-  }
-  if (numberPage < 5) {
-    for (let i = numberPage + 5; i > numberPage; i--) {
+  } else if (numberPage < 5 && numberPage > 0) {
+    for (let i = numberPage - numberPage; i < numberPage; i++) {
       createListWords(numberGroup, i);
     }
+  } else {
+    createListWords(numberGroup, numberPage);
   }
 }
 

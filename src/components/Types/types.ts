@@ -60,4 +60,5 @@ export enum IdPages {
   BookID = 'book-page',
   PreloaSprintID = 'preload-sprint',
   SprintStatiD = 'srpint-statistic',
+  LogoIt = 'logo',
 }
