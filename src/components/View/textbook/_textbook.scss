@@ -95,10 +95,6 @@
   column-gap: 20px;
 }
 
-.nav-textbook-display-none {
-  display: none;
-}
-
 .nav-button {
   width: 40px;
   height: 40px;
@@ -246,4 +242,8 @@
   @media (max-width: 480px) {
     width: 46%;
   }
+}
+
+.display-none {
+  display: none;
 }

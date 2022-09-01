@@ -35,8 +35,8 @@ export async function drawPageTextbook() {
   const currentGroup: string = getStorage('currentGroup', '0');
   const pagination = <HTMLElement>document.querySelector('#nav-textbook');
   if (Number(currentGroup) === COUNT_GROUP) {
-    pagination.classList.add('nav-textbook-display-none');
-  } else pagination.classList.remove('nav-textbook-display-none');
+    pagination.classList.add('display-none');
+  } else pagination.classList.remove('display-none');
 }
 
 function disabledButton(currentButton: HTMLButtonElement) {
