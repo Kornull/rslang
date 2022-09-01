@@ -99,7 +99,7 @@
   width: 40px;
   height: 40px;
   border-radius: 10px;
-  border: 2px solid $colorGroup1;
+  border: 2px solid $colorGroup2;
   background-color: $colorWhite;
 }
 
@@ -107,13 +107,13 @@
   cursor: pointer;
 
   &:hover {
-    background-color: $colorGroup1;
+    background-color: $colorGroup2;
     color: $colorWhite;
   }
 }
 
 .nav-button_disabled {
-  background-color: $colorGroup1;
+  background-color: $colorGroup2;
 }
 
 .wrapper-page-textbook {
@@ -233,7 +233,8 @@
 .game__link{
   width: 40%;
   padding: 15px 5px;
-  background: red;
+  border-radius: 10px;
+  background: $backgroundHeader;
   color: $colorWhite;
   font-size: $size19px;
   @media (max-width: 786px) {
