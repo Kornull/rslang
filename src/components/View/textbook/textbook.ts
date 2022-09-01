@@ -5,7 +5,7 @@ import { createEl } from '../create_element';
 import { getLocalStorage, getStorage, setStorage } from '../../Controller/storage';
 import './_textbook.scss';
 import User from '../../Controller/authorization/user';
-import { updateHardWord, updateLearnWord } from './util';
+import { updateHardWord, updateLearnWord } from './word';
 
 const COUNT_GROUP = 6;
 const COUNT_PAGE_GROUP = 30;
