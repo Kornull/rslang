@@ -27,8 +27,6 @@ export async function updateWordUser(user: User, wordId: string, word: types.Wor
     },
     body: JSON.stringify(word),
   });
-  // const data = rawResponse.json();
-  // return data;
 }
 
 export async function createWordUser(user: User, wordId: string, word: types.WordValue): Promise<void> {
@@ -56,19 +54,6 @@ export async function getAggregateWordsUser(user: User, group: number, page: num
   const data = (await rawResponse.json())[0].paginatedResults;
   return data;
 }
-
-// export async function getLearnWord(user: User) {
-//   const rawResponse = await fetch(`${urlLink}users/${user.userId}/aggregatedWords?filter={"userWord.difficulty":"hard"}`, {
-//     method: 'GET',
-//     headers: {
-//       Authorization: `Bearer ${user.token}`,
-//       Accept: 'application/json',
-//       'Content-Type': 'application/json',
-//     },
-//   });
-//   const data = (await rawResponse.json())[0].paginatedResults;
-//   return data;
-// }
 
 export async function getListWords(group: number, page: number): Promise<types.Word[]> {
   const listWords: types.Word[] = await getWords(group, page);
