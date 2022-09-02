@@ -7,7 +7,7 @@ import { Key, Word } from './type';
 const extraOptionUserWord: ExtraWordOption = {
   difficulty: 'easy',
   optional: {
-    gameGuessed: 1,
+    gameGuessed: 0,
     gameMistake: 0,
     sprintGameAllGuessWord: 0,
     statusLearn: 'false',
@@ -80,7 +80,6 @@ export async function createAllListWords(numberGroup: number, numberUserPage?: n
       createListWords(numberGroup, i);
     }
   } else {
-    console.log('numberPage', numberPage)
     createListWords(numberGroup, numberPage);
   }
 }

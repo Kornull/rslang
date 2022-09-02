@@ -1,4 +1,5 @@
 import { words, urlLink } from '../../Templates/serve';
+import { ExtraWordOption } from '../../Types/types';
 import * as types from '../../Types/word';
 import User from '../authorization/user';
 
@@ -17,7 +18,7 @@ export async function getWordsUser(user: User, wordId: string): Promise<types.Wo
   return data;
 }
 
-export async function updateWordUser(user: User, wordId: string, word: types.WordValue): Promise<void> {
+export async function updateWordUser(user: User, wordId: string, word: ExtraWordOption): Promise<void> {
   await fetch(`${urlLink}users/${user.userId}/words/${wordId}`, {
     method: 'PUT',
     headers: {
@@ -29,7 +30,7 @@ export async function updateWordUser(user: User, wordId: string, word: types.Wor
   });
 }
 
-export async function createWordUser(user: User, wordId: string, word: types.WordValue): Promise<void> {
+export async function createWordUser(user: User, wordId: string, word: ExtraWordOption): Promise<void> {
   await fetch(`${urlLink}users/${user.userId}/words/${wordId}`, {
     method: 'POST',
     headers: {
@@ -60,7 +61,7 @@ export async function getListWords(group: number, page: number): Promise<types.W
   return listWords;
 }
 
-export async function addWordUser(user: User, wordId: string, word: types.WordValue) {
+export async function addWordUser(user: User, wordId: string, word: ExtraWordOption) {
   return (
     await fetch(`${urlLink}users/${user.userId}/words/${wordId}`, {
       method: 'POST',
@@ -70,7 +71,7 @@ export async function addWordUser(user: User, wordId: string, word: types.WordVa
   ).json();
 }
 
-export async function createLearnWord(user: User, wordId: string, params: types.WordValue) {
+export async function createLearnWord(user: User, wordId: string, params: ExtraWordOption) {
   await fetch(`${urlLink}users/${user.userId}/words/${wordId}`, {
     method: 'POST',
     headers: {

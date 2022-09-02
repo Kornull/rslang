@@ -118,7 +118,7 @@ export async function renderCardsAutorizedUser(currentGroup: string, currentPage
     let type = '';
     if (item.userWord) {
       if (item.userWord.difficulty === 'hard') type = 'hard';
-      else if (item.userWord.difficulty === 'easy' && item.userWord.optional?.statuslearn === 'true') {
+      else if (item.userWord.difficulty === 'easy' && item.userWord.optional.statusLearn === 'true') {
         type = 'learned';
       }
     }
@@ -127,7 +127,7 @@ export async function renderCardsAutorizedUser(currentGroup: string, currentPage
       cardWord.setAttribute('data-wordUser', 'true');
       if (item.userWord.difficulty === 'hard') {
         cardWord.setAttribute('data-WordHard', 'true');
-      } else if (item.userWord.difficulty === 'easy' && item.userWord.optional?.statuslearn === 'true') {
+      } else if (item.userWord.difficulty === 'easy' && item.userWord.optional.statusLearn === 'true') {
         cardWord.setAttribute('data-WordLearned', 'true');
       }
     }
