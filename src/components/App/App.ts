@@ -1,3 +1,4 @@
+import { createPage } from '../View/textbook/textbook';
 import './_app.scss';
 import { main } from '../Templates/main-block';
 // eslint-disable-next-line import/no-cycle
@@ -33,13 +34,14 @@ export function App(idPage: string | null): void {
       case IdPages.SprintStatiD:
         statisticGame();
         break;
+      case IdPages.BookID:
+        createPage();
+        break;
       default:
         break;
     }
     window.location.hash = idPage;
-    // else if (idPage === '#book-page') {
-    //   createPage();
-    // }
+
     setLocalStorage(PageKey.userPage, idPage);
   } else {
     App(IdPages.MainID);
