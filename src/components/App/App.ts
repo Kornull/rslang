@@ -9,6 +9,7 @@ import { PageKey } from '../Controller/sprint-game/storage/type-storage';
 // eslint-disable-next-line import/no-cycle
 import createPopup from '../View/authorization-page/authorization-page';
 import User from '../Controller/authorization/user';
+import { createStatisticPage } from '../View/statistic/statistic';
 
 export const appUser = new User();
 export function App(idPage: string | null): void {
@@ -32,6 +33,9 @@ export function App(idPage: string | null): void {
         break;
       case IdPages.SprintStatiD:
         statisticGame();
+        break;
+      case IdPages.StatisticId:
+        createStatisticPage();
         break;
       default:
         break;
