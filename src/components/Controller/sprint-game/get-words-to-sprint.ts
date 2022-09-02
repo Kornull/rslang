@@ -96,6 +96,7 @@ async function userWords(wordId: string, params: object): Promise<void> {
 }
 
 const setUserWords = async (wordId: string, wordOption: object) => {
+  console.log('d');
   await fetch(`${urlLink}users/${user.userId}/words/${wordId}`, {
     method: 'PUT',
     headers: {

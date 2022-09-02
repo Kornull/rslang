@@ -5,9 +5,9 @@ import { main } from '../Templates/main-block';
 // eslint-disable-next-line import/no-cycle
 import { createPreSprintGamePage, createSprintGame, statisticGame } from '../View/sprint-game/sprint-game';
 import createMainPage from '../View/main-page/main-page';
-import { IdPages } from '../Types/types';
+import { IdPages, PageKey } from '../Types/types';
 import { setLocalStorage } from '../Controller/sprint-game/storage/storage-set-kornull';
-import { PageKey } from '../Controller/sprint-game/storage/type-storage';
+
 import createPopup from '../View/authorization-page/authorization-page';
 import User from '../Controller/authorization/user';
 

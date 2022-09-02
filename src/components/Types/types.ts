@@ -34,6 +34,9 @@ export type StatisticsUserWords = {
     sprintDayGuess: number;
     sprintAllDayWords: number;
     sprintMaxGuessed: number;
+    audiotDayGuess?: number;
+    audioAllDayWords?: number;
+    audioMaxGuessed?: number;
     'data-0'?: object;
     'data-1'?: object;
     'data-2'?: object;
@@ -62,4 +65,10 @@ export enum IdPages {
   PreloaSprintID = 'preload-sprint',
   SprintStatiD = 'srpint-statistic',
   LogoIt = 'logo',
+}
+
+export enum PageKey {
+  userPage = 'userPageNow',
+  numPage = 'currentPage',
+  numGroup = 'currentGroup',
 }
