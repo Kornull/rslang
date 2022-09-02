@@ -9,7 +9,7 @@ const extraOptionUserWord: ExtraWordOption = {
   optional: {
     gameGuessed: 0,
     gameMistake: 0,
-    sprintGameAllGuessWord: 0,
+    gameAllGuessWord: 0,
     statusLearn: 'false',
   },
 };
@@ -163,7 +163,7 @@ export const getGuessSprintWords = async (boolean: boolean, lengthGuess: number)
 
 const statusTrue = async (wordOption: ExtraWordOption, wordId: string) => {
   wordOption.optional.gameGuessed += 1;
-  wordOption.optional.sprintGameAllGuessWord += 1;
+  wordOption.optional.gameAllGuessWord += 1;
   wordOption.optional.data = `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`;
   if (wordOption.difficulty === 'easy' && wordOption.optional.gameGuessed >= 3) {
     wordOption.optional.statusLearn = 'true';
@@ -198,12 +198,12 @@ export const getUserWord = async (wordId: string, status: boolean) => {
     if (status) {
       extraOptionUserWord.optional.gameGuessed = 1;
       extraOptionUserWord.optional.gameMistake = 0;
-      extraOptionUserWord.optional.sprintGameAllGuessWord = 1;
+      extraOptionUserWord.optional.gameAllGuessWord = 1;
       extraOptionUserWord.optional.data = `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`;
     } else {
       extraOptionUserWord.optional.gameGuessed = 0;
       extraOptionUserWord.optional.gameMistake = 1;
-      extraOptionUserWord.optional.sprintGameAllGuessWord = 0;
+      extraOptionUserWord.optional.gameAllGuessWord = 0;
       extraOptionUserWord.optional.data = `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`;
     }
     userWords(wordId, extraOptionUserWord);

@@ -30,7 +30,7 @@ function createParamUserWord(cardWord: HTMLElement): ExtraWordOption {
       optional: {
         gameGuessed: 0,
         gameMistake: 0,
-        sprintGameAllGuessWord: 0,
+        gameAllGuessWord: 0,
         statusLearn: 'false',
       },
     };
@@ -47,7 +47,7 @@ function createParamUserWord(cardWord: HTMLElement): ExtraWordOption {
     optional: {
       gameGuessed: 0,
       gameMistake: 0,
-      sprintGameAllGuessWord: 0,
+      gameAllGuessWord: 0,
       statusLearn: 'true',
     },
   };
@@ -66,7 +66,7 @@ export async function updateLearnWord(wordValue: Word, cardWord: HTMLElement, us
       optional: {
         gameGuessed: wordObj.wordId.gameGuessed,
         gameMistake: wordObj.wordId.gameMistake,
-        sprintGameAllGuessWord: wordObj.wordId.sprintGameAllGuessWord,
+        gameAllGuessWord: wordObj.wordId.gameAllGuessWord,
         statusLearn: 'true',
       },
     };
@@ -95,7 +95,7 @@ export async function updateHardWord(wordValue: Word, cardWord: HTMLElement, use
         optional: {
           gameGuessed: wordObj.wordId.gameGuessed,
           gameMistake: wordObj.wordId.gameMistake,
-          sprintGameAllGuessWord: wordObj.wordId.sprintGameAllGuessWord,
+          gameAllGuessWord: wordObj.wordId.gameAllGuessWord,
           statusLearn: 'false',
         },
       };
@@ -106,7 +106,7 @@ export async function updateHardWord(wordValue: Word, cardWord: HTMLElement, use
         optional: {
           gameGuessed: wordObj.wordId.gameGuessed,
           gameMistake: wordObj.wordId.gameMistake,
-          sprintGameAllGuessWord: wordObj.wordId.sprintGameAllGuessWord,
+          gameAllGuessWord: wordObj.wordId.gameAllGuessWord,
           statusLearn: 'false',
         },
       };
@@ -118,7 +118,7 @@ export async function updateHardWord(wordValue: Word, cardWord: HTMLElement, use
       optional: {
         gameGuessed: wordObj.wordId.gameGuessed,
         gameMistake: wordObj.wordId.gameMistake,
-        sprintGameAllGuessWord: wordObj.wordId.sprintGameAllGuessWord,
+        gameAllGuessWord: wordObj.wordId.gameAllGuessWord,
         statusLearn: 'false',
       },
     };

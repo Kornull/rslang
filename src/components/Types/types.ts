@@ -49,7 +49,7 @@ export type ExtraWordOption = {
   optional: {
     gameGuessed: number;
     gameMistake: number;
-    sprintGameAllGuessWord: number;
+    gameAllGuessWord: number;
     statusLearn: string;
     data?: string;
   };
