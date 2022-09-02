@@ -9,6 +9,7 @@ const extraOptionUserWord: ExtraWordOption = {
   optional: {
     gameGuessed: 1,
     gameMistake: 0,
+    sprintGameAllGuessWord: 0,
     statusLearn: 'false',
   },
 };
@@ -69,16 +70,17 @@ export async function createAllListWords(numberGroup: number, numberUserPage?: n
   setLocalStorage('allListWords', []);
   wordsArr = [];
   let numberPage = Math.floor(Math.random() * CountPages.pages);
-  if (numberUserPage) numberPage = numberUserPage;
+  if (typeof numberUserPage === 'number') numberPage = numberUserPage;
   if (numberPage >= 5) {
-    for (let i = numberPage - 5; i < numberPage; i++) {
+    for (let i = numberPage - 5; i <= numberPage; i++) {
       createListWords(numberGroup, i);
     }
   } else if (numberPage < 5 && numberPage > 0) {
-    for (let i = numberPage - numberPage; i < numberPage; i++) {
+    for (let i = numberPage - numberPage; i <= numberPage; i++) {
       createListWords(numberGroup, i);
     }
   } else {
+    console.log('numberPage', numberPage)
     createListWords(numberGroup, numberPage);
   }
 }
@@ -162,12 +164,16 @@ export const getGuessSprintWords = async (boolean: boolean, lengthGuess: number)
 
 const statusTrue = async (wordOption: ExtraWordOption, wordId: string) => {
   wordOption.optional.gameGuessed += 1;
+  wordOption.optional.sprintGameAllGuessWord += 1;
   wordOption.optional.data = `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`;
   if (wordOption.difficulty === 'easy' && wordOption.optional.gameGuessed >= 3) {
     wordOption.optional.statusLearn = 'true';
     setUserWords(wordId, { optional: wordOption.optional });
   }
-  if (wordOption.difficulty === 'hard' && wordOption.optional.gameGuessed >= 5) wordOption.optional.statusLearn = 'true';
+  if (wordOption.difficulty === 'hard' && wordOption.optional.gameGuessed >= 5) {
+    wordOption.optional.statusLearn = 'true';
+    wordOption.difficulty = 'easy';
+  }
   setUserWords(wordId, { optional: wordOption.optional });
 };
 
@@ -193,10 +199,12 @@ export const getUserWord = async (wordId: string, status: boolean) => {
     if (status) {
       extraOptionUserWord.optional.gameGuessed = 1;
       extraOptionUserWord.optional.gameMistake = 0;
+      extraOptionUserWord.optional.sprintGameAllGuessWord = 1;
       extraOptionUserWord.optional.data = `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`;
     } else {
       extraOptionUserWord.optional.gameGuessed = 0;
       extraOptionUserWord.optional.gameMistake = 1;
+      extraOptionUserWord.optional.sprintGameAllGuessWord = 0;
       extraOptionUserWord.optional.data = `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`;
     }
     userWords(wordId, extraOptionUserWord);

@@ -233,16 +233,31 @@
 }
 .game__link{
   width: 40%;
+  height: 60px;
   padding: 15px 5px;
   border-radius: 10px;
-  background: $backgroundHeader;
+  background-color: red;
   color: $colorWhite;
   font-size: $size19px;
+  font-weight: bold;
+  box-shadow: 0 0 3px $colorBlack;
+  border: 1px solid $colorWhite;
+  transition: background-color .1s linear,
+  border .1s linear,
+  box-shadow .1s linear;
   @media (max-width: 786px) {
     width: 30%;
   }
   @media (max-width: 480px) {
     width: 46%;
+    height: 50px;
+    font-size: $size16px;
+  }
+  &:hover {
+    cursor: pointer;
+    background-color: rgb(254, 108, 108);
+    border: 2px solid $colorWhite;
+    box-shadow: 0 0 5px black;
   }
 }
 

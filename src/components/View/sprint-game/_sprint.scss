@@ -284,6 +284,7 @@
     font-weight: bold;
     color: $colorWhite;
     margin-bottom: 15px;
+    border: 1px solid $colorWhite;
     transition: background-color .2s linear;
     @media (max-width: $size480px) {
       width: 190px;
@@ -295,6 +296,7 @@
     background-color: $colorRed;
     &:hover {
       background-color: #b81414;
+      box-shadow: 0 0 2px $colorBlack;
     }
     &:active {
       border: 1px solid $colorWhite;
@@ -305,6 +307,7 @@
     background-color: $colorSalat;
     &:hover {
       background-color: #1aa115;
+      box-shadow: 0 0 2px $colorBlack;
     }
     &:active {
       border: 1px solid $colorWhite;

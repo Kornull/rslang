@@ -1,9 +1,13 @@
+/* eslint-disable import/no-cycle */
 import { createEl } from '../create_element';
 import { getLocalStorage, getStorage, setStorage } from '../../Controller/storage';
 import './_textbook.scss';
 import User from '../../Controller/authorization/user';
 import { renderCardsAutorizedUser, renderCardsNoAutorizedUser } from './cardWord';
 import { COUNT_GROUP, COUNT_PAGE_GROUP } from './util';
+import { IdPages } from '../../Types/types';
+import { ClickSprint } from '../sprint-game/sprint-game.utils';
+import { loading } from '../../Templates/loading';
 
 export async function renderPageTextbook() {
   const currentGroup: string = getStorage('currentGroup', '0');
@@ -126,11 +130,21 @@ function renderLinkGroup(): HTMLDivElement {
     });
   }
   const gameLink = <HTMLDivElement>createEl('div', linkGroup, ['game__links']);
-  const sprint = <HTMLDivElement>createEl('div', gameLink, ['game__links-sprint', 'game__link'], { id: 'sprint-page' });
-  const audioGame = <HTMLDivElement>createEl('div', gameLink, ['game__links-audio', 'game__link'], { id: 'audiogame-page' });
+  const sprint = <HTMLLinkElement>createEl('a', gameLink, ['game__links-sprint', 'game__link'], { id: 'sprint-page' });
+  const audioGame = <HTMLLinkElement>createEl('a', gameLink, ['game__links-audio', 'game__link'], { id: 'audiogame-page' });
   sprint.innerHTML = 'Sprint';
   audioGame.innerHTML = 'Audio-game';
-
+  sprint.href = '#sprint-page';
+  audioGame.href = '#';
+  gameLink.addEventListener('click', (ev) => {
+    const message = ev.target as HTMLElement;
+    const group = Number(getLocalStorage('currentGroup'));
+    const page = Number(getLocalStorage('currentGroup'));
+    if (message.id === IdPages.SprintID) {
+      ClickSprint(group, page);
+      loading();
+    }
+  });
   return linkGroup;
 }
 

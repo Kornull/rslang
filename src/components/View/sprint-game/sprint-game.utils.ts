@@ -218,11 +218,11 @@ export function mixWords(blockGame: HTMLElement, blockDotted: HTMLDivElement[]):
   viewWords();
 }
 
-export const Click = (id: number, num?: number): void => {
+export const ClickSprint = (id: number, num?: number): void => {
   let arrayWords: WordSettings[] = [];
   const arrayWordsEn: object[] = [];
   const arrayWordsRu: object[] = [];
-  if (num) {
+  if (typeof num === 'number') {
     createAllListWords(id, num);
   } else {
     createAllListWords(id);
