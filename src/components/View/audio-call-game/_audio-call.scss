@@ -1,1 +1,78 @@
-// start
+@import "../../../../src/scss/base/settings";
+.audio-game {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  max-height: 500px;
+  
+  background-color: rgb(159, 207, 62);
+  .view {
+    background-color: aqua;
+    height: 250px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+
+    .image-container {
+      height: 150px;
+      width: 150px;
+      border-radius: 50%;
+      overflow: hidden;
+
+      background-color: coral;
+    }
+
+    .audio-field {
+      display: flex;
+      flex-direction: row;
+      min-width: 300px;
+      justify-content: space-around;
+      align-items: center;
+
+      background-color: darkorange;
+
+      .audio-button {
+        height: 50px;
+        width: 50px;
+        border-radius: 50%;
+
+      }
+      .english-word {
+        font-size: $size31px;
+      }
+    }
+  }
+  .btn-field {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 500px;
+    height: 80px;
+    justify-content: space-around;
+
+    .btn-choice {
+      min-width: 80px;
+      height: 40px;
+      border-radius: 10px;
+      font-size: $size21px;
+      padding: 0px 5px;
+    }
+  }
+
+  .next-skip-btn {
+    min-width: 120px;
+    padding: 0px 10px;
+    height: 60px;
+    border-radius: 10px;
+    font-size: $size21px;
+
+    background-color: gold;
+  }
+}
+
