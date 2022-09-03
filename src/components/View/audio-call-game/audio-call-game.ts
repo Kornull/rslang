@@ -1,7 +1,7 @@
 import './_audio-call.scss';
 import { main } from '../../Templates/main-block';
 import { createEl } from '../../Controller/createTagBlock';
-import { createListWords, createAllListWords, getGuessSprintWords } from '../../Controller/audio-game/audio-game';
+import { createListWords, createAllListWords, getGuessSprintWords, getMainGameArray } from '../../Controller/audio-game/audio-game';
 import { IdPages } from '../../Types/types';
 import { fillStatisticAudio } from './audio-call-game.utils';
 // eslint-disable-next-line import/no-cycle
@@ -17,9 +17,12 @@ enum TextPreloadAudioGame {
 function createButtons(parentElement: HTMLElement, count: number): void {
   const buttonsField = createEl('div', parentElement, ['btn-field']);
   for (let i = 1; i < count + 1; i++) {
-    const btnChoice = <HTMLElement>createEl('button', buttonsField, ['btn-choice']);
+    const buttonWrapper = createEl('div', buttonsField, ['btn-wrapper']);
+    const buttonNumber = createEl('div', buttonWrapper, ['btn-number']);
+    buttonNumber.innerText = `${i}`;
+    const btnChoice = <HTMLElement>createEl('button', buttonWrapper, ['btn-choice']);
     btnChoice.id = `word-${i}`;
-    btnChoice.innerHTML = `${i}`;
+    // btnChoice.innerHTML = `${i}`;
   }
 }
 
@@ -51,6 +54,8 @@ export function createAudioGame() {
   createButtons(gameField, 5);
   const nextSkipBtn = createEl('button', gameField, ['next-skip-btn']);
   nextSkipBtn.innerText = 'Следующий';
+  nextSkipBtn.addEventListener('click', getMainGameArray);
+  console.log(getMainGameArray());
 }
 
 export function createAudioGamePreload() {

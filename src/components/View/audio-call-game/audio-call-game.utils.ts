@@ -1,5 +1,6 @@
 import { getLocalStorage, setLocalStorage } from '../../Controller/sprint-game/storage/storage-set-kornull';
 
+
 enum KeysWords {
   EnglishWords = 'wordsObjectEn',
   RussianWords = 'wordsObjectRu',
@@ -27,4 +28,8 @@ export function fillStatisticAudio(block: HTMLElement): void {
   words.innerHTML = `Угадано слов - ${guessedNum}`;
   percent.innerHTML = `Количество ответов без ошибок - ${guessWordLengthGame}`;
   percentWord.innerHTML = `Процент отгаданных слов - ${Math.trunc((guessedNum / allCountWords) * 100)}%`;
+}
+
+function fillNewStepGame() {
+
 }

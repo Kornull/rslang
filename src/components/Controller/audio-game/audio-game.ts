@@ -8,9 +8,17 @@ import { appUser } from '../../App/App';
 let wordsArr: Word[][] = [];
 const user: UserStat = getLocalStorage(LocalKeys.UserData);
 
-enum CountPages {
-  pages = 30,
+const enum NumberOf {
+  pagesInGroup = 30,
+  wordsInPage = 20,
+  answersOnPage = 5,
+  wordsInResponse = 100,
 }
+
+type MainGameElement = {
+  word: Word;
+  falseWords: string[];
+};
 
 const statisticsUserWords: StatisticsUserWords = {
   learnedWords: 1,
@@ -46,6 +54,36 @@ const randomGroupWords = (queryS: Key[] = []): string => {
   return '';
 };
 
+function getRandomNumber(limit: number): number {
+  return Math.floor(Math.random() * limit);
+}
+
+export function getMainGameArray(): MainGameElement[] {
+  const allListWords = getLocalStorage('allListWords');
+  console.log('allListWords', allListWords);
+  const result: MainGameElement[] = [allListWords[0]];
+  let currentWord: Word;
+  let currentWordNumber: number;
+  for (let i = 1; i < NumberOf.wordsInPage; i++) {
+    do {
+      currentWordNumber = getRandomNumber(NumberOf.wordsInPage);
+      currentWord = allListWords[currentWordNumber];
+      // eslint-disable-next-line @typescript-eslint/no-loop-func
+    } while (result.findIndex((el) => el.word.id === currentWord.id) !== -1);
+    const answersArray: string[] = [currentWord.wordTranslate];
+    let currentAnswer = '';
+    do {
+      currentAnswer = allListWords[getRandomNumber(NumberOf.wordsInPage)].wordTranslate;
+      if (!answersArray.includes(currentAnswer)) {
+        answersArray.push(currentAnswer);
+      }
+    } while (answersArray.length < NumberOf.answersOnPage);
+    result.push({ word: currentWord, falseWords: answersArray });
+  }
+  console.log('mainGameArray =', result);
+  return result;
+}
+
 export const createListWords = async (num: number, numberPage: number): Promise<void> => {
   const groupWords: Key = {
     key: 'group',
@@ -65,7 +103,7 @@ export const createListWords = async (num: number, numberPage: number): Promise<
 export async function createAllListWords(numberGroup: number, numberUserPage?: number) {
   setLocalStorage('allListWords', []);
   wordsArr = [];
-  let numberPage = Math.floor(Math.random() * CountPages.pages);
+  let numberPage = Math.floor(Math.random() * NumberOf.pagesInGroup);
   if (numberUserPage) numberPage = numberUserPage;
   if (numberPage >= 5) {
     for (let i = numberPage - 5; i < numberPage; i++) {
@@ -135,3 +173,5 @@ export const getGuessSprintWords = async (boolean: boolean, lengthGuess: number)
     setLearnedUserWords({ learnedWords: res.learnedWords, optional: res.optional });
   }
 };
+
+
