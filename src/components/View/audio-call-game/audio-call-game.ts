@@ -1,11 +1,13 @@
 import './_audio-call.scss';
 import { main } from '../../Templates/main-block';
 import { createEl } from '../../Controller/createTagBlock';
-import { createListWords, createAllListWords, getGuessSprintWords } from '../../../components/Controller/audio-game/audio-game';
+import { createListWords, createAllListWords, getGuessSprintWords } from '../../Controller/audio-game/audio-game';
 import { IdPages } from '../../Types/types';
 import { fillStatisticAudio } from './audio-call-game.utils';
 // eslint-disable-next-line import/no-cycle
 import { App } from '../../App/App';
+// eslint-disable-next-line import/no-cycle
+import { clickIdLink } from '../../Controller/burger/burger.utils';
 
 enum TextPreloadAudioGame {
   gameHeader = 'Для старта игры выберите уровень сложности',
@@ -21,11 +23,21 @@ function createButtons(parentElement: HTMLElement, count: number): void {
   }
 }
 
+function createChoiceGroupButtons(parentElement: HTMLElement, count: number): void {
+  const buttonsField = createEl('div', parentElement, ['btn-field']);
+  for (let i = 1; i < count + 1; i++) {
+    const btnChoice = <HTMLLinkElement>createEl('a', buttonsField, ['btn-choice-group']);
+    btnChoice.innerHTML = `${i}`;
+    btnChoice.href = `#${IdPages.AudioGame}`;
+  }
+}
+
 // function craateButton(parentElement: HTMLElement) {
 //   createEl('button', parentElement, ['shoce-btn'], )
 // }
 
 export function createAudioGame() {
+  console.log('--------------craate Audio Game--------------');
   main.innerHTML = '';
   const gameField = <HTMLElement>createEl('div', main, ['audio-game']);
   const viewField = <HTMLElement>createEl('div', gameField, ['view']);
@@ -46,11 +58,17 @@ export function createAudioGamePreload() {
   const preloadAudioPage = <HTMLElement>createEl('div', main, ['audio-preload']);
   const preloadMessage = <HTMLElement>createEl('p', preloadAudioPage, ['preload-message']);
   preloadMessage.innerText = TextPreloadAudioGame.gameHeader;
-  createButtons(preloadAudioPage, 6);
+  createChoiceGroupButtons(preloadAudioPage, 6);
   const gameRules = <HTMLElement>createEl('p', preloadAudioPage, ['game-rules']);
   gameRules.innerHTML = TextPreloadAudioGame.gameRules;
-  console.log(createAllListWords(2, 1));
-  console.log(getGuessSprintWords(true, 2));
+  preloadAudioPage.addEventListener('click', (event) => {
+    const group = Number((event.target as HTMLElement).innerText) - 1;
+    createAllListWords(group);
+    App(IdPages.AudioGame);
+  });
+  // createAllListWords(2, 1);
+  // console.log(localStorage.getItem('allListWords'));
+  // console.log(getGuessSprintWords(true, 2));
 }
 
 export function createStatisticAudioGame(): void {

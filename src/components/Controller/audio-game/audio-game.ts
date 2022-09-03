@@ -3,6 +3,7 @@ import { urlLink } from '../../Templates/serve';
 import { ExtraWordOption, LocalKeys, StatisticsUserWords, UserStat } from '../../Types/types';
 import { getLocalStorage, setLocalStorage } from '../sprint-game/storage/storage-set-kornull';
 import { Key, Word } from '../sprint-game/type';
+import { appUser } from '../../App/App';
 
 let wordsArr: Word[][] = [];
 const user: UserStat = getLocalStorage(LocalKeys.UserData);
@@ -29,6 +30,11 @@ const statisticsUserWords: StatisticsUserWords = {
 
 async function getTheWords(request: string) {
   const words = await fetch(`${urlLink}words/${request}`);
+  console.log('response status - ', words.status);
+  if (words.status === 401) {
+    await appUser.getNewTokens();
+    getTheWords(request);
+  }
   const res: Word[] = await words.json();
   return res;
 }
@@ -74,6 +80,7 @@ export async function createAllListWords(numberGroup: number, numberUserPage?: n
   }
 }
 
+//--------------------------------------------------------------------------------------------------
 
 const setLearnedUserWords = async (statisticsUser: StatisticsUserWords) => {
   await fetch(`${urlLink}users/${user.userId}/statistics`, {
