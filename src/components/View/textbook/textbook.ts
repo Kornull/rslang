@@ -8,6 +8,7 @@ import { COUNT_GROUP, COUNT_PAGE_GROUP } from './util';
 import { IdPages } from '../../Types/types';
 import { ClickSprint } from '../sprint-game/sprint-game.utils';
 import { loading } from '../../Templates/loading';
+import { setLocalStorage } from '../../Controller/sprint-game/storage/storage-set-kornull';
 
 export async function renderPageTextbook() {
   const currentGroup: string = getStorage('currentGroup', '0');
@@ -118,17 +119,30 @@ function renderLinkGroup(): HTMLDivElement {
   const groupLinkBlock = <HTMLDivElement>createEl('div', linkGroup, ['group__buttons']);
   const user: User = getLocalStorage('userDataBasic');
   const countGroup = user.userId ? COUNT_GROUP + 1 : COUNT_GROUP;
+
   for (let i = 1; i <= countGroup; i++) {
     const currentLinkGroup = <HTMLButtonElement>createEl('button', groupLinkBlock, ['group__link', `group-${i}`], { id: `group-${i}` });
     currentLinkGroup.innerText = String(i);
-    currentLinkGroup.addEventListener('click', () => {
+    if (getLocalStorage('btnActive')) {
+      const a = getLocalStorage('btnActive');
+      if (currentLinkGroup.id === a[0]) currentLinkGroup.classList.add('active');
+    }
+    currentLinkGroup.addEventListener('click', (ev) => {
+      const allButtons = groupLinkBlock.querySelectorAll('.group__link');
+      allButtons.forEach((el) => {
+        el.classList.remove('active');
+      });
+      const btnActive = ev.target as HTMLElement;
+      btnActive.classList.add('active');
       const currentPage = 0;
+      setLocalStorage('btnActive', [btnActive.id, 'active']);
       setStorage('currentGroup', String(i - 1));
       setStorage('currentPage', String(currentPage));
       updateButtonPagination(currentPage);
       drawPageTextbook();
     });
   }
+
   const gameLink = <HTMLDivElement>createEl('div', linkGroup, ['game__links']);
   const sprint = <HTMLLinkElement>createEl('a', gameLink, ['game__links-sprint', 'game__link'], { id: 'sprint-page' });
   const audioGame = <HTMLLinkElement>createEl('a', gameLink, ['game__links-audio', 'game__link'], { id: 'audiogame-page' });
