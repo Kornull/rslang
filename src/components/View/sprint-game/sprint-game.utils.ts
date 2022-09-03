@@ -2,10 +2,11 @@
 import { App } from '../../App/App';
 import { createAllListWords, getGuessSprintWords, getUserWord } from '../../Controller/sprint-game/get-words-to-sprint';
 import { getLocalStorage, setLocalStorage } from '../../Controller/sprint-game/storage/storage-set-kornull';
-import { body } from '../../Templates/main-block';
+import { body, main } from '../../Templates/main-block';
 import { urlLink } from '../../Templates/serve';
 // eslint-disable-next-line object-curly-newline
-import { IdPages, Key, LocalKeys, WordSettings } from '../../Types/types';
+import { IdPages, Key, LocalKeys, PageKey, WordSettings } from '../../Types/types';
+import { createEl } from '../create_element';
 
 const audio = new Audio();
 enum KeysWords {
@@ -16,6 +17,10 @@ enum KeysWords {
   WrongWord = 'wrongWords',
   Image = '#game-img',
   Count = '0',
+}
+
+enum TextNoWords {
+  NoWordsText = 'Тут не изученных слов нету.<br>Поищите в другом месте',
 }
 
 let guessWordLengthGame = 0;
@@ -218,6 +223,12 @@ export function mixWords(blockGame: HTMLElement, blockDotted: HTMLDivElement[]):
   viewWords();
 }
 
+export const notWords = () => {
+  const noWord = <HTMLElement>createEl('div', main, ['no__words'], { id: IdPages.NoWords });
+  const noWordText = <HTMLElement>createEl('div', noWord, ['no__words-text'], { id: IdPages.NoWords });
+  noWordText.innerHTML = TextNoWords.NoWordsText;
+};
+
 export const ClickSprint = (id: number, num?: number): void => {
   let arrayWords: WordSettings[] = [];
   const arrayWordsEn: object[] = [];
@@ -228,7 +239,7 @@ export const ClickSprint = (id: number, num?: number): void => {
     createAllListWords(id);
   }
   setTimeout(() => {
-    arrayWords = getLocalStorage('allListWords');
+    arrayWords = getLocalStorage(PageKey.allWords);
     arrayWords.forEach((el: WordSettings) => {
       const wordsEn: Key = {};
       const wordsRu: Key = {};
@@ -240,8 +251,8 @@ export const ClickSprint = (id: number, num?: number): void => {
       arrayWordsEn.push(wordsEn);
       arrayWordsRu.push(wordsRu);
     });
-    setLocalStorage('wordsObjectEn', arrayWordsEn);
-    setLocalStorage('wordsObjectRu', arrayWordsRu);
+    setLocalStorage(KeysWords.EnglishWords, arrayWordsEn);
+    setLocalStorage(KeysWords.RussianWords, arrayWordsRu);
   }, 6000);
 };
 

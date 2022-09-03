@@ -66,10 +66,12 @@ export enum IdPages {
   PreloaSprintID = 'preload-sprint',
   SprintStatiD = 'srpint-statistic',
   LogoIt = 'logo',
+  NoWords = 'no-words',
 }
 
 export enum PageKey {
   userPage = 'userPageNow',
   numPage = 'currentPage',
   numGroup = 'currentGroup',
+  allWords = 'allListWords',
 }

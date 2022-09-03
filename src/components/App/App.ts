@@ -10,6 +10,7 @@ import { setLocalStorage } from '../Controller/sprint-game/storage/storage-set-k
 
 import createPopup from '../View/authorization-page/authorization-page';
 import User from '../Controller/authorization/user';
+import { notWords } from '../View/sprint-game/sprint-game.utils';
 
 export const appUser = new User();
 export function App(idPage: string | null): void {
@@ -36,6 +37,9 @@ export function App(idPage: string | null): void {
         break;
       case IdPages.BookID:
         createPage();
+        break;
+      case IdPages.NoWords:
+        notWords();
         break;
       default:
         break;

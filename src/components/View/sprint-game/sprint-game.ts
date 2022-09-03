@@ -1,17 +1,18 @@
+/* eslint-disable object-curly-newline */
+/* eslint-disable import/no-cycle */
 import './_sprint.scss';
 import { body, main } from '../../Templates/main-block';
 import { createEl } from '../../Controller/createTagBlock';
-// eslint-disable-next-line object-curly-newline, import/no-cycle
 import { ClickSprint, createAudioButton, createStaticticSprint, examEvent, mixWords } from './sprint-game.utils';
 import { createAllListWords } from '../../Controller/sprint-game/get-words-to-sprint';
-// eslint-disable-next-line import/no-cycle
 import { App } from '../../App/App';
 import { IdPages } from '../../Types/types';
+import { loading } from '../../Templates/loading';
 
 const listBurger = <HTMLElement>document.querySelector('#header-menu');
 const header = document.querySelector('.header') as HTMLElement;
 enum TitleSprint {
-  SprintPerulation = '<span>Правила игры</span> очень просты: вам нужно дать ответ -  совпадает или нет предложенный перевод слова',
+  SprintPerulation = '<span>Правила игры</span> очень просты: вам нужно дать ответ -  совпадает или нет предложенный перевод слова.<br>Играть можно мышкой или стрелками "влево"/"вправо"',
   PreButton = 'Для старта игры выберите уровень сложности',
 }
 
@@ -54,7 +55,7 @@ export const createSprintGame = () => {
   sprintPage.id = 'sprint-page';
   const blockGame = <HTMLElement>createEl('div', sprintPage, ['sprint__game', 'game']);
   const timer = <HTMLElement>createEl('div', blockGame, ['game__timer']);
-  timer.innerHTML = '0:30';
+  timer.innerHTML = '1:00';
   const audioButton = <HTMLElement>createEl('div', blockGame, ['game__audio', 'sound-on']);
   audioButton.style.backgroundImage = 'url(./assets/img/sound-on.png)';
   audioButton.style.backgroundImage = 'url(./assets/img/sound-on.png)';
@@ -69,7 +70,7 @@ export const createSprintGame = () => {
   sprintWordRu.id = 'word-ru';
   createDotteds(sprintDotted);
   createButtons(choiceButtons, CountButtons.Two);
-  let time = 29;
+  let time = 59;
   createAudioButton(audioButton);
   const runTimer = setInterval(() => {
     const hash = window.location.hash.slice(1);
@@ -95,21 +96,6 @@ export const createSprintGame = () => {
   listBurger.removeEventListener('click', createSprintGame);
   mixWords(blockGame, arrayDotted);
 };
-
-function loading(): void {
-  main.innerHTML = '';
-  const sprintPreloadPage = <HTMLElement>createEl('div', main, ['sprint', 'sprint__game-preload']);
-  <HTMLElement>createEl('div', sprintPreloadPage, ['spinner']);
-  const timeSleep = setTimeout(() => {
-    App(IdPages.SprintID);
-  }, 7000);
-  header.addEventListener('click', (ev) => {
-    const message = ev.target as HTMLElement;
-    if (message.id === 'logo' || message.classList[0] === 'header__nav-link') {
-      clearTimeout(timeSleep);
-    }
-  });
-}
 
 export function createPreSprintGamePage(): HTMLElement {
   main.innerHTML = '';
