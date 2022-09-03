@@ -61,15 +61,17 @@ function getRandomNumber(limit: number): number {
 export function getMainGameArray(): MainGameElement[] {
   const allListWords = getLocalStorage('allListWords');
   console.log('allListWords', allListWords);
-  const result: MainGameElement[] = [allListWords[0]];
+  const result: MainGameElement[] = [];
   let currentWord: Word;
-  let currentWordNumber: number;
-  for (let i = 1; i < NumberOf.wordsInPage; i++) {
-    do {
-      currentWordNumber = getRandomNumber(NumberOf.wordsInPage);
-      currentWord = allListWords[currentWordNumber];
-      // eslint-disable-next-line @typescript-eslint/no-loop-func
-    } while (result.findIndex((el) => el.word.id === currentWord.id) !== -1);
+  for (let i = 0; i < NumberOf.wordsInPage; i++) {
+    if (result.length === 0) {
+      currentWord = allListWords[getRandomNumber(NumberOf.wordsInPage)];
+    } else {
+      do {
+        currentWord = allListWords[getRandomNumber(NumberOf.wordsInPage)];
+        // eslint-disable-next-line @typescript-eslint/no-loop-func
+      } while (result.findIndex((el) => el.word.id === currentWord.id) !== -1);
+    }
     const answersArray: string[] = [currentWord.wordTranslate];
     let currentAnswer = '';
     do {
