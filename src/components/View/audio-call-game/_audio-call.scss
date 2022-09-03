@@ -76,3 +76,45 @@
   }
 }
 
+.audio-preload {
+  min-height: 500px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+
+
+  // background-color: khaki;
+
+  .preload-message {
+    font-size: $size21px;
+  }
+
+  .btn-field {
+    width: 500px;
+    height: 100px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+
+
+    .btn-choice {
+      height: 70px;
+      width: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      font-size: $size25px;
+
+      background-color: darkgrey;
+    }
+  }
+
+  .game-rules {
+    font-size: $size21px;
+    text-align: center;
+  }
+}

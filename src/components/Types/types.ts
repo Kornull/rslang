@@ -34,6 +34,7 @@ export type StatisticsUserWords = {
     sprintDayGuess: number;
     sprintAllDayWords: number;
     sprintMaxGuessed: number;
+    audioMaxGuessed?: number;
     'data-0'?: object;
     'data-1'?: object;
     'data-2'?: object;
@@ -61,5 +62,7 @@ export enum IdPages {
   PreloaSprintID = 'preload-sprint',
   SprintStatiD = 'srpint-statistic',
   LogoIt = 'logo',
-  PreloadAudio = 'preload-audio',
+  AudioGamePreload = 'preload-audio',
+  AudioGame = 'audio-game',
+  AudioGameStatistic = 'statistic-audio',
 }

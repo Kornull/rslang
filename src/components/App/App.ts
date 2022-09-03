@@ -9,7 +9,7 @@ import { PageKey } from '../Controller/sprint-game/storage/type-storage';
 // eslint-disable-next-line import/no-cycle
 import createPopup from '../View/authorization-page/authorization-page';
 import User from '../Controller/authorization/user';
-import { createAudioGame } from '../View/audio-call-game/audio-call-game';
+import { createAudioGame, createAudioGamePreload, createStatisticAudioGame } from '../View/audio-call-game/audio-call-game';
 
 export const appUser = new User();
 export function App(idPage: string | null): void {
@@ -34,8 +34,14 @@ export function App(idPage: string | null): void {
       case IdPages.SprintStatiD:
         statisticGame();
         break;
-      case IdPages.PreloadAudio:
+      case IdPages.AudioGamePreload:
+        createAudioGamePreload();
+        break;
+      case IdPages.AudioGame:
         createAudioGame();
+        break;
+      case IdPages.AudioGameStatistic:
+        createStatisticAudioGame();
         break;
       default:
         break;

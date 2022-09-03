@@ -1,8 +1,13 @@
 import './_audio-call.scss';
 import { main } from '../../Templates/main-block';
 import { createEl } from '../../Controller/createTagBlock';
+import { createListWords, createAllListWords, getGuessSprintWords } from '../../../components/Controller/audio-game/audio-game';
+import { IdPages } from '../../Types/types';
+import { fillStatisticAudio } from './audio-call-game.utils';
+// eslint-disable-next-line import/no-cycle
+import { App } from '../../App/App';
 
-enum TextAudioGame {
+enum TextPreloadAudioGame {
   gameHeader = 'Для старта игры выберите уровень сложности',
   gameRules = '<span>Правила игры</span> очень просты: вам нужно выбрать правильный перевод прослушанного слова',
 }
@@ -36,12 +41,47 @@ export function createAudioGame() {
   nextSkipBtn.innerText = 'Следующий';
 }
 
-export function createAudoGamePreload() {
+export function createAudioGamePreload() {
   main.innerHTML = '';
   const preloadAudioPage = <HTMLElement>createEl('div', main, ['audio-preload']);
   const preloadMessage = <HTMLElement>createEl('p', preloadAudioPage, ['preload-message']);
-  preloadMessage.innerText = 
+  preloadMessage.innerText = TextPreloadAudioGame.gameHeader;
+  createButtons(preloadAudioPage, 6);
+  const gameRules = <HTMLElement>createEl('p', preloadAudioPage, ['game-rules']);
+  gameRules.innerHTML = TextPreloadAudioGame.gameRules;
+  console.log(createAllListWords(2, 1));
+  console.log(getGuessSprintWords(true, 2));
 }
+
+export function createStatisticAudioGame(): void {
+  main.innerHTML = '';
+  const audioPageStat = <HTMLElement>createEl('div', main, ['audio__statistic'], { id: 'audio-statistic' });
+  const title = <HTMLElement>createEl('h1', audioPageStat, ['audio__statistic-title']);
+  title.innerHTML = 'Statistic - Sprint game';
+  <HTMLElement>createEl('div', audioPageStat, ['audio__statistic-correct']);
+  <HTMLElement>createEl('div', audioPageStat, ['audio__statistic-wrong']);
+  <HTMLElement>createEl('div', audioPageStat, ['audio__statistic-words']);
+  <HTMLElement>createEl('div', audioPageStat, ['audio__statistic-percent']);
+  <HTMLElement>createEl('div', audioPageStat, ['audio__statistic-percent--words']);
+  const buttonsStat = <HTMLElement>createEl('div', audioPageStat, ['audio__statistic-buttons']);
+
+  const statisticBtnPreGame = <HTMLLinkElement>createEl('a', buttonsStat, ['audio__btn-close--stat-preload']);
+  const statisticBtnMainPage = <HTMLLinkElement>createEl('a', buttonsStat, ['audio__btn-close--stat-main']);
+  statisticBtnPreGame.href = `#${IdPages.AudioGamePreload}`;
+  statisticBtnMainPage.href = `#${IdPages.MainID}`;
+  statisticBtnPreGame.innerHTML = 'Закрыть';
+  statisticBtnMainPage.innerHTML = 'Главная страница';
+  statisticBtnPreGame.addEventListener('click', () => {
+    App(IdPages.PreloaSprintID);
+  });
+  statisticBtnMainPage.addEventListener('click', () => {
+    App(IdPages.MainID);
+  });
+  fillStatisticAudio(audioPageStat);
+}
+
+// first - 95847075
+/// last - 95848677
 
 // <svg class="CircularProgressbar " viewBox="0 0 100 100" data-test-id="CircularProgressbar"><path class="CircularProgressbar-trail" d="
 //       M 50,50
