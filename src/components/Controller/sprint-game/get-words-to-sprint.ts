@@ -1,6 +1,7 @@
 /* eslint-disable object-curly-newline */
 import { urlLink } from '../../Templates/serve';
 import { ExtraWordOption, LocalKeys, StatisticsUserWords, UserStat } from '../../Types/types';
+import { userWordsCheckTrueOrFalse } from '../check-words-user';
 import { getLocalStorage, setLocalStorage } from './storage/storage-set-kornull';
 import { Key, Word } from './type';
 
@@ -63,7 +64,12 @@ export const createListWords = async (num: number, numberPage: number): Promise<
   const a = await getTheWords(queryStr);
   wordsArr.push(a);
   const wordsArrCopy: Word[] = wordsArr.flat();
-  setLocalStorage('allListWords', wordsArrCopy);
+  if (getLocalStorage(LocalKeys.UserData).userId) {
+    const wordsSortCopy: Word[] = await userWordsCheckTrueOrFalse(wordsArrCopy);
+    setLocalStorage('allListWords', wordsSortCopy);
+  } else {
+    setLocalStorage('allListWords', wordsArrCopy);
+  }
 };
 
 export async function createAllListWords(numberGroup: number, numberUserPage?: number) {
@@ -96,7 +102,6 @@ async function userWords(wordId: string, params: object): Promise<void> {
 }
 
 const setUserWords = async (wordId: string, wordOption: object) => {
-  console.log('d');
   await fetch(`${urlLink}users/${user.userId}/words/${wordId}`, {
     method: 'PUT',
     headers: {

@@ -56,6 +56,7 @@ export type ExtraWordOption = {
     statusLearn: string;
     data?: string;
   };
+  wordId?: string;
 };
 
 export enum IdPages {

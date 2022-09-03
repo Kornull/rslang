@@ -110,7 +110,7 @@ export async function updateLearnWord(wordValue: Word, cardWord: HTMLElement, us
             gameGuessed: 0,
             gameMistake: 0,
             gameAllGuessWord: 0,
-            statusLearn: 'false',
+            statusLearn: 'true',
           },
         };
         createWordUser(user, wordValue.id, wordVal1);
@@ -129,7 +129,7 @@ export async function updateLearnWord(wordValue: Word, cardWord: HTMLElement, us
             statusLearn: 'false',
           },
         };
-        createWordUser(user, wordValue.id, wordVal2);
+        updateWordUser(user, wordValue.id, wordVal2);
         cardWord.setAttribute('data-wordUser', 'true');
         cardWord.setAttribute('data-WordLearned', 'true');
         break;

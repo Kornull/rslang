@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-use-before-define */
 import './_sprint.scss';
 import { body, main } from '../../Templates/main-block';
 import { createEl } from '../../Controller/createTagBlock';

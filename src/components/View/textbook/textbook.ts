@@ -111,6 +111,7 @@ function createMainTextbook() {
   const paginationTextbook = renderPaginationButton();
   mainTextbook.append(paginationTextbook);
   createEl('div', mainTextbook, ['page-textbook'], { id: 'page-textbook' });
+
   return mainTextbook;
 }
 
@@ -126,6 +127,9 @@ function renderLinkGroup(): HTMLDivElement {
     if (getLocalStorage('btnActive')) {
       const a = getLocalStorage('btnActive');
       if (currentLinkGroup.id === a[0]) currentLinkGroup.classList.add('active');
+    } else {
+      // eslint-disable-next-line no-lonely-if
+      if (i === 1) currentLinkGroup.classList.add('active');
     }
     currentLinkGroup.addEventListener('click', (ev) => {
       const allButtons = groupLinkBlock.querySelectorAll('.group__link');
@@ -153,7 +157,7 @@ function renderLinkGroup(): HTMLDivElement {
   gameLink.addEventListener('click', (ev) => {
     const message = ev.target as HTMLElement;
     const group = Number(getLocalStorage('currentGroup'));
-    const page = Number(getLocalStorage('currentGroup'));
+    const page = Number(getLocalStorage('currentPage'));
     if (message.id === IdPages.SprintID) {
       ClickSprint(group, page);
       loading();
@@ -178,4 +182,10 @@ export function createPage(): void {
   const pageNumber: number = +getStorage('currentPage', '0');
   updateButtonPagination(pageNumber);
   drawPageTextbook();
+  // eslint-disable-next-line no-restricted-globals
+  if (isNaN(Number(getLocalStorage('currentPage')))) {
+    setLocalStorage('btnActive', ['group-1', 'active']);
+    setStorage('currentGroup', '0');
+    setStorage('currentPage', '0');
+  }
 }
