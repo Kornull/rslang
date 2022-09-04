@@ -33,5 +33,4 @@ export async function getStatisticLernWords(user: User) {
     console.log('Error');
   }
   return (await response.json())[0];
-  // return res;
 }
