@@ -160,7 +160,7 @@ function renderLinkGroup(): HTMLDivElement {
     const page = Number(getLocalStorage('currentPage'));
     if (message.id === IdPages.SprintID) {
       ClickSprint(group, page);
-      loading();
+      loading(IdPages.SprintID);
     }
   });
   return linkGroup;

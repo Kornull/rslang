@@ -240,5 +240,37 @@ export async function updateHardWord(wordValue: Word, cardWord: HTMLElement, use
         cardWord.classList.remove('cardLearned');
       }
     }
+  } else if (wordObj.userWord === undefined) {
+    if (cardWord.getAttribute('data-WordHard') !== 'true') {
+      const wordVal: ExtraWordOption = {
+        difficulty: 'hard',
+        optional: {
+          gameGuessed: 0,
+          gameMistake: 0,
+          gameAllGuessWord: 0,
+          statusLearn: 'false',
+        },
+      };
+      createWordUser(user, wordValue.id, wordVal);
+      cardWord.setAttribute('data-WordHard', 'true');
+      cardWord.setAttribute('data-WordLearned', 'false');
+      cardWord.classList.add('cardHard');
+      cardWord.classList.remove('cardLearned');
+    }
+  } else {
+    const wordVal: ExtraWordOption = {
+      difficulty: 'hard',
+      optional: {
+        gameGuessed: wordObj.userWord.optional.gameGuessed,
+        gameMistake: wordObj.userWord.optional.gameMistake,
+        gameAllGuessWord: wordObj.userWord.optional.gameAllGuessWord,
+        statusLearn: 'false',
+      },
+    };
+    updateWordUser(user, wordValue.id, wordVal);
+    cardWord.setAttribute('data-WordHard', 'true');
+    cardWord.setAttribute('data-WordLearned', 'false');
+    cardWord.classList.add('cardHard');
+    cardWord.classList.remove('cardLearned');
   }
 }

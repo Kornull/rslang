@@ -1,7 +1,9 @@
 import User from '../../Controller/authorization/user';
 import { getLocalStorage, setStorage } from '../../Controller/storage';
 import { getAggregateWordsUser, getListHardWord, getListWords } from '../../Controller/textbook/textbook';
+import { main } from '../../Templates/main-block';
 import { urlLink } from '../../Templates/serve';
+import { PageKey } from '../../Types/types';
 import { Word, WordAggregated } from '../../Types/word';
 import { createEl } from '../create_element';
 import { COUNT_GROUP } from './util';
@@ -91,6 +93,7 @@ export async function renderCardsAutorizedUser(currentGroup: string, currentPage
   } catch {
     setStorage('userDataBasic', '{}');
     const buttonGroup = <HTMLElement>document.querySelector('#group-7');
+
     buttonGroup.classList.add('display-none');
     const gameLinks = <HTMLElement>document.querySelector('.game__links');
     gameLinks.classList.add('display-none');
@@ -133,4 +136,10 @@ export async function renderCardsAutorizedUser(currentGroup: string, currentPage
     }
     wrapperPageTextbook.append(cardWord);
   });
+  const numberGroup = getLocalStorage(PageKey.numGroup);
+  if (numberGroup === '6') {
+    const mainWrap = <HTMLElement>main.querySelector('#wrapper-page-textbook');
+    const textGroupHard = <HTMLElement>createEl('h1', mainWrap, ['title__group']);
+    textGroupHard.innerHTML = 'Сложные слова / Hard words';
+  }
 }
