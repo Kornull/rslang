@@ -25,9 +25,15 @@ function createStatisticItem(title: string, rowTitle: Array<string>, rowValue: A
   return blockStat;
 }
 
+function addMessage(): HTMLSpanElement {
+  const message = 'Статистика доступна только авторизованному пользователю';
+  const spanMessage: HTMLSpanElement = createEl('span', undefined, ['statisticMessage']);
+  spanMessage.innerHTML = message;
+  return spanMessage;
+}
+
 export async function createStatisticPage() {
   main.innerHTML = '';
-  const message = 'Статистика доступна только авторизованному пользователю';
   const title: HTMLElement = createEl('h2', main, ['h2']);
   title.innerText = 'Статистика';
   const statistic: HTMLElement = createEl('div', main, ['statistics']);
@@ -64,7 +70,7 @@ export async function createStatisticPage() {
       ]);
       statistic.append(wordsStat);
     } catch {
-      statistic.innerHTML = message;
+      statistic.append(addMessage());
     }
-  } else statistic.innerHTML = message;
+  } else statistic.append(addMessage());
 }
