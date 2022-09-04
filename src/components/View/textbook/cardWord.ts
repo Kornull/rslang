@@ -31,7 +31,7 @@ function createButtonAudio(wordValue: Word): SVGSVGElement {
   return audioImg;
 }
 
-export async function renderCardWord(wordValue: Word, type: string): Promise<HTMLDivElement> {
+export async function renderCardWord(wordValue: Word, type: string, gameAllGuessWord: number, gameMistake: number): Promise<HTMLDivElement> {
   const cardWord = <HTMLDivElement>createEl('div', undefined, ['cardWord', `group-${wordValue.group + 1}`], { id: `cardWord-${wordValue.id}` });
   const multimedia = <HTMLDivElement>createEl('div', cardWord, ['multimediaBlock']);
   const imgBlock = <HTMLDivElement>createEl('div', multimedia, ['imgBlock']);
@@ -59,7 +59,25 @@ export async function renderCardWord(wordValue: Word, type: string): Promise<HTM
     }
   }
   const word = <HTMLDivElement>createEl('div', cardWord, ['word']);
-  const wordLang = createEl('h3', word, ['h3']);
+  const wordBlock = <HTMLDivElement>createEl('div', word, ['wordBlock']);
+  const wordLang = createEl('h3', wordBlock, ['h3']);
+  if (user.userId && (gameAllGuessWord || gameMistake)) {
+    const wordGame = <HTMLDivElement>createEl('div', wordBlock, ['wordGameImg']);
+    const imgGuessed = <HTMLDivElement>createEl('div', wordGame, ['wordGameImgGuessed']);
+    const wordGameGuessed = <SVGSVGElement>document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    wordGameGuessed.classList.add('imgWordGame');
+    wordGameGuessed.innerHTML = '<use xlink:href="./assets/img/guessed.svg#guessed"></use>';
+    imgGuessed.append(wordGameGuessed);
+    const countGuessed = <HTMLSpanElement>createEl('span', imgGuessed, ['wordBlockCount']);
+    countGuessed.innerHTML = String(gameAllGuessWord);
+    const imgMistake = <HTMLDivElement>createEl('div', wordGame, ['wordGameImgGuessed']);
+    const wordGameMistake = <SVGSVGElement>document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    wordGameMistake.classList.add('imgWordGame');
+    wordGameMistake.innerHTML = '<use xlink:href="./assets/img/mistake.svg#mistake"></use>';
+    imgMistake.append(wordGameMistake);
+    const countMistake = <HTMLSpanElement>createEl('span', imgMistake, ['wordGameImgGuessed']);
+    countMistake.innerHTML = String(gameMistake);
+  }
   wordLang.innerHTML = `${wordValue.word} (${wordValue.wordTranslate})`;
   const wordTranscript = createEl('h4', word, ['h4']);
   wordTranscript.innerHTML = `${wordValue.transcription}`;
@@ -78,7 +96,7 @@ export async function renderCardsNoAutorizedUser(currentGroup: string, currentPa
   let cardWord: HTMLDivElement;
   const listWords: Word[] = await getListWords(+currentGroup, +currentPage);
   listWords.forEach(async (item) => {
-    cardWord = await renderCardWord(item, '');
+    cardWord = await renderCardWord(item, '', 0, 0);
     wrapperPageTextbook.append(cardWord);
   });
 }
@@ -125,7 +143,9 @@ export async function renderCardsAutorizedUser(currentGroup: string, currentPage
         type = 'learned';
       }
     }
-    cardWord = await renderCardWord(word, type);
+    const gameAllGuessWord: number = item.userWord?.optional.gameAllGuessWord ? item.userWord?.optional.gameAllGuessWord : 0;
+    const gameMistake: number = item.userWord?.optional.gameMistake ? item.userWord?.optional.gameMistake : 0;
+    cardWord = await renderCardWord(word, type, gameAllGuessWord, gameMistake);
     if (item.userWord) {
       cardWord.setAttribute('data-wordUser', 'true');
       if (item.userWord.difficulty === 'hard') {

@@ -285,3 +285,26 @@
   text-decoration: underline;
   color: $colorBlueSaturated;
 }
+
+.wordGameImg {
+  display: flex;
+  gap: 10px;
+}
+
+.wordBlock {
+  display: flex;
+  justify-content: space-between;
+}
+
+.imgWordGame {
+  width: 20px;
+  height: 20px;
+}
+
+.wordGameImgGuessed {
+  height: 40px;
+}
+
+.wordGameImgGuessed {
+  font-size: 14px;
+}
