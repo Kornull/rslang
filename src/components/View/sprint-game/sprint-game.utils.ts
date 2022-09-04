@@ -98,6 +98,7 @@ function colorDotted(blockDotted: HTMLDivElement[], numberDot: number) {
 }
 
 export function mixWords(blockGame: HTMLElement, blockDotted: HTMLDivElement[]): void {
+  numberDotted = 0;
   removeCountAnswers();
   let lengthGuessed = 0;
   let count = 0;
