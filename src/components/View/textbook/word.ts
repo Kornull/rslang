@@ -96,14 +96,14 @@ async function createParamUserWord(cardWord: HTMLElement) {
 
 export async function updateLearnWord(wordValue: Word, cardWord: HTMLElement, user: User) {
   const currentGroup: string = getStorage('currentGroup', '0');
-  const d = await userCheckWord(wordValue.id);
-  const wordObj = d[0];
   const isWordUser = cardWord.getAttribute('data-wordUser');
   if (isWordUser === 'true') {
     const wordVal = await createParamUserWord(cardWord);
     updateWordUser(user, wordValue.id, wordVal);
     getAllUserlearnWords();
   } else {
+    const d = await userCheckWord(wordValue.id);
+    const wordObj = d[0];
     switch (typeof wordObj.userWord) {
       case 'undefined':
         const wordVal1: ExtraWordOption = {

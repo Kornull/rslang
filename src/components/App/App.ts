@@ -71,5 +71,5 @@ window.addEventListener('hashchange', () => {
   const hash = window.location.hash.slice(1);
   setTimeout(() => {
     App(hash);
-  });
+  }, 100);
 });

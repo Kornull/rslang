@@ -236,6 +236,7 @@ export const getAllUserlearnWords = async () => {
       },
     },
   );
+
   const resStatistic = await fetch(`${urlLink}users/${user.userId}/statistics`, {
     method: 'GET',
     headers: {
@@ -243,22 +244,30 @@ export const getAllUserlearnWords = async () => {
       Accept: 'application/json',
     },
   });
-  const res: StatisticsUserWords = await resStatistic.json();
   if (resStatistic.status === 404) {
-    res.optional = {
-      sprintDayGuess: 1,
-      sprintAllDayWords: 1,
-      sprintMaxGuessed: 1,
+    const statisticRun: StatisticsUserWords = {
+      learnedWords: 1,
+      optional: {
+        sprintDayGuess: 0,
+        sprintAllDayWords: 0,
+        sprintMaxGuessed: 0,
+      },
     };
+    setLearnedUserWords(statisticRun);
   } else {
-    res.optional = {
-      sprintDayGuess: res.optional.sprintDayGuess,
-      sprintAllDayWords: res.optional.sprintAllDayWords,
-      sprintMaxGuessed: res.optional.sprintMaxGuessed,
-    };
+    const res: StatisticsUserWords = await resStatistic.json();
+    if (resLearnWords.status === 404) {
+      res.optional = {
+        sprintDayGuess: res.optional.sprintDayGuess,
+        sprintAllDayWords: res.optional.sprintAllDayWords,
+        sprintMaxGuessed: res.optional.sprintMaxGuessed,
+      };
+      setLearnedUserWords({ learnedWords: 1, optional: res.optional });
+    } else {
+      const words = await resLearnWords.json();
+      setLearnedUserWords({ learnedWords: words[0].paginatedResults.length, optional: res.optional });
+    }
   }
-  const words = await resLearnWords.json();
-  setLearnedUserWords({ learnedWords: words[0].paginatedResults.length, optional: res.optional });
 };
 
 (async () => {
