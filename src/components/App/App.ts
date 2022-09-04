@@ -69,5 +69,7 @@ export function App(idPage: string | null): void {
 
 window.addEventListener('hashchange', () => {
   const hash = window.location.hash.slice(1);
-  App(hash);
+  setTimeout(() => {
+    App(hash);
+  });
 });
