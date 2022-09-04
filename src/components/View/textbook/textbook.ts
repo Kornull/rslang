@@ -148,12 +148,10 @@ function renderLinkGroup(): HTMLDivElement {
   }
 
   const gameLink = <HTMLDivElement>createEl('div', linkGroup, ['game__links']);
-  const sprint = <HTMLLinkElement>createEl('a', gameLink, ['game__links-sprint', 'game__link'], { id: 'sprint-page' });
-  const audioGame = <HTMLLinkElement>createEl('a', gameLink, ['game__links-audio', 'game__link'], { id: 'audiogame-page' });
+  const sprint = <HTMLButtonElement>createEl('button', gameLink, ['game__links-sprint', 'game__link'], { id: 'sprint-page' });
+  const audioGame = <HTMLButtonElement>createEl('button', gameLink, ['game__links-audio', 'game__link'], { id: 'audiogame-page' });
   sprint.innerHTML = 'Sprint';
   audioGame.innerHTML = 'Audio-game';
-  sprint.href = '#sprint-page';
-  audioGame.href = '#';
   gameLink.addEventListener('click', (ev) => {
     const message = ev.target as HTMLElement;
     const group = Number(getLocalStorage('currentGroup'));

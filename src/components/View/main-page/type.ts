@@ -6,6 +6,10 @@ export enum IdBlocks {
   Statistic = 'statistic',
   Games = 'games',
   Time = 'time',
+  TitleTeam = 'title-team',
+  Kornull = 'kornull',
+  Maxlablearn = 'maxlablearn',
+  Svetlana85 = 'svetlana85',
 }
 
 export enum Count {
