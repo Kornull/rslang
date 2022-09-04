@@ -25,13 +25,11 @@ export enum CountButtons {
 function createButtons(el: HTMLElement, count: number): void {
   for (let i = 1; i < count + 1; i++) {
     if (count > CountButtons.Two) {
-      const btnSection = <HTMLLinkElement>createEl('a', el, ['sprint__btn-group']);
-      btnSection.id = `words-${i}`;
+      const btnSection = <HTMLLinkElement>createEl('a', el, ['sprint__btn-group'], { id: `words-${i}` });
       btnSection.href = '#sprint-page';
       btnSection.innerHTML = `${i}`;
     } else {
-      const btnsChoice = <HTMLElement>createEl('button', el, [`game__btns-choise--${i % count === 0}`]);
-      btnsChoice.id = `word-${i % count === 0}`;
+      const btnsChoice = <HTMLElement>createEl('button', el, [`game__btns-choise--${i % count === 0}`], { id: `word-${i % count === 0}` });
       if (i % count === 0) {
         btnsChoice.innerHTML = 'Yes';
       } else {
@@ -51,8 +49,7 @@ function createDotteds(block: HTMLDivElement) {
 
 export const createSprintGame = () => {
   main.innerHTML = '';
-  const sprintPage = <HTMLDivElement>createEl('div', main, ['sprint', 'sprint__page']);
-  sprintPage.id = 'sprint-page';
+  const sprintPage = <HTMLDivElement>createEl('div', main, ['sprint', 'sprint__page'], { id: 'sprint-page' });
   const blockGame = <HTMLElement>createEl('div', sprintPage, ['sprint__game', 'game']);
   const timer = <HTMLElement>createEl('div', blockGame, ['game__timer']);
   timer.innerHTML = '1:00';
@@ -63,11 +60,9 @@ export const createSprintGame = () => {
   <HTMLImageElement>createEl('img', wordsimg, ['game__img'], { id: 'game-img' });
   const sprintDotted = <HTMLDivElement>createEl('div', blockGame, ['game__dotted']);
   const wordsSprint = <HTMLElement>createEl('div', blockGame, ['game__words']);
-  const sprintWordEn = <HTMLElement>createEl('div', wordsSprint, ['game__word-en']);
-  const sprintWordRu = <HTMLElement>createEl('div', wordsSprint, ['game__word-ru']);
+  <HTMLElement>createEl('div', wordsSprint, ['game__word-en'], { id: 'word-en' });
+  <HTMLElement>createEl('div', wordsSprint, ['game__word-ru'], { id: 'word-ru' });
   const choiceButtons = <HTMLElement>createEl('div', blockGame, ['game__btns-choise']);
-  sprintWordEn.id = 'word-en';
-  sprintWordRu.id = 'word-ru';
   createDotteds(sprintDotted);
   createButtons(choiceButtons, CountButtons.Two);
   let time = 59;
@@ -99,8 +94,7 @@ export const createSprintGame = () => {
 
 export function createPreSprintGamePage(): HTMLElement {
   main.innerHTML = '';
-  const sprintPreloadPage = <HTMLElement>createEl('div', main, ['sprint', 'sprint__game-preload']);
-  sprintPreloadPage.id = 'preload-sprint';
+  const sprintPreloadPage = <HTMLElement>createEl('div', main, ['sprint', 'sprint__game-preload'], { id: 'preload-sprint' });
   const titleSprint = <HTMLElement>createEl('h1', sprintPreloadPage, ['sprint__title']);
   titleSprint.innerHTML = TitleSprint.PreButton;
   sprintPreloadPage.addEventListener('click', (ev: Event) => {
@@ -110,7 +104,7 @@ export function createPreSprintGamePage(): HTMLElement {
     if (classBlock[0] === 'sprint__btn-group') {
       ev.preventDefault();
       createAllListWords(Number(id.split('').slice(-1)) - 1);
-      loading();
+      loading(IdPages.SprintID);
       ClickSprint(Number(id.split('').slice(-1)) - 1);
     }
   });
@@ -121,7 +115,7 @@ export function createPreSprintGamePage(): HTMLElement {
       const group = examEvent(ev);
       if (group !== undefined) {
         createAllListWords(group);
-        loading();
+        loading(IdPages.SprintID);
         ClickSprint(group);
       }
     }

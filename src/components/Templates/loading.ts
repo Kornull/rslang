@@ -6,7 +6,7 @@ import { createEl } from '../View/create_element';
 import { main } from './main-block';
 
 const header = <HTMLElement>document.querySelector('.header');
-export function loading(): void {
+export function loading(idPage: string): void {
   main.innerHTML = '';
   const sprintPreloadPage = <HTMLElement>createEl('div', main, ['sprint', 'sprint__game-preload']);
   <HTMLElement>createEl('div', sprintPreloadPage, ['spinner']);
@@ -15,7 +15,7 @@ export function loading(): void {
     if (arrayAllWords.length === 0) {
       App(IdPages.NoWords);
     } else {
-      App(IdPages.SprintID);
+      App(idPage);
     }
   }, 7000);
   header.addEventListener('click', (ev) => {
