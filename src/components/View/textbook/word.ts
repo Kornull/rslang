@@ -70,6 +70,7 @@ async function createParamUserWord(cardWord: HTMLElement) {
   const isHardWord = cardWord.getAttribute('data-WordHard');
   if (isHardWord === 'false') {
     cardWord.classList.remove('cardHard');
+    cardWord.classList.add('cardLearned');
     cardWord.setAttribute('data-WordHard', 'false');
   }
   if (wordObj.userWord === undefined) {
@@ -143,6 +144,7 @@ export async function updateLearnWord(wordValue: Word, cardWord: HTMLElement, us
   }
   cardWord.classList.remove('cardHard');
   cardWord.setAttribute('data-WordHard', 'false');
+  getAllUserlearnWords();
   if (Number(currentGroup) === COUNT_GROUP) {
     cardWord.classList.add('display-none');
   }
