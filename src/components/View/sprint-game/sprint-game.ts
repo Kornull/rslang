@@ -4,7 +4,6 @@ import './_sprint.scss';
 import { body, main } from '../../Templates/main-block';
 import { createEl } from '../../Controller/createTagBlock';
 import { ClickSprint, createAudioButton, createStaticticSprint, examEvent, mixWords } from './sprint-game.utils';
-import { createAllListWords } from '../../Controller/sprint-game/get-words-to-sprint';
 import { App } from '../../App/App';
 import { IdPages } from '../../Types/types';
 import { loading } from '../../Templates/loading';
@@ -103,7 +102,6 @@ export function createPreSprintGamePage(): HTMLElement {
     const classBlock = message.classList;
     if (classBlock[0] === 'sprint__btn-group') {
       ev.preventDefault();
-      createAllListWords(Number(id.split('').slice(-1)) - 1);
       loading(IdPages.SprintID);
       ClickSprint(Number(id.split('').slice(-1)) - 1);
     }
@@ -114,7 +112,6 @@ export function createPreSprintGamePage(): HTMLElement {
     } else {
       const group = examEvent(ev);
       if (group !== undefined) {
-        createAllListWords(group);
         loading(IdPages.SprintID);
         ClickSprint(group);
       }

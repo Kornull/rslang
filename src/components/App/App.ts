@@ -5,8 +5,8 @@ import { main } from '../Templates/main-block';
 // eslint-disable-next-line import/no-cycle
 import { createPreSprintGamePage, createSprintGame, statisticGame } from '../View/sprint-game/sprint-game';
 import createMainPage from '../View/main-page/main-page';
-import { IdPages, PageKey } from '../Types/types';
-import { setLocalStorage } from '../Controller/sprint-game/storage/storage-set-kornull';
+import { IdPages, LocalKeys, PageKey } from '../Types/types';
+import { getLocalStorage, setLocalStorage } from '../Controller/sprint-game/storage/storage-set-kornull';
 
 import createPopup from '../View/authorization-page/authorization-page';
 import User from '../Controller/authorization/user';
@@ -55,17 +55,25 @@ export function App(idPage: string | null): void {
     App(IdPages.MainID);
   }
 
+  (() => {
+    const logoUserInput = <HTMLElement>document.querySelector('.header__login-icon');
+    const logoUser = <HTMLElement>document.querySelector('.header__logo-user');
+    if (getLocalStorage(LocalKeys.UserData).userId) {
+      logoUserInput.style.display = 'none';
+      logoUser.style.display = 'block';
+    } else {
+      logoUserInput.style.display = 'block';
+      logoUser.style.display = 'none';
+    }
+  })();
+
   const authPage = <HTMLElement>document.querySelector('#login');
   authPage.addEventListener('click', createPopup);
 }
 
-// if (getLocalStorage('userDataBasic').userId) appUser.getUser();
-
-// currentPage"1"
-// currentGroup "4"
-
-// const bookPage = <HTMLElement>document.querySelector('#book-page');
-// bookPage.addEventListener('click', () => {
-//   main.innerHTML = '';
-//   createPage();
-// });
+window.addEventListener('hashchange', () => {
+  const hash = window.location.hash.slice(1);
+  setTimeout(() => {
+    App(hash);
+  });
+});

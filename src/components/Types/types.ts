@@ -76,4 +76,5 @@ export enum PageKey {
   numPage = 'currentPage',
   numGroup = 'currentGroup',
   allWords = 'allListWords',
+  numGamePage = 'NumGamePage',
 }
