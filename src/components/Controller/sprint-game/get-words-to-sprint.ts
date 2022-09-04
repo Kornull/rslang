@@ -1,6 +1,6 @@
 /* eslint-disable object-curly-newline */
 import { urlLink } from '../../Templates/serve';
-import { ExtraWordOption, LocalKeys, StatisticsUserWords, UserStat } from '../../Types/types';
+import { ExtraWordOption, LocalKeys, PageKey, StatisticsUserWords, UserStat } from '../../Types/types';
 import { userWordsCheckTrueOrFalse } from '../check-words-user';
 import { getLocalStorage, setLocalStorage } from './storage/storage-set-kornull';
 import { Key, Word } from './type';
@@ -64,7 +64,7 @@ export const createListWords = async (num: number, numberPage: number): Promise<
   const a = await getTheWords(queryStr);
   wordsArr.push(a);
   const wordsArrCopy: Word[] = wordsArr.flat();
-  if (getLocalStorage(LocalKeys.UserData).userId) {
+  if (getLocalStorage(LocalKeys.UserData).userId && getLocalStorage(PageKey.numGamePage).length > 0) {
     const wordsSortCopy: Word[] = await userWordsCheckTrueOrFalse(wordsArrCopy);
     setLocalStorage('allListWords', wordsSortCopy);
   } else {

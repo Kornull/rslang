@@ -233,9 +233,12 @@ export const ClickSprint = (id: number, num?: number): void => {
   let arrayWords: WordSettings[] = [];
   const arrayWordsEn: object[] = [];
   const arrayWordsRu: object[] = [];
+  // console.log(num);
   if (typeof num === 'number') {
+    setLocalStorage(PageKey.numGamePage, [`${num}`]);
     createAllListWords(id, num);
   } else {
+    setLocalStorage(PageKey.numGamePage, []);
     createAllListWords(id);
   }
   setTimeout(() => {
