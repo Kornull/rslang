@@ -11,7 +11,17 @@ export async function getStatisticWords(user: User): Promise<StatisticsUserWords
     },
   });
   if (response.status === 404) {
-    console.log('Error');
+    return {
+      learnedWords: 0,
+      optional: {
+        sprintDayGuess: 0,
+        sprintAllDayWords: 0,
+        sprintMaxGuessed: 0,
+        audiotDayGuess: 0,
+        audioAllDayWords: 0,
+        audioMaxGuessed: 0,
+      },
+    };
   }
   const res: StatisticsUserWords = await response.json();
   return res;
@@ -30,7 +40,7 @@ export async function getStatisticLernWords(user: User): Promise<number> {
     },
   );
   if (response.status === 404) {
-    console.log('Error');
+    return 0;
   }
   const result = (await response.json())[0].totalCount[0].count;
   return result;

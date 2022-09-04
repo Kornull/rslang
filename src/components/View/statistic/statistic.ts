@@ -25,8 +25,7 @@ function createStatisticItem(title: string, rowTitle: Array<string>, rowValue: A
   return blockStat;
 }
 
-function addMessage(): HTMLSpanElement {
-  const message = 'Статистика доступна только авторизованному пользователю';
+function addMessage(message: string): HTMLSpanElement {
   const spanMessage: HTMLSpanElement = createEl('span', undefined, ['statisticMessage']);
   spanMessage.innerHTML = message;
   return spanMessage;
@@ -39,38 +38,54 @@ export async function createStatisticPage() {
   const statistic: HTMLElement = createEl('div', main, ['statistics']);
   const user: User = getLocalStorage('userDataBasic');
   if (user.userId) {
+    let stat: StatisticsUserWords;
     try {
-      const stat: StatisticsUserWords = await getStatisticWords(user);
-      const countLernWords: number = await getStatisticLernWords(user);
-      const audioResult: number[] = [
-        stat.optional.audiotDayGuess ? stat.optional.audiotDayGuess : 0,
-        stat.optional.audioAllDayWords && stat.optional.audiotDayGuess
-          ? Math.round((stat.optional.audiotDayGuess / stat.optional.audioAllDayWords) * 100)
-          : 0,
-        stat.optional.audioMaxGuessed ? stat.optional.audioMaxGuessed : 0,
-        stat.optional.audioAllDayWords ? stat.optional.audioAllDayWords : 0,
-      ];
-      const sprintResult: number[] = [
-        stat.optional.sprintDayGuess ? stat.optional.sprintDayGuess : 0,
-        stat.optional.sprintDayGuess && stat.optional.sprintAllDayWords
-          ? Math.round((stat.optional.sprintDayGuess / stat.optional.sprintAllDayWords) * 100)
-          : 0,
-        stat.optional.sprintMaxGuessed ? stat.optional.sprintMaxGuessed : 0,
-        stat.optional.sprintAllDayWords ? stat.optional.sprintAllDayWords : 0,
-      ];
-      const audioStat: HTMLElement = createStatisticItem(titleStatistic[0], rowStatistic, audioResult);
-      statistic.append(audioStat);
-      const sprintStat: HTMLElement = createStatisticItem(titleStatistic[1], rowStatistic, sprintResult);
-      statistic.append(sprintStat);
-      const percentTrue: number = Math.round(((audioResult[0] + sprintResult[0]) / (audioResult[3] + sprintResult[3])) * 100);
-      const wordsStat: HTMLElement = createStatisticItem(titleStatistic[2], rowStatisticWords, [
-        audioResult[0] + sprintResult[0],
-        (stat.learnedWords ? stat.learnedWords : 0) + countLernWords,
-        percentTrue,
-      ]);
-      statistic.append(wordsStat);
+      stat = await getStatisticWords(user);
     } catch {
-      statistic.append(addMessage());
+      stat = {
+        learnedWords: 0,
+        optional: {
+          sprintDayGuess: 0,
+          sprintAllDayWords: 0,
+          sprintMaxGuessed: 0,
+          audiotDayGuess: 0,
+          audioAllDayWords: 0,
+          audioMaxGuessed: 0,
+        },
+      };
     }
-  } else statistic.append(addMessage());
+    let countLernWords: number;
+    try {
+      countLernWords = await getStatisticLernWords(user);
+    } catch {
+      countLernWords = 0;
+    }
+    const audioResult: number[] = [
+      stat.optional.audiotDayGuess ? stat.optional.audiotDayGuess : 0,
+      stat.optional.audioAllDayWords && stat.optional.audiotDayGuess
+        ? Math.round((stat.optional.audiotDayGuess / stat.optional.audioAllDayWords) * 100)
+        : 0,
+      stat.optional.audioMaxGuessed ? stat.optional.audioMaxGuessed : 0,
+      stat.optional.audioAllDayWords ? stat.optional.audioAllDayWords : 0,
+    ];
+    const sprintResult: number[] = [
+      stat.optional.sprintDayGuess ? stat.optional.sprintDayGuess : 0,
+      stat.optional.sprintDayGuess && stat.optional.sprintAllDayWords
+        ? Math.round((stat.optional.sprintDayGuess / stat.optional.sprintAllDayWords) * 100)
+        : 0,
+      stat.optional.sprintMaxGuessed ? stat.optional.sprintMaxGuessed : 0,
+      stat.optional.sprintAllDayWords ? stat.optional.sprintAllDayWords : 0,
+    ];
+    const audioStat: HTMLElement = createStatisticItem(titleStatistic[0], rowStatistic, audioResult);
+    statistic.append(audioStat);
+    const sprintStat: HTMLElement = createStatisticItem(titleStatistic[1], rowStatistic, sprintResult);
+    statistic.append(sprintStat);
+    const percentTrue: number = Math.round(((audioResult[0] + sprintResult[0]) / (audioResult[3] + sprintResult[3])) * 100);
+    const wordsStat: HTMLElement = createStatisticItem(titleStatistic[2], rowStatisticWords, [
+      audioResult[0] + sprintResult[0],
+      (stat.learnedWords ? stat.learnedWords : 0) + countLernWords,
+      percentTrue,
+    ]);
+    statistic.append(wordsStat);
+  } else statistic.append(addMessage('Статистика доступна только авторизованному пользователю'));
 }
