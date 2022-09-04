@@ -170,7 +170,7 @@
   &__image-team {
     border-radius: 25%;
     border: 1px solid $colorBlueSaturated;
-    box-shadow: 0 0 5px $colorBlack;
+    box-shadow: 0 0 10px $colorBlue;
     width: 60px;
     height: 60px;
     overflow: hidden;
@@ -202,7 +202,7 @@
   }
 
   &__role{
-    color: #7100ca;
+    color: #1f0c5a;
   }
   &__name-link {
     color: #3074af;
@@ -222,6 +222,7 @@
     li {
       position: relative;
       font-style: italic;
+      font-size: $size16px;
       color: #4978bd;
       &::before {
         position: absolute;
