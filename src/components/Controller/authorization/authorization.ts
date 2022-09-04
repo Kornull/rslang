@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/no-cycle
-import { appUser } from '../../App/App';
+import { App, appUser } from '../../App/App';
+import { getLocalStorage } from '../sprint-game/storage/storage-set-kornull';
 
 export function toggleButtons(element: Element): void {
   const signIn = <HTMLElement>document.querySelector('#sign-in-btn');
@@ -23,6 +24,7 @@ export function toggleButtons(element: Element): void {
 export function closePopup(): void {
   const popup = document.querySelector('.popup__bg');
   popup?.remove();
+  App(getLocalStorage('userPageNow'));
 }
 
 function showMessage(message: string): void {

@@ -1,16 +1,17 @@
+/* eslint-disable import/no-cycle */
 import { createPage } from '../View/textbook/textbook';
 import './_app.scss';
 import { main } from '../Templates/main-block';
 // eslint-disable-next-line import/no-cycle
 import { createPreSprintGamePage, createSprintGame, statisticGame } from '../View/sprint-game/sprint-game';
 import createMainPage from '../View/main-page/main-page';
-import { IdPages } from '../Types/types';
+import { IdPages, PageKey } from '../Types/types';
 import { setLocalStorage } from '../Controller/sprint-game/storage/storage-set-kornull';
-import { PageKey } from '../Controller/sprint-game/storage/type-storage';
-// eslint-disable-next-line import/no-cycle
+
 import createPopup from '../View/authorization-page/authorization-page';
 import User from '../Controller/authorization/user';
 import { createStatisticPage } from '../View/statistic/statistic';
+import { notWords } from '../View/sprint-game/sprint-game.utils';
 
 export const appUser = new User();
 export function App(idPage: string | null): void {
@@ -40,6 +41,9 @@ export function App(idPage: string | null): void {
         break;
       case IdPages.StatisticId:
         createStatisticPage();
+        break;
+      case IdPages.NoWords:
+        notWords();
         break;
       default:
         break;

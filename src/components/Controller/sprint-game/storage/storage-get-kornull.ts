@@ -1,5 +1,5 @@
 import { App } from '../../../App/App';
-import { PageKey } from './type-storage';
+import { PageKey } from '../../../Types/types';
 
 export function getLocalStorageApp(): void {
   const page = localStorage.getItem(PageKey.userPage);

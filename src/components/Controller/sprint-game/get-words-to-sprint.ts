@@ -1,14 +1,16 @@
 /* eslint-disable object-curly-newline */
 import { urlLink } from '../../Templates/serve';
 import { ExtraWordOption, LocalKeys, StatisticsUserWords, UserStat } from '../../Types/types';
+import { userWordsCheckTrueOrFalse } from '../check-words-user';
 import { getLocalStorage, setLocalStorage } from './storage/storage-set-kornull';
 import { Key, Word } from './type';
 
 const extraOptionUserWord: ExtraWordOption = {
   difficulty: 'easy',
   optional: {
-    gameGuessed: 1,
+    gameGuessed: 0,
     gameMistake: 0,
+    gameAllGuessWord: 0,
     statusLearn: 'false',
   },
 };
@@ -62,20 +64,25 @@ export const createListWords = async (num: number, numberPage: number): Promise<
   const a = await getTheWords(queryStr);
   wordsArr.push(a);
   const wordsArrCopy: Word[] = wordsArr.flat();
-  setLocalStorage('allListWords', wordsArrCopy);
+  if (getLocalStorage(LocalKeys.UserData).userId) {
+    const wordsSortCopy: Word[] = await userWordsCheckTrueOrFalse(wordsArrCopy);
+    setLocalStorage('allListWords', wordsSortCopy);
+  } else {
+    setLocalStorage('allListWords', wordsArrCopy);
+  }
 };
 
 export async function createAllListWords(numberGroup: number, numberUserPage?: number) {
   setLocalStorage('allListWords', []);
   wordsArr = [];
   let numberPage = Math.floor(Math.random() * CountPages.pages);
-  if (numberUserPage) numberPage = numberUserPage;
+  if (typeof numberUserPage === 'number') numberPage = numberUserPage;
   if (numberPage >= 5) {
-    for (let i = numberPage - 5; i < numberPage; i++) {
+    for (let i = numberPage - 5; i <= numberPage; i++) {
       createListWords(numberGroup, i);
     }
   } else if (numberPage < 5 && numberPage > 0) {
-    for (let i = numberPage - numberPage; i < numberPage; i++) {
+    for (let i = numberPage - numberPage; i <= numberPage; i++) {
       createListWords(numberGroup, i);
     }
   } else {
@@ -162,12 +169,16 @@ export const getGuessSprintWords = async (boolean: boolean, lengthGuess: number)
 
 const statusTrue = async (wordOption: ExtraWordOption, wordId: string) => {
   wordOption.optional.gameGuessed += 1;
+  wordOption.optional.gameAllGuessWord += 1;
   wordOption.optional.data = `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`;
   if (wordOption.difficulty === 'easy' && wordOption.optional.gameGuessed >= 3) {
     wordOption.optional.statusLearn = 'true';
     setUserWords(wordId, { optional: wordOption.optional });
   }
-  if (wordOption.difficulty === 'hard' && wordOption.optional.gameGuessed >= 5) wordOption.optional.statusLearn = 'true';
+  if (wordOption.difficulty === 'hard' && wordOption.optional.gameGuessed >= 5) {
+    wordOption.optional.statusLearn = 'true';
+    wordOption.difficulty = 'easy';
+  }
   setUserWords(wordId, { optional: wordOption.optional });
 };
 
@@ -193,10 +204,12 @@ export const getUserWord = async (wordId: string, status: boolean) => {
     if (status) {
       extraOptionUserWord.optional.gameGuessed = 1;
       extraOptionUserWord.optional.gameMistake = 0;
+      extraOptionUserWord.optional.gameAllGuessWord = 1;
       extraOptionUserWord.optional.data = `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`;
     } else {
       extraOptionUserWord.optional.gameGuessed = 0;
       extraOptionUserWord.optional.gameMistake = 1;
+      extraOptionUserWord.optional.gameAllGuessWord = 0;
       extraOptionUserWord.optional.data = `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`;
     }
     userWords(wordId, extraOptionUserWord);
