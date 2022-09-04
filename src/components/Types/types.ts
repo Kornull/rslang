@@ -55,6 +55,7 @@ export type ExtraWordOption = {
     gameAllGuessWord: number;
     statusLearn: string;
     data?: string;
+    dataLearn?: string;
   };
   wordId?: string;
 };
