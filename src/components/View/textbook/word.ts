@@ -1,5 +1,6 @@
 /* eslint-disable no-case-declarations */
 import User from '../../Controller/authorization/user';
+import { getAllUserlearnWords } from '../../Controller/sprint-game/get-words-to-sprint';
 import { getLocalStorage, getStorage } from '../../Controller/storage';
 import { createWordUser, updateWordUser } from '../../Controller/textbook/textbook';
 import { urlLink } from '../../Templates/serve';
@@ -95,13 +96,14 @@ async function createParamUserWord(cardWord: HTMLElement) {
 
 export async function updateLearnWord(wordValue: Word, cardWord: HTMLElement, user: User) {
   const currentGroup: string = getStorage('currentGroup', '0');
-  const d = await userCheckWord(wordValue.id);
-  const wordObj = d[0];
   const isWordUser = cardWord.getAttribute('data-wordUser');
   if (isWordUser === 'true') {
     const wordVal = await createParamUserWord(cardWord);
     updateWordUser(user, wordValue.id, wordVal);
+    getAllUserlearnWords();
   } else {
+    const d = await userCheckWord(wordValue.id);
+    const wordObj = d[0];
     switch (typeof wordObj.userWord) {
       case 'undefined':
         const wordVal1: ExtraWordOption = {
@@ -118,6 +120,7 @@ export async function updateLearnWord(wordValue: Word, cardWord: HTMLElement, us
         cardWord.setAttribute('data-WordLearned', 'true');
         cardWord.setAttribute('data-WordHard', 'false');
         cardWord.classList.add('cardLearned');
+        getAllUserlearnWords();
         break;
       case 'object':
         const wordVal2: ExtraWordOption = {
@@ -132,6 +135,7 @@ export async function updateLearnWord(wordValue: Word, cardWord: HTMLElement, us
         updateWordUser(user, wordValue.id, wordVal2);
         cardWord.setAttribute('data-wordUser', 'true');
         cardWord.setAttribute('data-WordLearned', 'true');
+        getAllUserlearnWords();
         break;
       default:
         break;
@@ -162,6 +166,7 @@ export async function updateHardWord(wordValue: Word, cardWord: HTMLElement, use
           },
         };
         createWordUser(user, wordValue.id, wordVal);
+        getAllUserlearnWords();
       } else if (Number(currentGroup) === COUNT_GROUP) {
         const wordVal: ExtraWordOption = {
           difficulty: 'easy',
@@ -173,6 +178,7 @@ export async function updateHardWord(wordValue: Word, cardWord: HTMLElement, use
           },
         };
         updateWordUser(user, wordValue.id, wordVal);
+        getAllUserlearnWords();
       } else {
         const wordVal: ExtraWordOption = {
           difficulty: 'hard',
@@ -185,6 +191,7 @@ export async function updateHardWord(wordValue: Word, cardWord: HTMLElement, use
         };
         updateWordUser(user, wordValue.id, wordVal);
         cardWord.setAttribute('data-wordUser', 'true');
+        getAllUserlearnWords();
       }
       if (Number(currentGroup) === COUNT_GROUP) {
         cardWord.classList.add('display-none');
@@ -193,6 +200,7 @@ export async function updateHardWord(wordValue: Word, cardWord: HTMLElement, use
         cardWord.setAttribute('data-WordLearned', 'false');
         cardWord.classList.add('cardHard');
         cardWord.classList.remove('cardLearned');
+        getAllUserlearnWords();
       }
     } else if (wordObj.userWord !== undefined) {
       if (cardWord.getAttribute('data-WordHard') !== 'true') {
@@ -206,6 +214,7 @@ export async function updateHardWord(wordValue: Word, cardWord: HTMLElement, use
           },
         };
         updateWordUser(user, wordValue.id, wordVal);
+        getAllUserlearnWords();
       } else if (Number(currentGroup) === COUNT_GROUP) {
         const wordVal: ExtraWordOption = {
           difficulty: 'easy',
@@ -217,6 +226,7 @@ export async function updateHardWord(wordValue: Word, cardWord: HTMLElement, use
           },
         };
         updateWordUser(user, wordValue.id, wordVal);
+        getAllUserlearnWords();
       } else {
         const wordVal: ExtraWordOption = {
           difficulty: 'hard',
@@ -229,6 +239,7 @@ export async function updateHardWord(wordValue: Word, cardWord: HTMLElement, use
         };
         updateWordUser(user, wordValue.id, wordVal);
         cardWord.setAttribute('data-wordUser', 'true');
+        getAllUserlearnWords();
       }
       if (Number(currentGroup) === COUNT_GROUP) {
         cardWord.classList.add('display-none');
@@ -256,6 +267,7 @@ export async function updateHardWord(wordValue: Word, cardWord: HTMLElement, use
       cardWord.setAttribute('data-WordLearned', 'false');
       cardWord.classList.add('cardHard');
       cardWord.classList.remove('cardLearned');
+      getAllUserlearnWords();
     }
   } else {
     const wordVal: ExtraWordOption = {
@@ -272,5 +284,6 @@ export async function updateHardWord(wordValue: Word, cardWord: HTMLElement, use
     cardWord.setAttribute('data-WordLearned', 'false');
     cardWord.classList.add('cardHard');
     cardWord.classList.remove('cardLearned');
+    getAllUserlearnWords();
   }
 }
