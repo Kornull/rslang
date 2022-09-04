@@ -20,7 +20,7 @@ enum KeysWords {
 }
 
 enum TextNoWords {
-  NoWordsText = 'Тут не изученных слов нету.<br>Поищите в другом месте',
+  NoWordsText = 'Тут неизученных слов нету.<br>Поищите в другом месте',
 }
 
 let guessWordLengthGame = 0;
