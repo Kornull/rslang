@@ -67,13 +67,7 @@ export function App(idPage: string | null): void {
   authPage.addEventListener('click', createPopup);
 }
 
-// if (getLocalStorage('userDataBasic').userId) appUser.getUser();
-
-// currentPage"1"
-// currentGroup "4"
-
-// const bookPage = <HTMLElement>document.querySelector('#book-page');
-// bookPage.addEventListener('click', () => {
-//   main.innerHTML = '';
-//   createPage();
-// });
+window.addEventListener('hashchange', () => {
+  const hash = window.location.hash.slice(1);
+  App(hash);
+});
