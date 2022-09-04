@@ -120,6 +120,7 @@
     margin: 0.5em;
     fill: aliceblue;
     &:hover {
+      cursor: pointer;
       fill: red;
     }
   }
