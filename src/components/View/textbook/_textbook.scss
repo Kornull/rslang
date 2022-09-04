@@ -274,3 +274,14 @@
 .display-none {
   display: none;
 }
+
+.title__group{
+  width: 90%;
+  text-align: center;
+  margin: 20px auto;
+  font-family: $fontRobotoSlab;
+  font-size: $size19px;
+  font-weight: bold;
+  text-decoration: underline;
+  color: $colorBlueSaturated;
+}
