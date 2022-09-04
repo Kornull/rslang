@@ -7,8 +7,8 @@ import { StatisticsUserWords } from '../../Types/types';
 import './_statistic.scss';
 
 const titleStatistic = ['Аудиовызов', 'Спринт', 'Статистика по словам'];
-const rowStatistic = ['Количество новых слов за день', 'Процент правильных ответов', 'Лучшая серия'];
-const rowStatisticWords = ['Количество новых слов за день', 'Количество изученных слов за день', 'Процент правильных ответов за день'];
+const rowStatistic = ['Количество угаданных слов за день', 'Процент правильных ответов', 'Лучшая серия'];
+const rowStatisticWords = ['Количество угаданных слов за день', 'Количество изученных слов за день', 'Процент правильных ответов за день'];
 
 function createStatisticItem(title: string, rowTitle: Array<string>, rowValue: Array<number>): HTMLElement {
   const blockStat: HTMLElement = createEl('div', undefined, ['blockStat']);
