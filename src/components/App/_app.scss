@@ -6,20 +6,7 @@
   max-width: 1280px;
   padding: 0 10px;
   margin: 0 auto;
-  background: $backgroundMain;
-  box-shadow: -10px 0 55px $colorWhiteShadow, 10px 0 55px $colorWhiteShadow;
-  // &::before,
-  // &::after {
-  //   position: absolute;
-  //   content: "";
-  //   height: 100%;
-  //   width: 250px;
-  //   top: 0;
-  // }
-  // &::before {
-  //    top:0;
-  // }
-  // &::after {
-  //   bottom: 0;
-  // }
+}
+.background{
+  background-color: #ffffffe0;
 }

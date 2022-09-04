@@ -7,7 +7,7 @@
   &__page-greetings {
     margin-bottom: 50px;
   }
-  &__page-title{
+  &__page-title {
     width: 50%;
     margin: 0 auto;
     padding-top: 50px;
@@ -17,9 +17,8 @@
     font-size: $size28px;
     color: $colorBlueText;
     margin-bottom: 15px;
-
   }
-  &__page-description{
+  &__page-description {
     width: 70%;
     margin: 0 auto;
     padding: 5px;
@@ -33,7 +32,7 @@
     border-radius: 10px;
     margin-bottom: 70px;
   }
-  &__page-subtitle{
+  &__page-subtitle {
     width: 30%;
     margin: 0 auto;
     text-align: center;
@@ -41,6 +40,9 @@
     font-size: $size25px;
     color: $colorBlueText;
     font-weight: bold;
+    @media (max-width: $size480px) {
+    width: 90%;
+    }
   }
   &__list-description {
     display: flex;
@@ -56,16 +58,76 @@
     margin: 0 auto;
     justify-content: space-around;
     margin-bottom: 10px;
-    color:$colorBlueDescriptionText;
+    color: $colorBlueDescriptionText;
     background-color: $colorWhite;
-    transition: background-color .3s linear,
-    color .3s linear,
-    box-shadow .3s linear;
-    &:hover{
+    transition: background-color 0.3s linear, color 0.3s linear, box-shadow 0.3s linear;
+    &:hover {
       color: $colorGreenHover;
-      box-shadow: 0 0 15px $colorYellow;
+      box-shadow: 0 0 15px $colorBlue;
       background: $colorWhiteTransparent;
     }
+    @media (max-width: $size480px) {
+      height: 290px;
+    }
+  }
+  &__page-team {
+    display: flex;
+    width: 90%;
+    margin: 0 auto;
+    margin-top: 40px;
+    border: 2px solid $backgroundHeader;
+    background-color: $colorWhite;
+    border-radius: 15px;
+    justify-content: center;
+    flex-direction: column;
+    transition: background-color 0.3s linear, color 0.3s linear, box-shadow 0.3s linear;
+    &:hover {
+      box-shadow: 0 0 10px $colorBlue;
+      background: $colorWhiteTransparent;
+    }
+  }
+  &__list-team {
+    position: relative;
+    display: flex;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    margin-bottom: 25px;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 10px;
+    font-family: $fontMontserrat;
+    &:before {
+      position: absolute;
+      content: "";
+      width: 100%;
+      height: 1px;
+      background: $colorBlueSaturated;
+      bottom: -10px;
+    }
+    @media (max-width: $size540px) {
+      flex-direction: column;
+    }
+  }
+
+  &__list--team {
+    width: 55%;
+    margin: 0 auto;
+    border-radius: 15px;
+    padding: 5px;
+  }
+  &__list-title-team {
+    width: 50%;
+    margin: 0 auto;
+    text-align: center;
+    margin-top: 80px;
+    font-family: $fontMontserrat;
+    font-size: $size25px;
+    font-weight: bold;
+    color: $colorBlueText;
+  }
+  &.__list {
+    display: flex;
   }
 }
 
@@ -75,8 +137,20 @@
     font-family: $fontRobotoSlab;
     font-size: $size19px;
     font-weight: bold;
-
-
+    @media (max-width: $size768px) {
+      font-size: $size16px;
+    }
+    @media (max-width: $size480px) {
+      font-size: $size19px;
+    }
+    @media (max-width: $size380px) {
+      font-size: $size16px;
+    }
+  }
+  &__text-team {
+    @media (max-width: $size540px) {
+      margin-bottom: 10px;
+    }
   }
 
   &__image {
@@ -85,5 +159,83 @@
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
+    @media (max-width: $size540px) {
+      width: 90px;
+      height: 90px;
+    }
+    @media (max-width: $size480px) {
+      display: none;
+    }
+  }
+  &__image-team {
+    border-radius: 25%;
+    border: 1px solid $colorBlueSaturated;
+    box-shadow: 0 0 5px $colorBlack;
+    width: 60px;
+    height: 60px;
+    overflow: hidden;
+  }
+  &__text-team {
+    @media (max-width: $size540px) {
+      margin-bottom: 10px;
+    }
+  }
+  &__images-team {
+    object-fit: cover;
+  }
+}
+
+.team {
+  &__name {
+    margin-bottom: 10px;
+    &:hover + .team__description .team__role {
+      transition: color 0.2s linear;
+      color: $colorRed;
+    }
+  }
+  &__description {
+    display: flex;
+    gap: 10px;
+    @media (max-width: $size540px) {
+     flex-direction: column;;
+    }
+  }
+
+  &__role{
+    color: #7100ca;
+  }
+  &__name-link {
+    color: #3074af;
+    text-decoration: underline;
+    font-weight: bold;
+    font-size: $size16px;
+    transition: color .2s linear;
+    &:hover {
+      color: $colorGreen;
+    }
+
+  }
+  &__task {
+    font-size: 13px;
+    padding-left: 15px;
+    font-weight: bold;
+    li {
+      position: relative;
+      font-style: italic;
+      color: #4978bd;
+      &::before {
+        position: absolute;
+        content: "";
+        width: 5px;
+        height: 5px;
+        background: $colorRed;
+        border-radius: 50%;
+        top: 5px;
+        left: -15px;
+      }
+    }
+    @media (max-width: $size540px) {
+      padding-left: 50px;
+     }
   }
 }

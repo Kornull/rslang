@@ -59,7 +59,9 @@ const openBurgerMenu = (): void => {
   linkNavigation.forEach((link: Element) => {
     link.addEventListener('click', (ev: Event) => {
       const message = ev.target as HTMLElement;
-      clickIdLink(message.id);
+      if (message.id !== 'team' && message.id !== 'about') {
+        clickIdLink(message.id);
+      }
       if (ev !== null) {
         if (ev.type === 'click') openBurgerMenu();
       }
