@@ -224,6 +224,43 @@ export const getUserWord = async (wordId: string, status: boolean) => {
   }
 };
 
+export const getAllUserlearnWords = async () => {
+  const resLearnWords = await fetch(
+    `${urlLink}users/${user.userId}/aggregatedWords?filter={
+      "$and": [{"$and": [{"$or": [{"userWord.difficulty": "hard"},{"userWord.difficulty": "easy"}]}]},{"userWord.optional.statusLearn":"true"}]}&wordsPerPage=3600`,
+    {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+        Accept: 'application/json',
+      },
+    },
+  );
+  const resStatistic = await fetch(`${urlLink}users/${user.userId}/statistics`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${user.token}`,
+      Accept: 'application/json',
+    },
+  });
+  const res: StatisticsUserWords = await resStatistic.json();
+  if (resStatistic.status === 404) {
+    res.optional = {
+      sprintDayGuess: 1,
+      sprintAllDayWords: 1,
+      sprintMaxGuessed: 1,
+    };
+  } else {
+    res.optional = {
+      sprintDayGuess: res.optional.sprintDayGuess,
+      sprintAllDayWords: res.optional.sprintAllDayWords,
+      sprintMaxGuessed: res.optional.sprintMaxGuessed,
+    };
+  }
+  const words = await resLearnWords.json();
+  setLearnedUserWords({ learnedWords: words[0].paginatedResults.length, optional: res.optional });
+};
+
 (async () => {
   if (getLocalStorage('timeDateReset') !== `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`) {
     const responce = await fetch(`${urlLink}users/${user.userId}/statistics`, {
