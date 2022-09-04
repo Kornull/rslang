@@ -76,7 +76,8 @@
     text-align: center;
     font-family: $fontRoboto;
     font-size: $size21px;
-    color: $colorRed;
+    color: $colorBlueSaturated;
+    line-height: 1.4;
     span {
       font-weight: bold;
     }
@@ -284,6 +285,7 @@
     font-weight: bold;
     color: $colorWhite;
     margin-bottom: 15px;
+    border: 1px solid $colorWhite;
     transition: background-color .2s linear;
     @media (max-width: $size480px) {
       width: 190px;
@@ -295,6 +297,7 @@
     background-color: $colorRed;
     &:hover {
       background-color: #b81414;
+      box-shadow: 0 0 2px $colorBlack;
     }
     &:active {
       border: 1px solid $colorWhite;
@@ -305,6 +308,7 @@
     background-color: $colorSalat;
     &:hover {
       background-color: #1aa115;
+      box-shadow: 0 0 2px $colorBlack;
     }
     &:active {
       border: 1px solid $colorWhite;
@@ -320,5 +324,22 @@
     border: 1px solid $colorWhite;
       box-shadow: 0 0 5px $colorBlueSaturated;
       background-color: #b81414;
+  }
+}
+
+.no__words {
+  width: 80%;
+  margin: 0 auto;
+  padding-top: 50px;
+  &-text{
+    width: 50%;
+    margin: 0 auto;
+    margin-top: 100px;
+    text-align: center;
+    font-size: $size21px;
+    font-family: $fontMontserrat;
+    font-weight: bold;
+    line-height: 1.5;
+    color: $colorBlueSaturated;
   }
 }

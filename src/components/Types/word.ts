@@ -1,3 +1,5 @@
+import { ExtraWordOption } from './types';
+
 export interface Word {
   id: string;
   group: number;
@@ -30,24 +32,24 @@ export interface WordAggregated {
   wordTranslate: string;
   textMeaningTranslate: string;
   textExampleTranslate: string;
-  userWord?: WordValue;
+  userWord?: ExtraWordOption;
 }
 
-interface Optional {
-  statuslearn: string;
-  attempts?: number;
-  sucseessAttempts?: number;
-  newDate?: Date;
-}
+// interface Optional {
+//   statuslearn: string;
+//   attempts?: number;
+//   sucseessAttempts?: number;
+//   newDate?: Date;
+// }
 
-export interface WordValue {
-  difficulty: string;
-  optional?: Optional;
-}
+// export interface WordValue {
+//   difficulty: string;
+//   optional?: Optional;
+// }
 
 export interface WordUser {
   id: string;
   difficulty: string;
-  optional: Optional;
+  optional: ExtraWordOption;
   wordId: string;
 }

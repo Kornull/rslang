@@ -34,6 +34,9 @@ export type StatisticsUserWords = {
     sprintDayGuess: number;
     sprintAllDayWords: number;
     sprintMaxGuessed: number;
+    audiotDayGuess?: number;
+    audioAllDayWords?: number;
+    audioMaxGuessed?: number;
     'data-0'?: object;
     'data-1'?: object;
     'data-2'?: object;
@@ -49,9 +52,11 @@ export type ExtraWordOption = {
   optional: {
     gameGuessed: number;
     gameMistake: number;
+    gameAllGuessWord: number;
     statusLearn: string;
     data?: string;
   };
+  wordId?: string;
 };
 
 export enum IdPages {
@@ -61,4 +66,12 @@ export enum IdPages {
   PreloaSprintID = 'preload-sprint',
   SprintStatiD = 'srpint-statistic',
   LogoIt = 'logo',
+  NoWords = 'no-words',
+}
+
+export enum PageKey {
+  userPage = 'userPageNow',
+  numPage = 'currentPage',
+  numGroup = 'currentGroup',
+  allWords = 'allListWords',
 }
