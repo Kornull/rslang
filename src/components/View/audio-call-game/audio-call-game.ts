@@ -1,7 +1,8 @@
 import './_audio-call.scss';
 import { main } from '../../Templates/main-block';
 import { createEl } from '../../Controller/createTagBlock';
-import { createListWords, createAllListWords, getGuessSprintWords, getMainGameArray } from '../../Controller/audio-game/audio-game';
+// eslint-disable-next-line import/no-cycle
+import { createListWords, createAllListWords, getMainGameArray } from '../../Controller/audio-game/audio-game';
 import { IdPages } from '../../Types/types';
 import { fillStatisticAudio } from './audio-call-game.utils';
 // eslint-disable-next-line import/no-cycle
@@ -59,6 +60,7 @@ export function createAudioGame() {
 }
 
 export function createAudioGamePreload() {
+  console.log('--------------createAudioGamePreload--------------');
   main.innerHTML = '';
   const preloadAudioPage = <HTMLElement>createEl('div', main, ['audio-preload']);
   const preloadMessage = <HTMLElement>createEl('p', preloadAudioPage, ['preload-message']);
