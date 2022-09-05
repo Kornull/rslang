@@ -12,7 +12,6 @@ export function loading(idPage: string): void {
   <HTMLElement>createEl('div', sprintPreloadPage, ['spinner']);
   const timeSleep = setTimeout(() => {
     const arrayAllWords = getLocalStorage(PageKey.allWords);
-    console.log('---loading----');
     if (arrayAllWords.length === 0) {
       App(IdPages.NoWords);
     } else {

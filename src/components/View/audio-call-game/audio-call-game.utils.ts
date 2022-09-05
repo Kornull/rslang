@@ -1,18 +1,10 @@
 import { getLocalStorage, setLocalStorage } from '../../Controller/sprint-game/storage/storage-set-kornull';
 import { IdPages, Key, LocalKeys, PageKey, WordSettings } from '../../Types/types';
 import { createAllListWords } from '../../Controller/audio-game/audio-game';
-import { MainGameElement, NumberOf } from '../../Controller/audio-game/types';
+import { MainGameElement, NumberOf, KeysWords } from '../../Controller/audio-game/types';
+import { App } from '../../App/App';
+import { urlLink } from '../../Templates/serve';
 
-enum KeysWords {
-  EnglishWords = 'wordsObjectEn',
-  RussianWords = 'wordsObjectRu',
-  CorrectWord = 'correctWords',
-  GuessedWord = 'guessedWords',
-  WrongWord = 'wrongWords',
-  Image = '#game-img',
-  Count = '0',
-  MainGameArray = 'mainGameArray',
-}
 
 let guessWordLengthGame = 0;
 
@@ -82,6 +74,22 @@ export const ClickAudio = (id: number, num?: number): void => {
   }, 6000);
 };
 
-// function fillNewStepGame() {
+export function fillNewStepGame() {
+  const currentStep = Number(getLocalStorage(KeysWords.CurrentStep));
+  const mainGameArray = getLocalStorage(KeysWords.MainGameArray);
 
-// }
+  if (currentStep >= mainGameArray.length) {
+    App(IdPages.AudioGameStatistic);
+  }
+  const image = <HTMLImageElement>document.querySelector('.image-container img');
+  const enWord = <HTMLElement>document.querySelector('.english-word');
+  const ruWords = <NodeListOf<HTMLElement>>document.querySelectorAll('.btn-choice');
+  console.log('image ========', mainGameArray[currentStep]);
+
+  image.src = `${urlLink}${mainGameArray[currentStep].word.image}`;
+  enWord.innerText = `${mainGameArray[currentStep].word.word}`;
+  mainGameArray[currentStep].falseWords.forEach((word: string, count: number) => {
+    console.log('word number ', count, ': ', word);
+    ruWords[count].innerText = word;
+  });
+}

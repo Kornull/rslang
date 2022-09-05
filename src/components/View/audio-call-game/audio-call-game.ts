@@ -5,7 +5,7 @@ import { createEl } from '../../Controller/createTagBlock';
 // import { createListWords, createAllListWords, getMainGameArray } from '../../Controller/audio-game/audio-game';
 import { IdPages } from '../../Types/types';
 // eslint-disable-next-line import/no-cycle
-import { fillStatisticAudio, ClickAudio, getMainGameArray } from './audio-call-game.utils';
+import { fillStatisticAudio, ClickAudio, fillNewStepGame } from './audio-call-game.utils';
 // eslint-disable-next-line import/no-cycle
 import { App } from '../../App/App';
 // eslint-disable-next-line import/no-cycle
@@ -14,6 +14,8 @@ import { clickIdLink } from '../../Controller/burger/burger.utils';
 import { loading } from '../../Templates/loading';
 // eslint-disable-next-line import/no-cycle
 import { examEvent } from '../sprint-game/sprint-game.utils';
+import { setLocalStorage } from '../../Controller/sprint-game/storage/storage-set-kornull';
+import { KeysWords } from '../../Controller/audio-game/types';
 
 enum TextPreloadAudioGame {
   gameHeader = 'Для старта игры выберите уровень сложности',
@@ -60,8 +62,8 @@ export function createAudioGame() {
   createButtons(gameField, 5);
   const nextSkipBtn = createEl('button', gameField, ['next-skip-btn']);
   nextSkipBtn.innerText = 'Следующий';
-  // nextSkipBtn.addEventListener('click', getMainGameArray);
-  // console.log(getMainGameArray());
+  setLocalStorage(KeysWords.CurrentStep, '0');
+  fillNewStepGame();
 }
 
 export function createAudioGamePreload() {

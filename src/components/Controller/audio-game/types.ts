@@ -11,3 +11,13 @@ export const enum NumberOf {
   answersOnPage = 5,
   wordsInResponse = 100,
 }
+
+export enum KeysWords {
+  CorrectWord = 'correctWords',
+  GuessedWord = 'guessedWords',
+  WrongWord = 'wrongWords',
+  CurrentStep = 'currentStep',
+  Image = '#game-img',
+  Count = '0',
+  MainGameArray = 'mainGameArray',
+}
