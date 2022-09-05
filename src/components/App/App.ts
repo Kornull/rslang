@@ -10,6 +10,7 @@ import { getLocalStorage, setLocalStorage } from '../Controller/sprint-game/stor
 
 import createPopup from '../View/authorization-page/authorization-page';
 import User from '../Controller/authorization/user';
+import { createAudioGame, createAudioGamePreload, createStatisticAudioGame } from '../View/audio-call-game/audio-call-game';
 import { createStatisticPage } from '../View/statistic/statistic';
 import { notWords } from '../View/sprint-game/sprint-game.utils';
 
@@ -36,6 +37,15 @@ export function App(idPage: string | null): void {
         break;
       case IdPages.SprintStatiD:
         statisticGame();
+        break;
+      case IdPages.AudioGamePreload:
+        createAudioGamePreload();
+        break;
+      case IdPages.AudioGame:
+        createAudioGame();
+        break;
+      case IdPages.AudioGameStatistic:
+        createStatisticAudioGame();
         break;
       case IdPages.BookID:
         createPage();

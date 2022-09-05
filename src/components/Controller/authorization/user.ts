@@ -104,6 +104,7 @@ class User {
       this.refreshToken = content.refreshToken;
       this.userId = content.userId;
       this.userName = content.name;
+      console.log(' -------- token refreshed successfully -----------');
       localStorage.setItem(
         'userDataBasic',
         JSON.stringify({

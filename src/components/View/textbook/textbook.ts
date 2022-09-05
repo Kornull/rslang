@@ -9,6 +9,7 @@ import { IdPages } from '../../Types/types';
 import { ClickSprint } from '../sprint-game/sprint-game.utils';
 import { loading } from '../../Templates/loading';
 import { setLocalStorage } from '../../Controller/sprint-game/storage/storage-set-kornull';
+import { ClickAudio } from '../audio-call-game/audio-call-game.utils';
 import { getCountLearnWordPage } from '../../Controller/textbook/textbook';
 
 export async function renderPageTextbook() {
@@ -171,7 +172,7 @@ function renderLinkGroup(): HTMLDivElement {
 
   const gameLink = <HTMLDivElement>createEl('div', linkGroup, ['game__links']);
   const sprint = <HTMLButtonElement>createEl('button', gameLink, ['game__links-sprint', 'game__link'], { id: 'sprint-page' });
-  const audioGame = <HTMLButtonElement>createEl('button', gameLink, ['game__links-audio', 'game__link'], { id: 'audiogame-page' });
+  const audioGame = <HTMLButtonElement>createEl('button', gameLink, ['game__links-audio', 'game__link'], { id: 'audio-game' });
   sprint.innerHTML = 'Sprint';
   audioGame.innerHTML = 'Audio-game';
   gameLink.addEventListener('click', (ev) => {
@@ -181,6 +182,9 @@ function renderLinkGroup(): HTMLDivElement {
     if (message.id === IdPages.SprintID) {
       ClickSprint(group, page);
       loading(IdPages.SprintID);
+    } else if (message.id === IdPages.AudioGame) {
+      ClickAudio(group, page);
+      loading(IdPages.AudioGame);
     }
   });
   return linkGroup;

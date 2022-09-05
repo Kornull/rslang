@@ -1,0 +1,264 @@
+@import "../../../../src/scss/base/settings";
+
+.audio-game {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  min-height: 480px;
+
+  .view {
+    max-height: 350px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+
+    .image-container {
+      height: 0px;
+      width: 0px;
+      border-radius: 50%;
+      overflow: hidden;
+      transition-duration: .1s;
+
+      &.active {
+        height: 200px;
+        width: 200px;
+        transition-duration: .5s;
+        @media (max-width: $size480px) {
+          height: 120px;
+          width: 120px;
+        } 
+      }
+    }
+
+    .audio-field {
+      display: flex;
+      flex-direction: row;
+      min-width: 300px;
+      justify-content: space-around;
+      align-items: center;
+
+      .audio-button {
+        height: 100px;
+        width: 100px;
+        border-radius: 50%;
+        transition-duration: .5s;
+
+        &:hover {
+          transform: scale(1.1);
+          box-shadow: 0px 0px 30px 10px #918c8c;
+          transition-duration: 1s;
+        }
+
+        &.move {
+          height: 50px;
+          width: 50px;
+          transition-duration: 1s;
+        }
+      }
+      .english-word {
+        font-size: $size31px;
+        display: none;
+        transition-duration: 1s;
+
+        @media (max-width: $size480px) {
+          font-size: $size25px;
+        } 
+
+        &.active {
+          display: block;
+          transition-duration: 1s;
+        }
+      }
+    }
+  }
+
+  .btn-field {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    max-width: 1000px;
+    min-height: 80px;
+    padding-bottom: 20px;
+    justify-content: center;
+    column-gap: 20px;
+    
+    &.disabled {
+      pointer-events: none;
+    }
+
+    .btn-wrapper {
+      
+      .btn-number {
+        position: relative;
+        left: -10px;
+        top: 10px;
+        background-color: khaki;
+        border-radius: 50%;
+        height: 20px;
+        width: 20px;
+        text-align: center;
+      }
+
+      .btn-choice {
+        min-width: 80px;
+        height: 40px;
+        border-radius: 10px;
+        font-size: $size21px;
+        padding: 0px 10px;
+        border: $colorBlue solid 2px;
+        background-color: $colorBlue;
+        transition-duration: .5s;
+        &:hover {
+          border-color: $colorMediaHover;
+          background-color: #ffffff;
+          box-shadow: 0px 0px 30px 10px #918c8c;
+          transition-duration: 1s;
+        }
+      }
+    }
+  }
+
+  .next-skip-btn {
+    min-width: 120px;
+    padding: 0px 10px;
+    height: 60px;
+    border-radius: 10px;
+    font-size: $size21px;
+    transition-duration: .5s;
+    margin-top: 20px;
+    background-color: gold;
+
+    &:hover {
+      box-shadow: 0px 0px 30px 10px #918c8c;
+      transition-duration: 1s;
+    }
+  }
+}
+
+.audio-preload {
+  min-height: 480px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+
+  .preload-message {
+    font-size: $size25px;
+    color: $colorText;
+    text-align: center;
+  }
+
+  .btn-field {
+    max-width: 800px;
+    min-height: 100px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+
+    .btn-choice-group {
+      height: 70px;
+      width: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      font-size: $size31px;
+      transition-duration: 1s;
+      border: 2px solid transparent;
+
+      &.group-1 {
+        background-color: $colorGroup1;
+      }
+      
+      &.group-2 {
+        background-color: $colorGroup2;
+      }
+      
+      &.group-3 {
+        background-color: $colorGroup3;
+      }
+      
+      &.group-4 {
+        background-color: $colorGroup4;
+      }
+      
+      &.group-5 {
+        background-color: $colorGroup5;
+      }
+      
+      &.group-6 {
+        background-color: $colorGroup6;
+      }
+      
+      &:hover {
+        box-shadow: 0px 0px 30px 10px #918c8c;
+        background-color: #ffffff;
+        border-color: $colorMediaHover;
+        color: $colorText;
+        transition-duration: .4s;
+      }
+    }
+  }
+
+  .game-rules {
+    font-size: $size21px;
+    text-align: center;
+
+    span {
+      font-weight: bold;
+    }
+  }
+}
+
+.audio__statistic {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-size: $size25px;
+  align-items: center;
+  max-width: 1000px;
+
+  &-title {
+    font-weight: bold;
+  }
+  &-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+
+    & a {
+      min-width: 120px;
+      padding: 0px 10px;
+      height: 60px;
+      border-radius: 10px;
+      transition-duration: .5s;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: gold;
+
+      &:hover {
+        box-shadow: 0px 0px 30px 10px #918c8c;
+        transition-duration: 1s;
+      }
+    }
+
+  }
+  @media (max-width: $size480px) {
+    font-size: $size19px;
+    &-buttons {
+      flex-direction: column;
+    }
+  }
+}
