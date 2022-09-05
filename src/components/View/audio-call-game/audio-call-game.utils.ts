@@ -1,12 +1,14 @@
 import { getLocalStorage, setLocalStorage } from '../../Controller/sprint-game/storage/storage-set-kornull';
 import { IdPages, Key, LocalKeys, PageKey, WordSettings } from '../../Types/types';
+// eslint-disable-next-line import/no-cycle
 import { createAllListWords } from '../../Controller/audio-game/audio-game';
 import { MainGameElement, NumberOf, KeysWords } from '../../Controller/audio-game/types';
+// eslint-disable-next-line import/no-cycle
 import { App } from '../../App/App';
 import { urlLink } from '../../Templates/serve';
 
 const answerSound = new Audio();
-const audioWord = new Audio();
+export const audioWord = new Audio();
 let guessWordLengthGame = 0;
 
 function soundCorrectAnswer(): void {
@@ -45,8 +47,6 @@ function getRandomNumber(limit: number): number {
 }
 
 export function getMainGameArray(allListWords: WordSettings[]): MainGameElement[] {
-  // const allListWords = getLocalStorage('allListWords');
-  console.log('allListWords', allListWords);
   const result: MainGameElement[] = [];
   let currentWord: WordSettings;
   for (let i = 0; i < NumberOf.wordsInPage; i++) {
@@ -66,17 +66,14 @@ export function getMainGameArray(allListWords: WordSettings[]): MainGameElement[
         answersArray.push(currentAnswer);
       }
     } while (answersArray.length < NumberOf.answersOnPage);
-    console.log(answersArray);
     answersArray.sort(() => Math.random() - 0.5);
     result.push({ word: currentWord, falseWords: answersArray });
   }
-  console.log('mainGameArray =', result);
   return result;
 }
 
 export const ClickAudio = (id: number, num?: number): void => {
   let arrayWords: WordSettings[] = [];
-  // console.log(num);
   if (typeof num === 'number') {
     setLocalStorage(PageKey.numGamePage, [`${num}`]);
     createAllListWords(id, num);
@@ -95,9 +92,40 @@ function sendStatistic() {
   // -------------------------------------------statistic--------------------------------
 }
 
+export function isAnswerCorrect(event: Event) {
+  let currentStep = Number(getLocalStorage(KeysWords.CurrentStep));
+  const mainGameArray = getLocalStorage(KeysWords.MainGameArray);
+  let correctNum = Number(getLocalStorage(KeysWords.CorrectWord));
+  let wrongNum = Number(getLocalStorage(KeysWords.WrongWord));
+  let guessedNum = Number(getLocalStorage(KeysWords.GuessedWord));
+  const buttonFiled = <HTMLElement>document.querySelector('.btn-field');
+
+  if ((event.target as HTMLElement).classList.contains('btn-choice')) {
+    console.log('text ------>', (event.target as HTMLElement).innerText);
+    if (mainGameArray[currentStep].word.wordTranslate === (event.target as HTMLElement).innerText) {
+      soundCorrectAnswer();
+      correctNum += 1;
+      guessedNum += 1;
+    } else {
+      soundWrongAnswer();
+      wrongNum += 1;
+      guessedNum += 1;
+    }
+    currentStep += 1;
+    setLocalStorage(KeysWords.CurrentStep, `${currentStep}`);
+    setLocalStorage(KeysWords.CorrectWord, `${correctNum}`);
+    setLocalStorage(KeysWords.WrongWord, `${wrongNum}`);
+    setLocalStorage(KeysWords.GuessedWord, `${guessedNum}`);
+    buttonFiled.classList.add('disabled');
+    // fillNewStepGame();
+  }
+}
+
 export function fillNewStepGame() {
   const currentStep = Number(getLocalStorage(KeysWords.CurrentStep));
   const mainGameArray = getLocalStorage(KeysWords.MainGameArray);
+  const buttonFiled = <HTMLElement>document.querySelector('.btn-field');
+  buttonFiled.classList.remove('disabled');
 
   if (currentStep >= mainGameArray.length) {
     sendStatistic();
@@ -114,30 +142,4 @@ export function fillNewStepGame() {
   });
   audioWord.src = `${urlLink}${mainGameArray[currentStep].word.audio}`;
   audioWord.autoplay = true;
-}
-
-export function isAnswerCorrect(event: Event) {
-  let currentStep = Number(getLocalStorage(KeysWords.CurrentStep));
-  const mainGameArray = getLocalStorage(KeysWords.MainGameArray);
-  let correctNum = Number(getLocalStorage(KeysWords.CorrectWord));
-  let wrongNum = Number(getLocalStorage(KeysWords.WrongWord));
-  let guessedNum = Number(getLocalStorage(KeysWords.GuessedWord));
-
-  if ((event.target as HTMLElement).classList.contains('btn-choice')) {
-    if (mainGameArray[currentStep].word.wordTranslate === (event.target as HTMLElement).innerText) {
-      soundCorrectAnswer();
-      correctNum += 1;
-      guessedNum += 1;
-    } else {
-      soundWrongAnswer();
-      wrongNum += 1;
-      guessedNum += 1;
-    }
-    currentStep += 1;
-    setLocalStorage(KeysWords.CurrentStep, `${currentStep}`);
-    setLocalStorage(KeysWords.CorrectWord, `${correctNum}`);
-    setLocalStorage(KeysWords.WrongWord, `${wrongNum}`);
-    setLocalStorage(KeysWords.GuessedWord, `${guessedNum}`);
-    fillNewStepGame();
-  }
 }

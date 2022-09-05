@@ -58,6 +58,10 @@
     justify-content: space-around;
     gap: 20px;
 
+    &.disabled {
+      pointer-events: none;
+    }
+
     .btn-wrapper {
       
       .btn-number {
