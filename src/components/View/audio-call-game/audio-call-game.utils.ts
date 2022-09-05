@@ -92,6 +92,22 @@ function sendStatistic() {
   // -------------------------------------------statistic--------------------------------
 }
 
+export function showEnglishWord(show: boolean) {
+  // const buttonFiled = <HTMLElement>document.querySelector('.btn-field');
+  const imageContainer = <HTMLElement>document.querySelector('.image-container');
+  const audioButton = <HTMLElement>document.querySelector('.audio-button');
+  const englishWord = <HTMLElement>document.querySelector('.english-word');
+  if (show) {
+    imageContainer.classList.add('active');
+    audioButton.classList.add('move');
+    englishWord.classList.add('active');
+  } else {
+    imageContainer.classList.remove('active');
+    audioButton.classList.remove('move');
+    englishWord.classList.remove('active');
+  }
+}
+
 export function isAnswerCorrect(event: Event) {
   let currentStep = Number(getLocalStorage(KeysWords.CurrentStep));
   const mainGameArray = getLocalStorage(KeysWords.MainGameArray);
@@ -102,6 +118,7 @@ export function isAnswerCorrect(event: Event) {
 
   if ((event.target as HTMLElement).classList.contains('btn-choice')) {
     console.log('text ------>', (event.target as HTMLElement).innerText);
+    showEnglishWord(true);
     if (mainGameArray[currentStep].word.wordTranslate === (event.target as HTMLElement).innerText) {
       soundCorrectAnswer();
       correctNum += 1;
@@ -121,12 +138,13 @@ export function isAnswerCorrect(event: Event) {
   }
 }
 
+
 export function fillNewStepGame() {
   const currentStep = Number(getLocalStorage(KeysWords.CurrentStep));
   const mainGameArray = getLocalStorage(KeysWords.MainGameArray);
   const buttonFiled = <HTMLElement>document.querySelector('.btn-field');
   buttonFiled.classList.remove('disabled');
-
+  showEnglishWord(false);
   if (currentStep >= mainGameArray.length) {
     sendStatistic();
     App(IdPages.AudioGameStatistic);

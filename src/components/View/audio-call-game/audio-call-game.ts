@@ -60,7 +60,7 @@ export function createAudioGame() {
   engWord.innerText = 'computer';
   createButtons(gameField, 5);
   const nextSkipBtn = createEl('button', gameField, ['next-skip-btn']);
-  nextSkipBtn.innerText = 'следующий';
+  nextSkipBtn.innerText = 'дальше';
   const buttonFiled = <HTMLElement>document.querySelector('.btn-field');
 
   setLocalStorage(KeysWords.CurrentStep, '0');
