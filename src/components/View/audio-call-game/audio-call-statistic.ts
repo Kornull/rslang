@@ -21,6 +21,16 @@ const statisticsUserWords: StatisticsUserWords = {
   },
 };
 
+const extraOptionUserWord: ExtraWordOption = {
+  difficulty: 'easy',
+  optional: {
+    gameGuessed: 0,
+    gameMistake: 0,
+    gameAllGuessWord: 0,
+    statusLearn: 'false',
+  },
+};
+
 const setLearnedUserWords = async (statisticsUser: StatisticsUserWords) => {
   await fetch(`${urlLink}users/${getLocalStorage(LocalKeys.UserData).userId}/statistics`, {
     method: 'PUT',
@@ -34,18 +44,18 @@ const setLearnedUserWords = async (statisticsUser: StatisticsUserWords) => {
 };
 
 export const getGuessSprintWords = async (boolean: boolean, lengthGuess: number) => {
-  const responce = await fetch(`${urlLink}users/${getLocalStorage(LocalKeys.UserData).userId}/statistics`, {
+  const response = await fetch(`${urlLink}users/${getLocalStorage(LocalKeys.UserData).userId}/statistics`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${getLocalStorage(LocalKeys.UserData).token}`,
       Accept: 'application/json',
     },
   });
-  if (responce.status === 404) {
+  if (response.status === 404) {
     statisticsUserWords.optional.sprintDayGuess = 1;
     setLearnedUserWords(statisticsUserWords);
   } else {
-    const res: StatisticsUserWords = await responce.json();
+    const res: StatisticsUserWords = await response.json();
     res.learnedWords = 1;
     if (!res.optional.sprintDayGuess && !res.optional.sprintAllDayWords && !res.optional.sprintMaxGuessed) {
       res.optional.sprintDayGuess = 1;
@@ -75,15 +85,63 @@ export const getGuessSprintWords = async (boolean: boolean, lengthGuess: number)
   }
 };
 
+async function userWords(wordId: string, params: object): Promise<void> {
+  await fetch(`${urlLink}users/${getLocalStorage(LocalKeys.UserData).userId}/words/${wordId}`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${getLocalStorage(LocalKeys.UserData).token}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(params),
+  });
+}
+
+const setUserWords = async (wordId: string, wordOption: object) => {
+  await fetch(`${urlLink}users/${getLocalStorage(LocalKeys.UserData).userId}/words/${wordId}`, {
+    method: 'PUT',
+    headers: {
+      Authorization: `Bearer ${getLocalStorage(LocalKeys.UserData).token}`,
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(wordOption),
+  });
+};
+
+const statusTrue = async (wordOption: ExtraWordOption, wordId: string) => {
+  wordOption.optional.gameGuessed += 1;
+  wordOption.optional.gameAllGuessWord += 1;
+  wordOption.optional.data = `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`;
+  if (wordOption.difficulty === 'easy' && wordOption.optional.gameGuessed >= 3) {
+    wordOption.optional.statusLearn = 'true';
+    setUserWords(wordId, { optional: wordOption.optional });
+  }
+  if (wordOption.difficulty === 'hard' && wordOption.optional.gameGuessed >= 5) {
+    wordOption.optional.statusLearn = 'true';
+    wordOption.difficulty = 'easy';
+  }
+  setUserWords(wordId, { optional: wordOption.optional });
+};
+
+const statusFalse = async (wordOption: ExtraWordOption, wordId: string) => {
+  wordOption.optional.gameMistake += 1;
+  wordOption.optional.data = `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`;
+  if (wordOption.optional.statusLearn === 'true') {
+    wordOption.optional.statusLearn = 'false';
+    wordOption.optional.gameGuessed = 0;
+  }
+  setUserWords(wordId, { optional: wordOption.optional });
+};
+
 export const getUserWord = async (wordId: string, status: boolean) => {
-  const responce = await fetch(`${urlLink}users/${user.userId}/words/${wordId}`, {
+  const response = await fetch(`${urlLink}users/${getLocalStorage(LocalKeys.UserData).userId}/words/${wordId}`, {
     method: 'GET',
     headers: {
-      Authorization: `Bearer ${user.token}`,
+      Authorization: `Bearer ${getLocalStorage(LocalKeys.UserData).token}`,
       Accept: 'application/json',
     },
   });
-  if (responce.status === 404) {
+  if (response.status === 404) {
     if (status) {
       extraOptionUserWord.optional.gameGuessed = 1;
       extraOptionUserWord.optional.gameMistake = 0;
@@ -97,11 +155,11 @@ export const getUserWord = async (wordId: string, status: boolean) => {
     }
     userWords(wordId, extraOptionUserWord);
   } else if (status) {
-    const wordOption: ExtraWordOption = await responce.json();
+    const wordOption: ExtraWordOption = await response.json();
 
     statusTrue(wordOption, wordId);
   } else {
-    const wordOption: ExtraWordOption = await responce.json();
+    const wordOption: ExtraWordOption = await response.json();
 
     statusFalse(wordOption, wordId);
   }
