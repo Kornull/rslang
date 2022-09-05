@@ -1,18 +1,17 @@
-/* eslint-disable @typescript-eslint/no-use-before-define */
+/* eslint-disable object-curly-newline */
+/* eslint-disable import/no-cycle */
 import './_sprint.scss';
 import { body, main } from '../../Templates/main-block';
 import { createEl } from '../../Controller/createTagBlock';
-// eslint-disable-next-line object-curly-newline, import/no-cycle
-import { Click, createAudioButton, createStaticticSprint, examEvent, mixWords } from './sprint-game.utils';
-import { createAllListWords } from '../../Controller/sprint-game/get-words-to-sprint';
-// eslint-disable-next-line import/no-cycle
+import { ClickSprint, createAudioButton, createStaticticSprint, examEvent, mixWords } from './sprint-game.utils';
 import { App } from '../../App/App';
 import { IdPages } from '../../Types/types';
+import { loading } from '../../Templates/loading';
 
 const listBurger = <HTMLElement>document.querySelector('#header-menu');
 const header = document.querySelector('.header') as HTMLElement;
 enum TitleSprint {
-  SprintPerulation = '<span>Правила игры</span> очень просты: вам нужно дать ответ -  совпадает или нет предложенный перевод слова',
+  SprintPerulation = '<span>Правила игры</span> очень просты: вам нужно дать ответ -  совпадает или нет предложенный перевод слова.<br>Играть можно мышкой или стрелками "влево"/"вправо"',
   PreButton = 'Для старта игры выберите уровень сложности',
 }
 
@@ -25,13 +24,11 @@ export enum CountButtons {
 function createButtons(el: HTMLElement, count: number): void {
   for (let i = 1; i < count + 1; i++) {
     if (count > CountButtons.Two) {
-      const btnSection = <HTMLLinkElement>createEl('a', el, ['sprint__btn-group']);
-      btnSection.id = `words-${i}`;
+      const btnSection = <HTMLLinkElement>createEl('a', el, ['sprint__btn-group'], { id: `words-${i}` });
       btnSection.href = '#sprint-page';
       btnSection.innerHTML = `${i}`;
     } else {
-      const btnsChoice = <HTMLElement>createEl('button', el, [`game__btns-choise--${i % count === 0}`]);
-      btnsChoice.id = `word-${i % count === 0}`;
+      const btnsChoice = <HTMLElement>createEl('button', el, [`game__btns-choise--${i % count === 0}`], { id: `word-${i % count === 0}` });
       if (i % count === 0) {
         btnsChoice.innerHTML = 'Yes';
       } else {
@@ -51,11 +48,10 @@ function createDotteds(block: HTMLDivElement) {
 
 export const createSprintGame = () => {
   main.innerHTML = '';
-  const sprintPage = <HTMLDivElement>createEl('div', main, ['sprint', 'sprint__page']);
-  sprintPage.id = 'sprint-page';
+  const sprintPage = <HTMLDivElement>createEl('div', main, ['sprint', 'sprint__page'], { id: 'sprint-page' });
   const blockGame = <HTMLElement>createEl('div', sprintPage, ['sprint__game', 'game']);
   const timer = <HTMLElement>createEl('div', blockGame, ['game__timer']);
-  timer.innerHTML = '0:30';
+  timer.innerHTML = '1:00';
   const audioButton = <HTMLElement>createEl('div', blockGame, ['game__audio', 'sound-on']);
   audioButton.style.backgroundImage = 'url(./assets/img/sound-on.png)';
   audioButton.style.backgroundImage = 'url(./assets/img/sound-on.png)';
@@ -63,14 +59,12 @@ export const createSprintGame = () => {
   <HTMLImageElement>createEl('img', wordsimg, ['game__img'], { id: 'game-img' });
   const sprintDotted = <HTMLDivElement>createEl('div', blockGame, ['game__dotted']);
   const wordsSprint = <HTMLElement>createEl('div', blockGame, ['game__words']);
-  const sprintWordEn = <HTMLElement>createEl('div', wordsSprint, ['game__word-en']);
-  const sprintWordRu = <HTMLElement>createEl('div', wordsSprint, ['game__word-ru']);
+  <HTMLElement>createEl('div', wordsSprint, ['game__word-en'], { id: 'word-en' });
+  <HTMLElement>createEl('div', wordsSprint, ['game__word-ru'], { id: 'word-ru' });
   const choiceButtons = <HTMLElement>createEl('div', blockGame, ['game__btns-choise']);
-  sprintWordEn.id = 'word-en';
-  sprintWordRu.id = 'word-ru';
   createDotteds(sprintDotted);
   createButtons(choiceButtons, CountButtons.Two);
-  let time = 29;
+  let time = 59;
   createAudioButton(audioButton);
   const runTimer = setInterval(() => {
     const hash = window.location.hash.slice(1);
@@ -97,25 +91,9 @@ export const createSprintGame = () => {
   mixWords(blockGame, arrayDotted);
 };
 
-function loading(): void {
-  main.innerHTML = '';
-  const sprintPreloadPage = <HTMLElement>createEl('div', main, ['sprint', 'sprint__game-preload']);
-  <HTMLElement>createEl('div', sprintPreloadPage, ['spinner']);
-  const timeSleep = setTimeout(() => {
-    App(IdPages.SprintID);
-  }, 7000);
-  header.addEventListener('click', (ev) => {
-    const message = ev.target as HTMLElement;
-    if (message.id === 'logo' || message.classList[0] === 'header__nav-link') {
-      clearTimeout(timeSleep);
-    }
-  });
-}
-
 export function createPreSprintGamePage(): HTMLElement {
   main.innerHTML = '';
-  const sprintPreloadPage = <HTMLElement>createEl('div', main, ['sprint', 'sprint__game-preload']);
-  sprintPreloadPage.id = 'preload-sprint';
+  const sprintPreloadPage = <HTMLElement>createEl('div', main, ['sprint', 'sprint__game-preload'], { id: 'preload-sprint' });
   const titleSprint = <HTMLElement>createEl('h1', sprintPreloadPage, ['sprint__title']);
   titleSprint.innerHTML = TitleSprint.PreButton;
   sprintPreloadPage.addEventListener('click', (ev: Event) => {
@@ -124,9 +102,8 @@ export function createPreSprintGamePage(): HTMLElement {
     const classBlock = message.classList;
     if (classBlock[0] === 'sprint__btn-group') {
       ev.preventDefault();
-      createAllListWords(Number(id.split('').slice(-1)) - 1);
-      loading();
-      Click(Number(id.split('').slice(-1)) - 1);
+      loading(IdPages.SprintID);
+      ClickSprint(Number(id.split('').slice(-1)) - 1);
     }
   });
   body.onkeydown = (ev: KeyboardEvent) => {
@@ -135,9 +112,8 @@ export function createPreSprintGamePage(): HTMLElement {
     } else {
       const group = examEvent(ev);
       if (group !== undefined) {
-        createAllListWords(group);
-        loading();
-        Click(group);
+        loading(IdPages.SprintID);
+        ClickSprint(group);
       }
     }
   };

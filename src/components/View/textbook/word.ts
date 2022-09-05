@@ -1,10 +1,56 @@
+/* eslint-disable no-case-declarations */
 import User from '../../Controller/authorization/user';
-import { getStorage } from '../../Controller/storage';
+import { getAllUserlearnWords } from '../../Controller/sprint-game/get-words-to-sprint';
+import { getLocalStorage, getStorage } from '../../Controller/storage';
 import { createWordUser, updateWordUser } from '../../Controller/textbook/textbook';
-import { Word, WordValue } from '../../Types/word';
+import { urlLink } from '../../Templates/serve';
+// eslint-disable-next-line object-curly-newline
+import { ExtraWordOption, LocalKeys, PageKey, UserStat } from '../../Types/types';
+import { Word } from '../../Types/word';
 import { COUNT_GROUP } from './util';
 
-function createParamUserWord(cardWord: HTMLElement): WordValue {
+const userLog: UserStat = getLocalStorage(LocalKeys.UserData);
+
+const getuserWord = async (group: number, page: number, word: string) => {
+  let idword = '';
+  const res = await fetch(`${urlLink}words/?group=${group}&&page=${page}`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${userLog.token}`,
+      Accept: 'application/json',
+    },
+  });
+  const a = await res.json();
+  a.forEach((element: Word) => {
+    if (element.word === word) {
+      idword = element.id;
+    }
+  });
+  return idword;
+};
+
+const userCheckWord = async (id: string) => {
+  const res = await fetch(`${urlLink}users/${userLog.userId}/aggregatedWords/${id}`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${userLog.token}`,
+      Accept: 'application/json',
+    },
+  });
+  const a = await res.json();
+  return a;
+};
+
+async function createParamUserWord(cardWord: HTMLElement) {
+  let idWord = '';
+  const wordPage = Number(getLocalStorage(PageKey.numPage));
+  const wordGroup = Number(getLocalStorage(PageKey.numGroup));
+  const word = cardWord.querySelector('h3')?.innerHTML.split(' ');
+  if (word !== undefined) {
+    idWord = await getuserWord(wordGroup, wordPage, word[0]);
+  }
+  const arrObj = await userCheckWord(idWord);
+  const wordObj = arrObj[0];
   const isLearnedWord = cardWord.getAttribute('data-WordLearned');
   if (isLearnedWord === 'true') {
     cardWord.classList.remove('cardLearned');
@@ -12,7 +58,10 @@ function createParamUserWord(cardWord: HTMLElement): WordValue {
     return {
       difficulty: 'easy',
       optional: {
-        statuslearn: 'false',
+        gameGuessed: wordObj.userWord.optional.gameGuessed,
+        gameMistake: wordObj.userWord.optional.gameMistake,
+        gameAllGuessWord: wordObj.userWord.optional.gameAllGuessWord,
+        statusLearn: 'false',
       },
     };
   }
@@ -23,76 +72,221 @@ function createParamUserWord(cardWord: HTMLElement): WordValue {
     cardWord.classList.remove('cardHard');
     cardWord.setAttribute('data-WordHard', 'false');
   }
+  if (wordObj.userWord === undefined) {
+    return {
+      difficulty: 'easy',
+      optional: {
+        gameGuessed: 0,
+        gameMistake: 0,
+        gameAllGuessWord: 0,
+        statusLearn: 'true',
+        dataLearn: `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`,
+      },
+    };
+  }
   return {
     difficulty: 'easy',
     optional: {
-      statuslearn: 'true',
+      gameGuessed: wordObj.userWord.optional.gameGuessed,
+      gameMistake: wordObj.userWord.optional.gameMistake,
+      gameAllGuessWord: wordObj.userWord.optional.gameAllGuessWord,
+      statusLearn: 'true',
+      dataLearn: `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`,
     },
   };
 }
 
-export function updateLearnWord(wordValue: Word, cardWord: HTMLElement, user: User) {
+export async function updateLearnWord(wordValue: Word, cardWord: HTMLElement, user: User) {
+  const currentGroup: string = getStorage('currentGroup', '0');
   const isWordUser = cardWord.getAttribute('data-wordUser');
   if (isWordUser === 'true') {
-    const wordVal = createParamUserWord(cardWord);
+    const wordVal = await createParamUserWord(cardWord);
     updateWordUser(user, wordValue.id, wordVal);
+    getAllUserlearnWords();
   } else {
-    const wordVal: WordValue = {
-      difficulty: 'easy',
-      optional: {
-        statuslearn: 'true',
-      },
-    };
-    createWordUser(user, wordValue.id, wordVal);
-    cardWord.setAttribute('data-wordUser', 'true');
-    cardWord.setAttribute('data-WordLearned', 'true');
-    cardWord.classList.add('cardLearned');
+    const d = await userCheckWord(wordValue.id);
+    const wordObj = d[0];
+    switch (typeof wordObj.userWord) {
+      case 'undefined':
+        const wordVal1: ExtraWordOption = {
+          difficulty: 'easy',
+          optional: {
+            gameGuessed: 0,
+            gameMistake: 0,
+            gameAllGuessWord: 0,
+            statusLearn: 'true',
+            dataLearn: `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`,
+          },
+        };
+        createWordUser(user, wordValue.id, wordVal1);
+        cardWord.setAttribute('data-wordUser', 'true');
+        cardWord.setAttribute('data-WordLearned', 'true');
+        cardWord.setAttribute('data-WordHard', 'false');
+        cardWord.classList.add('cardLearned');
+        getAllUserlearnWords();
+        break;
+      case 'object':
+        const wordVal2: ExtraWordOption = {
+          difficulty: 'easy',
+          optional: {
+            gameGuessed: wordObj.userWord.optional.gameGuessed,
+            gameMistake: wordObj.userWord.optional.gameMistake,
+            gameAllGuessWord: wordObj.userWord.optional.gameAllGuessWord,
+            statusLearn: 'false',
+          },
+        };
+        updateWordUser(user, wordValue.id, wordVal2);
+        cardWord.setAttribute('data-wordUser', 'true');
+        cardWord.setAttribute('data-WordLearned', 'true');
+        getAllUserlearnWords();
+        break;
+      default:
+        break;
+    }
   }
   cardWord.classList.remove('cardHard');
   cardWord.setAttribute('data-WordHard', 'false');
-  const currentGroup: string = getStorage('currentGroup', '0');
   if (Number(currentGroup) === COUNT_GROUP) {
     cardWord.classList.add('display-none');
   }
 }
 
-export function updateHardWord(wordValue: Word, cardWord: HTMLElement, user: User) {
+export async function updateHardWord(wordValue: Word, cardWord: HTMLElement, user: User) {
+  const d = await userCheckWord(wordValue.id);
+  const wordObj = d[0];
   const isWordUser = cardWord.getAttribute('data-wordUser');
   const currentGroup: string = getStorage('currentGroup', '0');
   if (isWordUser === 'true') {
+    if (wordObj.userWord === undefined) {
+      if (cardWord.getAttribute('data-WordHard') !== 'true') {
+        const wordVal: ExtraWordOption = {
+          difficulty: 'hard',
+          optional: {
+            gameGuessed: 0,
+            gameMistake: 0,
+            gameAllGuessWord: 0,
+            statusLearn: 'false',
+          },
+        };
+        createWordUser(user, wordValue.id, wordVal);
+        getAllUserlearnWords();
+      } else if (Number(currentGroup) === COUNT_GROUP) {
+        const wordVal: ExtraWordOption = {
+          difficulty: 'easy',
+          optional: {
+            gameGuessed: wordObj.userWord.optional.gameGuessed,
+            gameMistake: wordObj.userWord.optional.gameMistake,
+            gameAllGuessWord: wordObj.userWord.optional.gameAllGuessWord,
+            statusLearn: 'false',
+          },
+        };
+        updateWordUser(user, wordValue.id, wordVal);
+        getAllUserlearnWords();
+      } else {
+        const wordVal: ExtraWordOption = {
+          difficulty: 'hard',
+          optional: {
+            gameGuessed: wordObj.userWord.optional.gameGuessed,
+            gameMistake: wordObj.userWord.optional.gameMistake,
+            gameAllGuessWord: wordObj.userWord.optional.gameAllGuessWord,
+            statusLearn: 'false',
+          },
+        };
+        updateWordUser(user, wordValue.id, wordVal);
+        cardWord.setAttribute('data-wordUser', 'true');
+        getAllUserlearnWords();
+      }
+      if (Number(currentGroup) === COUNT_GROUP) {
+        cardWord.classList.add('display-none');
+      } else {
+        cardWord.setAttribute('data-WordHard', 'true');
+        cardWord.setAttribute('data-WordLearned', 'false');
+        cardWord.classList.add('cardHard');
+        cardWord.classList.remove('cardLearned');
+        getAllUserlearnWords();
+      }
+    } else if (wordObj.userWord !== undefined) {
+      if (cardWord.getAttribute('data-WordHard') !== 'true') {
+        const wordVal: ExtraWordOption = {
+          difficulty: 'hard',
+          optional: {
+            gameGuessed: wordObj.userWord.optional.gameGuessed,
+            gameMistake: wordObj.userWord.optional.gameMistake,
+            gameAllGuessWord: wordObj.userWord.optional.gameAllGuessWord,
+            statusLearn: 'false',
+          },
+        };
+        updateWordUser(user, wordValue.id, wordVal);
+        getAllUserlearnWords();
+      } else if (Number(currentGroup) === COUNT_GROUP) {
+        const wordVal: ExtraWordOption = {
+          difficulty: 'easy',
+          optional: {
+            gameGuessed: wordObj.userWord.optional.gameGuessed,
+            gameMistake: wordObj.userWord.optional.gameMistake,
+            gameAllGuessWord: wordObj.userWord.optional.gameAllGuessWord,
+            statusLearn: 'false',
+          },
+        };
+        updateWordUser(user, wordValue.id, wordVal);
+        getAllUserlearnWords();
+      } else {
+        const wordVal: ExtraWordOption = {
+          difficulty: 'hard',
+          optional: {
+            gameGuessed: wordObj.userWord.optional.gameGuessed,
+            gameMistake: wordObj.userWord.optional.gameMistake,
+            gameAllGuessWord: wordObj.userWord.optional.gameAllGuessWord,
+            statusLearn: 'false',
+          },
+        };
+        updateWordUser(user, wordValue.id, wordVal);
+        cardWord.setAttribute('data-wordUser', 'true');
+        getAllUserlearnWords();
+      }
+      if (Number(currentGroup) === COUNT_GROUP) {
+        cardWord.classList.add('display-none');
+        cardWord.classList.remove('cardHard');
+      } else {
+        cardWord.setAttribute('data-WordHard', 'true');
+        cardWord.setAttribute('data-WordLearned', 'false');
+        cardWord.classList.add('cardHard');
+        cardWord.classList.remove('cardLearned');
+      }
+    }
+  } else if (wordObj.userWord === undefined) {
     if (cardWord.getAttribute('data-WordHard') !== 'true') {
-      const wordVal: WordValue = {
+      const wordVal: ExtraWordOption = {
         difficulty: 'hard',
         optional: {
-          statuslearn: 'false',
+          gameGuessed: 0,
+          gameMistake: 0,
+          gameAllGuessWord: 0,
+          statusLearn: 'false',
         },
       };
-      updateWordUser(user, wordValue.id, wordVal);
-    } else if (Number(currentGroup) === COUNT_GROUP) {
-      const wordVal: WordValue = {
-        difficulty: 'easy',
-        optional: {
-          statuslearn: 'false',
-        },
-      };
-      updateWordUser(user, wordValue.id, wordVal);
+      createWordUser(user, wordValue.id, wordVal);
+      cardWord.setAttribute('data-WordHard', 'true');
+      cardWord.setAttribute('data-WordLearned', 'false');
+      cardWord.classList.add('cardHard');
+      cardWord.classList.remove('cardLearned');
+      getAllUserlearnWords();
     }
   } else {
-    const wordVal: WordValue = {
+    const wordVal: ExtraWordOption = {
       difficulty: 'hard',
       optional: {
-        statuslearn: 'false',
+        gameGuessed: wordObj.userWord.optional.gameGuessed,
+        gameMistake: wordObj.userWord.optional.gameMistake,
+        gameAllGuessWord: wordObj.userWord.optional.gameAllGuessWord,
+        statusLearn: 'false',
       },
     };
-    createWordUser(user, wordValue.id, wordVal);
-    cardWord.setAttribute('data-wordUser', 'true');
-  }
-  if (Number(currentGroup) === COUNT_GROUP) {
-    cardWord.classList.add('display-none');
-  } else {
+    updateWordUser(user, wordValue.id, wordVal);
     cardWord.setAttribute('data-WordHard', 'true');
     cardWord.setAttribute('data-WordLearned', 'false');
     cardWord.classList.add('cardHard');
     cardWord.classList.remove('cardLearned');
+    getAllUserlearnWords();
   }
 }

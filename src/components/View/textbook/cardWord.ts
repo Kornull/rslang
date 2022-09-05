@@ -1,7 +1,9 @@
 import User from '../../Controller/authorization/user';
 import { getLocalStorage, setStorage } from '../../Controller/storage';
 import { getAggregateWordsUser, getListHardWord, getListWords } from '../../Controller/textbook/textbook';
+import { main } from '../../Templates/main-block';
 import { urlLink } from '../../Templates/serve';
+import { PageKey } from '../../Types/types';
 import { Word, WordAggregated } from '../../Types/word';
 import { createEl } from '../create_element';
 import { COUNT_GROUP } from './util';
@@ -29,7 +31,7 @@ function createButtonAudio(wordValue: Word): SVGSVGElement {
   return audioImg;
 }
 
-export async function renderCardWord(wordValue: Word, type: string): Promise<HTMLDivElement> {
+export async function renderCardWord(wordValue: Word, type: string, gameAllGuessWord: number, gameMistake: number): Promise<HTMLDivElement> {
   const cardWord = <HTMLDivElement>createEl('div', undefined, ['cardWord', `group-${wordValue.group + 1}`], { id: `cardWord-${wordValue.id}` });
   const multimedia = <HTMLDivElement>createEl('div', cardWord, ['multimediaBlock']);
   const imgBlock = <HTMLDivElement>createEl('div', multimedia, ['imgBlock']);
@@ -57,7 +59,25 @@ export async function renderCardWord(wordValue: Word, type: string): Promise<HTM
     }
   }
   const word = <HTMLDivElement>createEl('div', cardWord, ['word']);
-  const wordLang = createEl('h3', word, ['h3']);
+  const wordBlock = <HTMLDivElement>createEl('div', word, ['wordBlock']);
+  const wordLang = createEl('h3', wordBlock, ['h3']);
+  if (user.userId && (gameAllGuessWord || gameMistake)) {
+    const wordGame = <HTMLDivElement>createEl('div', wordBlock, ['wordGameImg']);
+    const imgGuessed = <HTMLDivElement>createEl('div', wordGame, ['wordGameImgGuessed']);
+    const wordGameGuessed = <SVGSVGElement>document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    wordGameGuessed.classList.add('imgWordGame');
+    wordGameGuessed.innerHTML = '<use xlink:href="./assets/img/guessed.svg#guessed"></use>';
+    imgGuessed.append(wordGameGuessed);
+    const countGuessed = <HTMLSpanElement>createEl('span', imgGuessed, ['wordBlockCount']);
+    countGuessed.innerHTML = String(gameAllGuessWord);
+    const imgMistake = <HTMLDivElement>createEl('div', wordGame, ['wordGameImgGuessed']);
+    const wordGameMistake = <SVGSVGElement>document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    wordGameMistake.classList.add('imgWordGame');
+    wordGameMistake.innerHTML = '<use xlink:href="./assets/img/mistake.svg#mistake"></use>';
+    imgMistake.append(wordGameMistake);
+    const countMistake = <HTMLSpanElement>createEl('span', imgMistake, ['wordGameImgGuessed']);
+    countMistake.innerHTML = String(gameMistake);
+  }
   wordLang.innerHTML = `${wordValue.word} (${wordValue.wordTranslate})`;
   const wordTranscript = createEl('h4', word, ['h4']);
   wordTranscript.innerHTML = `${wordValue.transcription}`;
@@ -76,7 +96,7 @@ export async function renderCardsNoAutorizedUser(currentGroup: string, currentPa
   let cardWord: HTMLDivElement;
   const listWords: Word[] = await getListWords(+currentGroup, +currentPage);
   listWords.forEach(async (item) => {
-    cardWord = await renderCardWord(item, '');
+    cardWord = await renderCardWord(item, '', 0, 0);
     wrapperPageTextbook.append(cardWord);
   });
 }
@@ -91,6 +111,7 @@ export async function renderCardsAutorizedUser(currentGroup: string, currentPage
   } catch {
     setStorage('userDataBasic', '{}');
     const buttonGroup = <HTMLElement>document.querySelector('#group-7');
+
     buttonGroup.classList.add('display-none');
     const gameLinks = <HTMLElement>document.querySelector('.game__links');
     gameLinks.classList.add('display-none');
@@ -118,19 +139,27 @@ export async function renderCardsAutorizedUser(currentGroup: string, currentPage
     let type = '';
     if (item.userWord) {
       if (item.userWord.difficulty === 'hard') type = 'hard';
-      else if (item.userWord.difficulty === 'easy' && item.userWord.optional?.statuslearn === 'true') {
+      else if (item.userWord.difficulty === 'easy' && item.userWord.optional.statusLearn === 'true') {
         type = 'learned';
       }
     }
-    cardWord = await renderCardWord(word, type);
+    const gameAllGuessWord: number = item.userWord?.optional.gameAllGuessWord ? item.userWord?.optional.gameAllGuessWord : 0;
+    const gameMistake: number = item.userWord?.optional.gameMistake ? item.userWord?.optional.gameMistake : 0;
+    cardWord = await renderCardWord(word, type, gameAllGuessWord, gameMistake);
     if (item.userWord) {
       cardWord.setAttribute('data-wordUser', 'true');
       if (item.userWord.difficulty === 'hard') {
         cardWord.setAttribute('data-WordHard', 'true');
-      } else if (item.userWord.difficulty === 'easy' && item.userWord.optional?.statuslearn === 'true') {
+      } else if (item.userWord.difficulty === 'easy' && item.userWord.optional.statusLearn === 'true') {
         cardWord.setAttribute('data-WordLearned', 'true');
       }
     }
     wrapperPageTextbook.append(cardWord);
   });
+  const numberGroup = getLocalStorage(PageKey.numGroup);
+  if (numberGroup === '6') {
+    const mainWrap = <HTMLElement>main.querySelector('#wrapper-page-textbook');
+    const textGroupHard = <HTMLElement>createEl('h1', mainWrap, ['title__group']);
+    textGroupHard.innerHTML = 'Сложные слова / Hard words';
+  }
 }

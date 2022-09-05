@@ -1,9 +1,14 @@
+/* eslint-disable import/no-cycle */
 import { createEl } from '../create_element';
 import { getLocalStorage, getStorage, setStorage } from '../../Controller/storage';
 import './_textbook.scss';
 import User from '../../Controller/authorization/user';
 import { renderCardsAutorizedUser, renderCardsNoAutorizedUser } from './cardWord';
 import { COUNT_GROUP, COUNT_PAGE_GROUP } from './util';
+import { IdPages } from '../../Types/types';
+import { ClickSprint } from '../sprint-game/sprint-game.utils';
+import { loading } from '../../Templates/loading';
+import { setLocalStorage } from '../../Controller/sprint-game/storage/storage-set-kornull';
 
 export async function renderPageTextbook() {
   const currentGroup: string = getStorage('currentGroup', '0');
@@ -106,6 +111,7 @@ function createMainTextbook() {
   const paginationTextbook = renderPaginationButton();
   mainTextbook.append(paginationTextbook);
   createEl('div', mainTextbook, ['page-textbook'], { id: 'page-textbook' });
+
   return mainTextbook;
 }
 
@@ -114,23 +120,47 @@ function renderLinkGroup(): HTMLDivElement {
   const groupLinkBlock = <HTMLDivElement>createEl('div', linkGroup, ['group__buttons']);
   const user: User = getLocalStorage('userDataBasic');
   const countGroup = user.userId ? COUNT_GROUP + 1 : COUNT_GROUP;
+
   for (let i = 1; i <= countGroup; i++) {
     const currentLinkGroup = <HTMLButtonElement>createEl('button', groupLinkBlock, ['group__link', `group-${i}`], { id: `group-${i}` });
     currentLinkGroup.innerText = String(i);
-    currentLinkGroup.addEventListener('click', () => {
+    if (getLocalStorage('btnActive')) {
+      const a = getLocalStorage('btnActive');
+      if (currentLinkGroup.id === a[0]) currentLinkGroup.classList.add('active');
+    } else {
+      // eslint-disable-next-line no-lonely-if
+      if (i === 1) currentLinkGroup.classList.add('active');
+    }
+    currentLinkGroup.addEventListener('click', (ev) => {
+      const allButtons = groupLinkBlock.querySelectorAll('.group__link');
+      allButtons.forEach((el) => {
+        el.classList.remove('active');
+      });
+      const btnActive = ev.target as HTMLElement;
+      btnActive.classList.add('active');
       const currentPage = 0;
+      setLocalStorage('btnActive', [btnActive.id, 'active']);
       setStorage('currentGroup', String(i - 1));
       setStorage('currentPage', String(currentPage));
       updateButtonPagination(currentPage);
       drawPageTextbook();
     });
   }
+
   const gameLink = <HTMLDivElement>createEl('div', linkGroup, ['game__links']);
-  const sprint = <HTMLDivElement>createEl('div', gameLink, ['game__links-sprint', 'game__link'], { id: 'sprint-page' });
-  const audioGame = <HTMLDivElement>createEl('div', gameLink, ['game__links-audio', 'game__link'], { id: 'audiogame-page' });
+  const sprint = <HTMLButtonElement>createEl('button', gameLink, ['game__links-sprint', 'game__link'], { id: 'sprint-page' });
+  const audioGame = <HTMLButtonElement>createEl('button', gameLink, ['game__links-audio', 'game__link'], { id: 'audiogame-page' });
   sprint.innerHTML = 'Sprint';
   audioGame.innerHTML = 'Audio-game';
-
+  gameLink.addEventListener('click', (ev) => {
+    const message = ev.target as HTMLElement;
+    const group = Number(getLocalStorage('currentGroup'));
+    const page = Number(getLocalStorage('currentPage'));
+    if (message.id === IdPages.SprintID) {
+      ClickSprint(group, page);
+      loading(IdPages.SprintID);
+    }
+  });
   return linkGroup;
 }
 
@@ -150,4 +180,10 @@ export function createPage(): void {
   const pageNumber: number = +getStorage('currentPage', '0');
   updateButtonPagination(pageNumber);
   drawPageTextbook();
+  // eslint-disable-next-line no-restricted-globals
+  if (isNaN(Number(getLocalStorage('currentPage')))) {
+    setLocalStorage('btnActive', ['group-1', 'active']);
+    setStorage('currentGroup', '0');
+    setStorage('currentPage', '0');
+  }
 }

@@ -8,7 +8,6 @@ import { toggleButtons, signInRequest, closePopup } from '../../Controller/autho
 import { getLocalStorage } from '../../Controller/sprint-game/storage/storage-set-kornull';
 import { LocalKeys } from '../../Types/types';
 
-
 function createLabel(inputType: string, inputName: string, classNames: string[], text: string, parent: HTMLElement, disabled: boolean): HTMLElement {
   const label = document.createElement('label');
   if (disabled) {
