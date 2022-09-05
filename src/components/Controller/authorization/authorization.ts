@@ -24,7 +24,7 @@ export function toggleButtons(element: Element): void {
 export function closePopup(): void {
   const popup = document.querySelector('.popup__bg');
   popup?.remove();
-  App(getLocalStorage('userPageNow'));
+  document.location.reload();
 }
 
 function showMessage(message: string): void {
