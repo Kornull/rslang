@@ -10,6 +10,7 @@ import { getLocalStorage, setLocalStorage } from '../Controller/sprint-game/stor
 
 import createPopup from '../View/authorization-page/authorization-page';
 import User from '../Controller/authorization/user';
+import { createStatisticPage } from '../View/statistic/statistic';
 import { notWords } from '../View/sprint-game/sprint-game.utils';
 
 export const appUser = new User();
@@ -37,6 +38,9 @@ export function App(idPage: string | null): void {
         break;
       case IdPages.BookID:
         createPage();
+        break;
+      case IdPages.StatisticId:
+        createStatisticPage();
         break;
       case IdPages.NoWords:
         notWords();
@@ -71,5 +75,5 @@ window.addEventListener('hashchange', () => {
   const hash = window.location.hash.slice(1);
   setTimeout(() => {
     App(hash);
-  });
+  }, 100);
 });
