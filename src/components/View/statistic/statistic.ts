@@ -80,7 +80,9 @@ export async function createStatisticPage() {
     statistic.append(audioStat);
     const sprintStat: HTMLElement = createStatisticItem(titleStatistic[1], rowStatistic, sprintResult);
     statistic.append(sprintStat);
-    const percentTrue: number = Math.round(((audioResult[0] + sprintResult[0]) / (audioResult[3] + sprintResult[3])) * 100);
+    const sumDayGuess: number = (audioResult[0] ? audioResult[0] : 0) + (sprintResult[0] ? sprintResult[0] : 0);
+    const sumAllDayWords: number = (audioResult[3] ? audioResult[3] : 0) + (sprintResult[3] ? sprintResult[3] : 0);
+    const percentTrue: number = sumAllDayWords ? Math.round((sumDayGuess / sumAllDayWords) * 100) : 0;
     const wordsStat: HTMLElement = createStatisticItem(titleStatistic[2], rowStatisticWords, [
       audioResult[0] + sprintResult[0],
       countLernWords,
