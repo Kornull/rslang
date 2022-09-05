@@ -24,36 +24,34 @@ export function App(idPage: string | null): void {
     } else {
       footer.style.display = 'flex';
     }
-    if (idPage !== 'title-team') {
-      switch (idPage) {
-        case IdPages.MainID:
-          createMainPage();
-          break;
-        case IdPages.PreloaSprintID:
-          createPreSprintGamePage();
-          break;
-        case IdPages.SprintID:
-          createSprintGame();
-          break;
-        case IdPages.SprintStatiD:
-          statisticGame();
-          break;
-        case IdPages.BookID:
-          createPage();
-          break;
-        case IdPages.StatisticId:
-          createStatisticPage();
-          break;
-        case IdPages.NoWords:
-          notWords();
-          break;
-        default:
-          break;
-      }
-      window.location.hash = idPage;
-
-      setLocalStorage(PageKey.userPage, idPage);
+    switch (idPage) {
+      case IdPages.MainID:
+        createMainPage();
+        break;
+      case IdPages.PreloaSprintID:
+        createPreSprintGamePage();
+        break;
+      case IdPages.SprintID:
+        createSprintGame();
+        break;
+      case IdPages.SprintStatiD:
+        statisticGame();
+        break;
+      case IdPages.BookID:
+        createPage();
+        break;
+      case IdPages.StatisticId:
+        createStatisticPage();
+        break;
+      case IdPages.NoWords:
+        notWords();
+        break;
+      default:
+        break;
     }
+    window.location.hash = idPage;
+
+    setLocalStorage(PageKey.userPage, idPage);
   } else {
     App(IdPages.MainID);
   }
