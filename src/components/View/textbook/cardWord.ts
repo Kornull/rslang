@@ -1,12 +1,15 @@
 import User from '../../Controller/authorization/user';
-import { getLocalStorage, setStorage } from '../../Controller/storage';
+import { getLocalStorage, getStorage, setStorage } from '../../Controller/storage';
 import { getAggregateWordsUser, getListHardWord, getListWords } from '../../Controller/textbook/textbook';
 import { main } from '../../Templates/main-block';
 import { urlLink } from '../../Templates/serve';
 import { PageKey } from '../../Types/types';
 import { Word, WordAggregated } from '../../Types/word';
 import { createEl } from '../create_element';
+// eslint-disable-next-line import/no-cycle
+import { updateButtonPagination } from './textbook';
 import { COUNT_GROUP } from './util';
+// eslint-disable-next-line import/no-cycle
 import { updateHardWord, updateLearnWord } from './word';
 
 function createButtonAudio(wordValue: Word): SVGSVGElement {
@@ -45,11 +48,19 @@ export async function renderCardWord(wordValue: Word, type: string, gameAllGuess
     imgLearn.classList.add('imgLearn');
     imgLearn.innerHTML = '<use xlink:href="./assets/img/checkmark.svg#check"></use>';
     buttonAdd.append(imgLearn);
-    imgLearn.addEventListener('click', () => updateLearnWord(wordValue, cardWord, user));
+    imgLearn.addEventListener('click', async () => {
+      await updateLearnWord(wordValue, cardWord, user);
+      const currentPage = Number(getStorage('currentPage', '0'));
+      await updateButtonPagination(currentPage);
+    });
     const imgHard = <SVGSVGElement>document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     imgHard.classList.add('imgHard');
     imgHard.innerHTML = '<use xlink:href="./assets/img/kettlebell.svg#kettlebell"></use>';
-    imgHard.addEventListener('click', () => updateHardWord(wordValue, cardWord, user));
+    imgHard.addEventListener('click', async () => {
+      await updateHardWord(wordValue, cardWord, user);
+      const currentPage = Number(getStorage('currentPage', '0'));
+      await updateButtonPagination(currentPage);
+    });
     buttonAdd.append(imgHard);
     if (type === 'learned') {
       cardWord.classList.add('cardLearned');
