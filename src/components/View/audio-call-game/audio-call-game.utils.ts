@@ -5,8 +5,22 @@ import { MainGameElement, NumberOf, KeysWords } from '../../Controller/audio-gam
 import { App } from '../../App/App';
 import { urlLink } from '../../Templates/serve';
 
-
+const audio = new Audio();
 let guessWordLengthGame = 0;
+
+function soundCorrectAnswer(): void {
+  audio.src = './assets/audio/correct.mp3';
+  setTimeout(() => {
+    audio.play();
+  });
+}
+
+function soundWrongAnswer(): void {
+  audio.src = './assets/audio/wrong3.mp3';
+  setTimeout(() => {
+    audio.play();
+  });
+}
 
 export function fillStatisticAudio(block: HTMLElement): void {
   const correctNum = Number(getLocalStorage(KeysWords.CorrectWord));
@@ -51,7 +65,9 @@ export function getMainGameArray(allListWords: WordSettings[]): MainGameElement[
         answersArray.push(currentAnswer);
       }
     } while (answersArray.length < NumberOf.answersOnPage);
-    result.push({ word: currentWord, falseWords: answersArray.sort(() => Math.random() - 0.5) });
+    console.log(answersArray);
+    answersArray.sort(() => Math.random() - 0.5);
+    result.push({ word: currentWord, falseWords: answersArray });
   }
   console.log('mainGameArray =', result);
   return result;
@@ -108,10 +124,11 @@ export function isAnswerCorrect(event: Event) {
 
   if ((event.target as HTMLElement).classList.contains('btn-choice')) {
     if (mainGameArray[currentStep].word.wordTranslate === (event.target as HTMLElement).innerText) {
-      console.log('------super win----------');
+      soundCorrectAnswer();
       correctNum += 1;
       guessedNum += 1;
     } else {
+      soundWrongAnswer();
       wrongNum += 1;
       guessedNum += 1;
     }

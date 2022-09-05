@@ -73,7 +73,6 @@ export function createAudioGamePreload() {
   setLocalStorage(KeysWords.CorrectWord, '0');
   setLocalStorage(KeysWords.WrongWord, '0');
   setLocalStorage(KeysWords.GuessedWord, '0');
-  console.log('--------------createAudioGamePreload--------------');
   main.innerHTML = '';
   const preloadAudioPage = <HTMLElement>createEl('div', main, ['audio-preload']);
   const preloadMessage = <HTMLElement>createEl('p', preloadAudioPage, ['preload-message']);
@@ -84,8 +83,6 @@ export function createAudioGamePreload() {
   preloadAudioPage.addEventListener('click', (event) => {
     const group = Number((event.target as HTMLElement).innerText) - 1;
     const message = event.target as HTMLElement;
-    console.log('messag =', message);
-    // const { id } = message;
     const classBlock = message.classList;
     if (classBlock[0] === 'btn-choice-group') {
       event.preventDefault();
