@@ -34,7 +34,7 @@ export type StatisticsUserWords = {
     sprintDayGuess: number;
     sprintAllDayWords: number;
     sprintMaxGuessed: number;
-    audiotDayGuess?: number;
+    audioDayGuess?: number;
     audioAllDayWords?: number;
     audioMaxGuessed?: number;
     'data-0'?: object;

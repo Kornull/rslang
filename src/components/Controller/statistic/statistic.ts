@@ -17,7 +17,7 @@ export async function getStatisticWords(user: User): Promise<StatisticsUserWords
         sprintDayGuess: 0,
         sprintAllDayWords: 0,
         sprintMaxGuessed: 0,
-        audiotDayGuess: 0,
+        audioDayGuess: 0,
         audioAllDayWords: 0,
         audioMaxGuessed: 0,
       },

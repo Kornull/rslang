@@ -1,14 +1,19 @@
 import './_audio-call.scss';
-import { main } from '../../Templates/main-block';
+import { body, main } from '../../Templates/main-block';
 import { createEl } from '../../Controller/createTagBlock';
 // eslint-disable-next-line import/no-cycle
-import { createListWords, createAllListWords, getMainGameArray } from '../../Controller/audio-game/audio-game';
+// import { createListWords, createAllListWords, getMainGameArray } from '../../Controller/audio-game/audio-game';
 import { IdPages } from '../../Types/types';
-import { fillStatisticAudio } from './audio-call-game.utils';
+// eslint-disable-next-line import/no-cycle
+import { fillStatisticAudio, ClickAudio, getMainGameArray } from './audio-call-game.utils';
 // eslint-disable-next-line import/no-cycle
 import { App } from '../../App/App';
 // eslint-disable-next-line import/no-cycle
 import { clickIdLink } from '../../Controller/burger/burger.utils';
+// eslint-disable-next-line import/no-cycle
+import { loading } from '../../Templates/loading';
+// eslint-disable-next-line import/no-cycle
+import { examEvent } from '../sprint-game/sprint-game.utils';
 
 enum TextPreloadAudioGame {
   gameHeader = 'Для старта игры выберите уровень сложности',
@@ -55,8 +60,8 @@ export function createAudioGame() {
   createButtons(gameField, 5);
   const nextSkipBtn = createEl('button', gameField, ['next-skip-btn']);
   nextSkipBtn.innerText = 'Следующий';
-  nextSkipBtn.addEventListener('click', getMainGameArray);
-  console.log(getMainGameArray());
+  // nextSkipBtn.addEventListener('click', getMainGameArray);
+  // console.log(getMainGameArray());
 }
 
 export function createAudioGamePreload() {
@@ -70,9 +75,27 @@ export function createAudioGamePreload() {
   gameRules.innerHTML = TextPreloadAudioGame.gameRules;
   preloadAudioPage.addEventListener('click', (event) => {
     const group = Number((event.target as HTMLElement).innerText) - 1;
-    createAllListWords(group);
-    App(IdPages.AudioGame);
+    const message = event.target as HTMLElement;
+    console.log('messag =', message);
+    // const { id } = message;
+    const classBlock = message.classList;
+    if (classBlock[0] === 'btn-choice-group') {
+      event.preventDefault();
+      loading(IdPages.AudioGame);
+      ClickAudio(group);
+    }
   });
+  body.onkeydown = (event: KeyboardEvent) => {
+    if (body.classList.contains('active') || event.repeat === true) {
+      event.stopPropagation();
+    } else {
+      const group = examEvent(event);
+      if (group !== undefined) {
+        loading(IdPages.SprintID);
+        ClickAudio(group);
+      }
+    }
+  };
   // createAllListWords(2, 1);
   // console.log(localStorage.getItem('allListWords'));
   // console.log(getGuessSprintWords(true, 2));

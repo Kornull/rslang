@@ -48,7 +48,7 @@ export async function createStatisticPage() {
           sprintDayGuess: 0,
           sprintAllDayWords: 0,
           sprintMaxGuessed: 0,
-          audiotDayGuess: 0,
+          audioDayGuess: 0,
           audioAllDayWords: 0,
           audioMaxGuessed: 0,
         },
@@ -61,9 +61,9 @@ export async function createStatisticPage() {
       countLernWords = 0;
     }
     const audioResult: number[] = [
-      stat.optional.audiotDayGuess ? stat.optional.audiotDayGuess : 0,
-      stat.optional.audioAllDayWords && stat.optional.audiotDayGuess
-        ? Math.round((stat.optional.audiotDayGuess / stat.optional.audioAllDayWords) * 100)
+      stat.optional.audioDayGuess ? stat.optional.audioDayGuess : 0,
+      stat.optional.audioAllDayWords && stat.optional.audioDayGuess
+        ? Math.round((stat.optional.audioDayGuess / stat.optional.audioAllDayWords) * 100)
         : 0,
       stat.optional.audioMaxGuessed ? stat.optional.audioMaxGuessed : 0,
       stat.optional.audioAllDayWords ? stat.optional.audioAllDayWords : 0,
