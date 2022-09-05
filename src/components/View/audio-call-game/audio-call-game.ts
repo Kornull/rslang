@@ -70,6 +70,9 @@ export function createAudioGame() {
 }
 
 export function createAudioGamePreload() {
+  setLocalStorage(KeysWords.CorrectWord, '0');
+  setLocalStorage(KeysWords.WrongWord, '0');
+  setLocalStorage(KeysWords.GuessedWord, '0');
   console.log('--------------createAudioGamePreload--------------');
   main.innerHTML = '';
   const preloadAudioPage = <HTMLElement>createEl('div', main, ['audio-preload']);
