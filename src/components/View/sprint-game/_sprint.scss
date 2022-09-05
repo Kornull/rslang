@@ -73,7 +73,7 @@
     width: 100%;
     max-width: 400px;
     justify-content: space-between;
-    padding: 50px;
+    padding-top: 50px;
     margin: 0 auto;
     margin-bottom: 80px;
     @media(max-width: $size480px){
@@ -99,23 +99,29 @@
 
   &__btn-group {
     display: block;
-    width: 35px;
-    height: 35px;
-    border-radius: 3px;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
     text-align: center;
-    padding: 5px;
+    padding: 8px;
     border: 1px solid $colorRed;
     color:black;
+    font-size: $size19px;
+    font-weight: bold;
     background: #ece5e5;
     transition: border .2s linear, color .2s linear, background .2s linear, box-shadow .2s linear;
     &:hover {
       border: 1px solid $colorWhite;
-      color:$colorBlueSaturated;
-      background: $colorYellow;
+      color:$colorWhite;
+      background: $colorRed;
       box-shadow: 0 0 10px $colorBlueSaturated;;
     }
     @media(max-width: $size380px) {
       margin: 10px;
+      width: 40px;
+      height: 40px;
+      padding: 6px;
+      margin-right: 10px;
     }
   }
   &__statistic {
