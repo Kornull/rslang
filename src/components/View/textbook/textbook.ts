@@ -74,7 +74,6 @@ export async function updateButtonPagination(currentPage: number) {
   if (user.userId) {
     const countLearnWord = await getCountLearnWordPage(user, Number(currentGroup), currentPage);
     const linkGamePage = document.querySelectorAll('.game__link');
-    console.log(countLearnWord);
     if (countLearnWord === 20) {
       pageNumber.classList.add('learnPage');
       linkGamePage.forEach((item) => {
