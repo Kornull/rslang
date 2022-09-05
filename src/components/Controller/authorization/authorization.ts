@@ -1,6 +1,5 @@
 // eslint-disable-next-line import/no-cycle
-import { App, appUser } from '../../App/App';
-import { getLocalStorage } from '../sprint-game/storage/storage-set-kornull';
+import { appUser } from '../../App/App';
 
 export function toggleButtons(element: Element): void {
   const signIn = <HTMLElement>document.querySelector('#sign-in-btn');
@@ -24,7 +23,7 @@ export function toggleButtons(element: Element): void {
 export function closePopup(): void {
   const popup = document.querySelector('.popup__bg');
   popup?.remove();
-  App(getLocalStorage('userPageNow'));
+  document.location.reload();
 }
 
 function showMessage(message: string): void {
@@ -62,5 +61,4 @@ export async function signInRequest() {
       showMessage('Неизвестная ошибка регистрации');
     }
   }
-  // console.log('signIn response - ', response.resolve);
 }
