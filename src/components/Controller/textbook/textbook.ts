@@ -94,3 +94,35 @@ export async function getListHardWord(user: User) {
   const data = (await rawResponse.json())[0].paginatedResults;
   return data;
 }
+
+export async function getListHardWordPage(user: User) {
+  const rawResponse = await fetch(`${urlLink}users/${user.userId}/aggregatedWords?filter={"userWord.difficulty":"hard"}&wordsPerPage=4000`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${user.token}`,
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+  });
+  const data = (await rawResponse.json())[0].paginatedResults;
+  return data;
+}
+
+export async function getCountLearnWordPage(user: User, group: number, page: number) {
+  const response: Response = await fetch(
+    `${urlLink}users/${user.userId}/aggregatedWords?filter={"$and": [{"$or": [{"userWord.difficulty": "hard"},{"$and": [{"userWord.difficulty": "easy", "userWord.optional.statusLearn":"true"}]}], "group":${group}, "page":${page}}]}&wordsPerPage=4000`,
+    {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    },
+  );
+  if (response.status === 200) {
+    const data = (await response.json())[0].totalCount[0];
+    return data ? data.count : 0;
+  }
+  return 0;
+}
