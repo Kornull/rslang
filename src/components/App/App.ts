@@ -39,11 +39,9 @@ export function App(idPage: string | null): void {
         statisticGame();
         break;
       case IdPages.AudioGamePreload:
-        console.log('---start preload audio game ---');
         createAudioGamePreload();
         break;
       case IdPages.AudioGame:
-        console.log('---start audio game ---');
         createAudioGame();
         break;
       case IdPages.AudioGameStatistic:
