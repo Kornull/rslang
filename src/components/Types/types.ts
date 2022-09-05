@@ -55,6 +55,7 @@ export type ExtraWordOption = {
     gameAllGuessWord: number;
     statusLearn: string;
     data?: string;
+    dataLearn?: string;
   };
   wordId?: string;
 };
@@ -66,6 +67,7 @@ export enum IdPages {
   PreloaSprintID = 'preload-sprint',
   SprintStatiD = 'srpint-statistic',
   LogoIt = 'logo',
+  StatisticId = 'statistics-page',
   NoWords = 'no-words',
 }
 

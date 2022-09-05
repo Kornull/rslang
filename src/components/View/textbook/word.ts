@@ -80,6 +80,7 @@ async function createParamUserWord(cardWord: HTMLElement) {
         gameMistake: 0,
         gameAllGuessWord: 0,
         statusLearn: 'true',
+        dataLearn: `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`,
       },
     };
   }
@@ -90,6 +91,7 @@ async function createParamUserWord(cardWord: HTMLElement) {
       gameMistake: wordObj.userWord.optional.gameMistake,
       gameAllGuessWord: wordObj.userWord.optional.gameAllGuessWord,
       statusLearn: 'true',
+      dataLearn: `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`,
     },
   };
 }
@@ -113,6 +115,7 @@ export async function updateLearnWord(wordValue: Word, cardWord: HTMLElement, us
             gameMistake: 0,
             gameAllGuessWord: 0,
             statusLearn: 'true',
+            dataLearn: `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`,
           },
         };
         createWordUser(user, wordValue.id, wordVal1);
