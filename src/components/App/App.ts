@@ -19,6 +19,7 @@ export function App(idPage: string | null): void {
   const footer = <HTMLElement>document.querySelector('.footer');
   if (idPage !== null) {
     main.innerHTML = '';
+
     if (idPage === IdPages.SprintID || idPage === IdPages.PreloaSprintID) {
       footer.style.display = 'none';
     } else {
@@ -85,7 +86,8 @@ export function App(idPage: string | null): void {
 
 window.addEventListener('hashchange', () => {
   const hash = window.location.hash.slice(1);
-  setTimeout(() => {
-    App(hash);
-  }, 100);
+  if (hash === 'title-team' || hash === 'main-subtitle') {
+    return;
+  }
+  App(hash);
 });

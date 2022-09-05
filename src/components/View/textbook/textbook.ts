@@ -10,6 +10,7 @@ import { ClickSprint } from '../sprint-game/sprint-game.utils';
 import { loading } from '../../Templates/loading';
 import { setLocalStorage } from '../../Controller/sprint-game/storage/storage-set-kornull';
 import { ClickAudio } from '../audio-call-game/audio-call-game.utils';
+import { getCountLearnWordPage } from '../../Controller/textbook/textbook';
 
 export async function renderPageTextbook() {
   const currentGroup: string = getStorage('currentGroup', '0');
@@ -50,7 +51,7 @@ function enabledButton(currentButton: HTMLButtonElement) {
   button.classList.add('nav-button_enabled');
 }
 
-function updateButtonPagination(currentPage: number) {
+export async function updateButtonPagination(currentPage: number) {
   const first = <HTMLButtonElement>document.querySelector('#first');
   const prev = <HTMLButtonElement>document.querySelector('#prev');
   const next = <HTMLButtonElement>document.querySelector('#next');
@@ -69,6 +70,27 @@ function updateButtonPagination(currentPage: number) {
   }
   const pageNumber = <HTMLButtonElement>document.querySelector('#pageNumber');
   pageNumber.innerText = String(currentPage + 1);
+  const currentGroup = getStorage('currentGroup', '0');
+  const user: User = getLocalStorage('userDataBasic');
+  if (user.userId) {
+    const countLearnWord = await getCountLearnWordPage(user, Number(currentGroup), currentPage);
+    const linkGamePage = document.querySelectorAll('.game__link');
+    if (countLearnWord === 20) {
+      pageNumber.classList.add('learnPage');
+      linkGamePage.forEach((item) => {
+        const obj = item as HTMLButtonElement;
+        obj.disabled = true;
+        obj.classList.add('game__link-disabled');
+      });
+    } else {
+      pageNumber.classList.remove('learnPage');
+      linkGamePage.forEach((item) => {
+        const obj = item as HTMLButtonElement;
+        obj.disabled = false;
+        obj.classList.remove('game__link-disabled');
+      });
+    }
+  }
 }
 
 function createPrevPage(e: Event) {

@@ -271,6 +271,12 @@
   }
 }
 
+.game__link-disabled {
+  background-color: #fe6c6c;
+  border: 2px solid $colorWhite;
+  box-shadow: 0 0 5px black;
+}
+
 .display-none {
   display: none;
 }
@@ -307,4 +313,9 @@
 
 .wordGameImgGuessed {
   font-size: 14px;
+}
+
+.learnPage {
+  background-color: #03365d;
+  color: white;
 }

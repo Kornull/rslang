@@ -1,4 +1,5 @@
-import { IdPages } from '../../Types/types';
+import { IdPages, PageKey } from '../../Types/types';
+import { getLocalStorage } from '../storage';
 import { clickIdLink } from './burger.utils';
 
 import './_burger.scss';
@@ -59,7 +60,10 @@ const openBurgerMenu = (): void => {
   linkNavigation.forEach((link: Element) => {
     link.addEventListener('click', (ev: Event) => {
       const message = ev.target as HTMLElement;
-      if (message.id !== 'team' && message.id !== 'about') {
+      if (message.id === 'team' || message.id === 'about') {
+        if (getLocalStorage(PageKey.userPage) !== IdPages.MainID) clickIdLink(IdPages.MainID);
+        ev.stopPropagation();
+      } else {
         clickIdLink(message.id);
       }
       if (ev !== null) {

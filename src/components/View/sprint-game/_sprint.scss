@@ -6,6 +6,11 @@
   width: 100%;
   height: 100vh;
   margin: 0 auto;
+  &__page{
+    @media(max-width: $size480px){
+      height: auto;
+    }
+  }
   &__game-preload {
     padding-top: 50px;
     text-align: center;
@@ -48,6 +53,9 @@
         animation: spin 4s linear infinite;
       }
     }
+    @media(max-width: $size480px){
+      padding-top: 10px;
+    }
   }
   &__title {
     font-size: $size21px;
@@ -55,6 +63,9 @@
     margin-top: 40px;
     font-family: $fontMontserrat;
     color: #150757;
+    @media(max-width: $size480px){
+      margin-top: 10px;
+    }
   }
   &__btns {
     display: flex;
@@ -62,12 +73,12 @@
     width: 100%;
     max-width: 400px;
     justify-content: space-between;
-    padding: 50px;
+    padding-top: 50px;
     margin: 0 auto;
     margin-bottom: 80px;
-  //   @media(max-width: $size480px){
-  //     width: 70%;
-  //   }
+    @media(max-width: $size480px){
+      margin-bottom: 20px;
+    }
   }
   &__regulation {
     width: 80%;
@@ -82,27 +93,35 @@
       font-weight: bold;
       text-decoration: underline;
     }
+    @media(max-width: $size480px){
+    }
   }
 
   &__btn-group {
     display: block;
-    width: 35px;
-    height: 35px;
-    border-radius: 3px;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
     text-align: center;
-    padding: 5px;
+    padding: 8px;
     border: 1px solid $colorRed;
     color:black;
+    font-size: $size19px;
+    font-weight: bold;
     background: #ece5e5;
     transition: border .2s linear, color .2s linear, background .2s linear, box-shadow .2s linear;
     &:hover {
       border: 1px solid $colorWhite;
-      color:$colorBlueSaturated;
-      background: $colorYellow;
+      color:$colorWhite;
+      background: $colorRed;
       box-shadow: 0 0 10px $colorBlueSaturated;;
     }
     @media(max-width: $size380px) {
       margin: 10px;
+      width: 40px;
+      height: 40px;
+      padding: 6px;
+      margin-right: 10px;
     }
   }
   &__statistic {
@@ -111,6 +130,10 @@
     background: $colorWhite;
     width: 100%;
     height: 100vh;
+    @media (max-width: $size480px) {
+      margin-bottom: 25px;
+      height: auto;
+    }
   }
   &__statistic-percent--words,
   &__statistic-words,
@@ -133,6 +156,9 @@
     font-size: $size31px;
     font-weight: bold;
     font-style: italic;
+    @media (max-width:$size480px) {
+      margin-top: 25px;
+    }
   }
   &__statistic-buttons{
     display: flex;
@@ -158,6 +184,15 @@
       box-shadow: 0 0 5px $colorBlueSaturated;
       color: $colorBlueSaturated
     }
+
+  }
+  &__statistic-percent--words{
+    @media (max-width:$size480px) {
+      margin-bottom: 150px;
+    }
+    @media (max-width:$size380px) {
+      margin-bottom: 50px;
+    }
   }
 }
 
@@ -179,6 +214,11 @@
   background: #d8d8d8;
   border-radius: 15px;
   box-shadow: 0 0  15px 10px $colorWhite;
+  @media(max-width: $size480px){
+    height: auto;
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
   &__timer {
     position: relative;
     width: 80px;
