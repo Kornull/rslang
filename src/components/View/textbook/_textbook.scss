@@ -1,0 +1,310 @@
+@import "../../../scss/base/settings";
+
+.textbook {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-bottom: 20px;
+}
+
+.group {
+  display: flex;
+  padding-top: 60px;
+  flex-wrap: wrap-reverse;
+  width: 100%;
+  justify-content: space-around;
+  margin-bottom: 20px;
+  &__buttons {
+    display: flex;
+    gap: 20px;
+    @media (max-width: 786px) {
+      justify-content: center;
+      margin: 0 auto;
+      margin-bottom: 20px;
+    }
+    @media (max-width: $size768px) {
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    @media (max-width: $size480px) {
+      gap: 12px;
+    }
+  }
+}
+
+.group__link {
+  width: 60px;
+  height: 60px;
+  border-radius: 10px;
+  color: $colorWhite;
+  font-weight: bold;
+  font-size: 24px;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  transition: border .1s linear, box-shadow .1s linear, color .1s linear;
+  &:hover{
+    border: 2px solid #f6ff00;
+    box-shadow: 0 0 12px $colorBlueSaturated;
+    color: $colorBlueSaturated;
+  }
+  &.active{
+    border: 2px solid #f6ff00;
+    box-shadow: 0 0 12px $colorBlueSaturated;
+    color: $colorBlueSaturated;
+  }
+  @media (max-width: $size768px) {
+    width: 50px;
+    height: 50px;
+  }
+  @media (max-width: $size480px) {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+.group-1 {
+  background-color: $colorGroup1;
+}
+
+.group-2 {
+  background-color: $colorGroup2;
+}
+
+.group-3 {
+  background-color: $colorGroup3;
+}
+
+.group-4 {
+  background-color: $colorGroup4;
+}
+
+.group-5 {
+  background-color: $colorGroup5;
+}
+
+.group-6 {
+  background-color: $colorGroup6;
+}
+
+.group-7 {
+  background-color: $colorGroup7;
+  color: $colorBlueText;
+}
+
+.main-textbook {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.nav-textbook {
+  display: flex;
+  position: sticky;
+  top: 0;
+  margin: 10px auto;
+  column-gap: 20px;
+  z-index: 5;
+  padding-top: 13px;
+}
+
+.nav-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border: 2px solid $colorGroup2;
+  background-color: $colorWhite;
+}
+
+.nav-button_enabled {
+  cursor: pointer;
+
+  &:hover {
+    background-color: $colorGroup2;
+    color: $colorWhite;
+  }
+}
+
+.nav-button_disabled {
+  background-color: $colorGroup2;
+}
+
+.wrapper-page-textbook {
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+}
+
+.cardWord {
+  display: flex;
+  gap: 1%;
+  padding: 1%;
+  border-radius: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  @media (max-width: $size768px) {
+    flex-direction: column;
+  }
+}
+
+.multimediaBlock {
+  width: 40%;
+  @media (max-width: $size768px) {
+    width: 100%;
+  }
+}
+
+.imgBlock {
+  width: 100%;
+  height: 260px;
+  overflow: hidden;
+}
+
+.imgWord {
+  width: 100%;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.buttonAdd {
+  display: flex;
+  justify-content: space-between;
+}
+
+.imgAudio {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  fill: $colorMedia;
+  &:hover {
+    fill: $colorMediaHover;
+  }
+}
+
+.imgLearn {
+  width: 25px;
+  height: 30px;
+  padding-top: 10px;
+  cursor: pointer;
+  fill: $colorMedia;
+  &:hover {
+    fill: $colorMediaHover;
+  }
+}
+
+.imgHard {
+  width: 35px;
+  height: 35px;
+  padding-top: 5px;
+  cursor: pointer;
+  fill: $colorMedia;
+  &:hover {
+    fill: $colorMediaHover;
+  }
+}
+
+.cardLearned {
+  opacity: 50%;
+}
+
+.cardHard {
+  box-shadow: none;
+  border: 2px solid black;
+}
+
+.word {
+  width: 55%;
+  padding: 0 10px;
+  @media (max-width: $size768px) {
+    width: 100%;
+  }
+}
+
+.h3 {
+  font-weight: bold;
+  text-transform: capitalize;
+  font-size: 18px;
+}
+
+.h4 {
+  margin-bottom: 10px;
+}
+
+.game__links {
+  display: flex;
+  width: 40%;
+  flex-wrap: wrap;
+  gap: 20px;
+  text-align: center;
+  @media (max-width: 968px) {
+    justify-content: center;
+    width: 90%;
+    margin: 0 auto;
+    margin-bottom: 20px;
+  }
+}
+.game__link {
+  width: 40%;
+  height: 60px;
+  padding: 15px 5px;
+  border-radius: 10px;
+  background-color: red;
+  color: $colorWhite;
+  font-size: $size19px;
+  font-weight: bold;
+  box-shadow: 0 0 3px $colorBlack;
+  border: 1px solid $colorWhite;
+  transition: background-color 0.1s linear, border 0.1s linear, box-shadow 0.1s linear;
+  @media (max-width: 968px) {
+    width: 30%;
+  }
+  @media (max-width: 480px) {
+    width: 46%;
+    height: 50px;
+    font-size: $size16px;
+  }
+  &:hover {
+    cursor: pointer;
+    background-color: #fe6c6c;
+    border: 2px solid $colorWhite;
+    box-shadow: 0 0 5px black;
+  }
+}
+
+.display-none {
+  display: none;
+}
+
+.title__group{
+  width: 90%;
+  text-align: center;
+  margin: 20px auto;
+  font-family: $fontRobotoSlab;
+  font-size: $size19px;
+  font-weight: bold;
+  text-decoration: underline;
+  color: $colorBlueSaturated;
+}
+
+.wordGameImg {
+  display: flex;
+  gap: 10px;
+}
+
+.wordBlock {
+  display: flex;
+  justify-content: space-between;
+}
+
+.imgWordGame {
+  width: 20px;
+  height: 20px;
+}
+
+.wordGameImgGuessed {
+  height: 40px;
+}
+
+.wordGameImgGuessed {
+  font-size: 14px;
+}

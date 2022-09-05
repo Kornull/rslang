@@ -34,6 +34,8 @@ export type StatisticsUserWords = {
     sprintDayGuess: number;
     sprintAllDayWords: number;
     sprintMaxGuessed: number;
+    audiotDayGuess?: number;
+    audioAllDayWords?: number;
     audioMaxGuessed?: number;
     'data-0'?: object;
     'data-1'?: object;
@@ -50,9 +52,12 @@ export type ExtraWordOption = {
   optional: {
     gameGuessed: number;
     gameMistake: number;
+    gameAllGuessWord: number;
     statusLearn: string;
     data?: string;
+    dataLearn?: string;
   };
+  wordId?: string;
 };
 
 export enum IdPages {
@@ -65,4 +70,14 @@ export enum IdPages {
   AudioGamePreload = 'preload-audio',
   AudioGame = 'audio-game',
   AudioGameStatistic = 'statistic-audio',
+  StatisticId = 'statistics-page',
+  NoWords = 'no-words',
+}
+
+export enum PageKey {
+  userPage = 'userPageNow',
+  numPage = 'currentPage',
+  numGroup = 'currentGroup',
+  allWords = 'allListWords',
+  numGamePage = 'NumGamePage',
 }
