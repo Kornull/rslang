@@ -1,5 +1,5 @@
 import { getLocalStorage, setLocalStorage } from '../../Controller/sprint-game/storage/storage-set-kornull';
-import { IdPages, Key, LocalKeys, PageKey, WordSettings } from '../../Types/types';
+import { IdPages, PageKey, WordSettings } from '../../Types/types';
 // eslint-disable-next-line import/no-cycle
 import { createAllListWords } from '../../Controller/audio-game/audio-game';
 import { MainGameElement, NumberOf, KeysWords } from '../../Controller/audio-game/types';
@@ -9,7 +9,7 @@ import { urlLink } from '../../Templates/serve';
 
 const answerSound = new Audio();
 export const audioWord = new Audio();
-let guessWordLengthGame = 0;
+// let guessWordLengthGame = 0;
 
 function soundCorrectAnswer(): void {
   answerSound.src = './assets/audio/correct.mp3';
@@ -30,7 +30,6 @@ export function fillStatisticAudio(block: HTMLElement): void {
   const wrongNum = Number(getLocalStorage(KeysWords.WrongWord));
   const guessedNum = Number(getLocalStorage(KeysWords.GuessedWord));
   const allCountWords = correctNum + wrongNum;
-  console.log('fillStatisticAudio-------------------');
   const correct = <HTMLElement>block.querySelector('.audio__statistic-correct');
   const wrong = <HTMLElement>block.querySelector('.audio__statistic-wrong');
   const words = <HTMLElement>block.querySelector('.audio__statistic-words');

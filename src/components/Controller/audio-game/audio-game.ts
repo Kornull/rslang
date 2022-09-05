@@ -1,8 +1,9 @@
 import { urlLink } from '../../Templates/serve';
 // eslint-disable-next-line object-curly-newline
-import { ExtraWordOption, LocalKeys, StatisticsUserWords, UserStat } from '../../Types/types';
+import { LocalKeys, StatisticsUserWords, UserStat } from '../../Types/types';
 import { getLocalStorage, setLocalStorage } from '../sprint-game/storage/storage-set-kornull';
 import { Key, Word } from '../sprint-game/type';
+// eslint-disable-next-line import/no-cycle
 import { appUser } from '../../App/App';
 import { NumberOf } from './types';
 
@@ -27,7 +28,6 @@ const statisticsUserWords: StatisticsUserWords = {
 
 async function getTheWords(request: string) {
   const words = await fetch(`${urlLink}words/${request}`);
-  console.log('response status - ', words.status);
   if (words.status === 401) {
     await appUser.getNewTokens();
     getTheWords(request);

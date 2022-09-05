@@ -1,15 +1,11 @@
 import './_audio-call.scss';
 import { body, main } from '../../Templates/main-block';
 import { createEl } from '../../Controller/createTagBlock';
-// eslint-disable-next-line import/no-cycle
-// import { createListWords, createAllListWords, getMainGameArray } from '../../Controller/audio-game/audio-game';
 import { IdPages } from '../../Types/types';
-// eslint-disable-next-line import/no-cycle
+// eslint-disable-next-line import/no-cycle, object-curly-newline
 import { fillStatisticAudio, ClickAudio, fillNewStepGame, buttonsEvenHandler, audioWord } from './audio-call-game.utils';
 // eslint-disable-next-line import/no-cycle
 import { App } from '../../App/App';
-// eslint-disable-next-line import/no-cycle
-import { clickIdLink } from '../../Controller/burger/burger.utils';
 // eslint-disable-next-line import/no-cycle
 import { loading } from '../../Templates/loading';
 // eslint-disable-next-line import/no-cycle
@@ -43,10 +39,6 @@ function createChoiceGroupButtons(parentElement: HTMLElement, count: number): vo
   }
 }
 
-// function craateButton(parentElement: HTMLElement) {
-//   createEl('button', parentElement, ['shoce-btn'], )
-// }
-
 export function createAudioGame() {
   main.innerHTML = '';
   const gameField = <HTMLElement>createEl('div', main, ['audio-game']);
@@ -55,13 +47,13 @@ export function createAudioGame() {
   createEl('img', imageContainer);
   const audioField = <HTMLElement>createEl('div', viewField, ['audio-field']);
   const audioButton = <HTMLElement>createEl('button', audioField, ['audio-button']);
+  // eslint-disable-next-line prettier/prettier
   audioButton.innerHTML = '<svg class="audio-svg-icon" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"></path></svg>';
   const engWord = <HTMLElement>createEl('p', audioField, ['english-word']);
   engWord.innerText = 'computer';
   createButtons(gameField, 5);
   const nextSkipBtn = createEl('button', gameField, ['next-skip-btn']);
   nextSkipBtn.innerText = 'дальше';
-  const buttonFiled = <HTMLElement>document.querySelector('.btn-field');
 
   setLocalStorage(KeysWords.CurrentStep, '0');
   gameField.addEventListener('click', (event) => buttonsEvenHandler(event));
@@ -133,18 +125,3 @@ export function createStatisticAudioGame(): void {
   });
   fillStatisticAudio(audioPageStat);
 }
-
-// first - 95847075
-/// last - 95848677
-
-// <svg class="CircularProgressbar " viewBox="0 0 100 100" data-test-id="CircularProgressbar"><path class="CircularProgressbar-trail" d="
-//       M 50,50
-//       m 0,-46
-//       a 46,46 0 1 1 0,92
-//       a 46,46 0 1 1 0,-92
-//     " stroke-width="8" fill-opacity="0" style="stroke: rgb(255, 255, 255); stroke-dasharray: 289.027px, 289.027px; stroke-dashoffset: 0px;"></path><path class="CircularProgressbar-path" d="
-//       M 50,50
-//       m 0,-46
-//       a 46,46 0 1 1 0,92
-//       a 46,46 0 1 1 0,-92
-//     " stroke-width="8" fill-opacity="0" style="stroke: rgb(242, 105, 92); stroke-dasharray: 289.027px, 289.027px; stroke-dashoffset: 130.062px;"></path><text class="CircularProgressbar-text" x="50" y="50" style="fill: rgb(242, 105, 92);">11/20</text></svg>
