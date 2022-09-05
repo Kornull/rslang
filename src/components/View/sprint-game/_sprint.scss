@@ -1,0 +1,388 @@
+@import "../../../scss/base/_settings";
+
+.sprint {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+  margin: 0 auto;
+  &__page{
+    @media(max-width: $size480px){
+      height: auto;
+    }
+  }
+  &__game-preload {
+    padding-top: 50px;
+    text-align: center;
+    // link: https://codepen.io/takeradi/pen/MyawBN
+    .spinner {
+      position: absolute;
+      height: 60px;
+      width: 60px;
+      border: 3px solid transparent;
+      border-top-color: #001eff;
+      top: 50%;
+      left: 50%;
+      margin: -30px;
+      border-radius: 50%;
+      animation: spin 3s linear infinite;
+
+      &:before,
+      &:after {
+        content: "";
+        position: absolute;
+        border: 3px solid transparent;
+        border-radius: 50%;
+      }
+
+      &:before {
+        border-top-color: #499ee3;
+        top: -12px;
+        left: -12px;
+        right: -12px;
+        bottom: -12px;
+        animation: spin 3s linear infinite;
+      }
+
+      &:after {
+        border-top-color: #000000;
+        top: 6px;
+        left: 6px;
+        right: 6px;
+        bottom: 6px;
+        animation: spin 4s linear infinite;
+      }
+    }
+    @media(max-width: $size480px){
+      padding-top: 10px;
+    }
+  }
+  &__title {
+    font-size: $size21px;
+    margin: 0 auto;
+    margin-top: 40px;
+    font-family: $fontMontserrat;
+    color: #150757;
+    @media(max-width: $size480px){
+      margin-top: 10px;
+    }
+  }
+  &__btns {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 400px;
+    justify-content: space-between;
+    padding-top: 50px;
+    margin: 0 auto;
+    margin-bottom: 80px;
+    @media(max-width: $size380px){
+      margin-bottom: 20px;
+      width: 65%;
+    }
+
+  }
+  &__regulation {
+    width: 80%;
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+    font-family: $fontRoboto;
+    font-size: $size21px;
+    color: $colorBlueSaturated;
+    line-height: 1.4;
+    span {
+      font-weight: bold;
+      text-decoration: underline;
+    }
+    @media(max-width: $size480px){
+    }
+  }
+
+  &__btn-group {
+    display: block;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    text-align: center;
+    padding: 8px;
+    border: 1px solid $colorRed;
+    color:black;
+    font-size: $size19px;
+    font-weight: bold;
+    background: #ece5e5;
+    transition: border .2s linear, color .2s linear, background .2s linear, box-shadow .2s linear;
+    &:hover {
+      border: 1px solid $colorWhite;
+      color:$colorWhite;
+      background: $colorRed;
+      box-shadow: 0 0 10px $colorBlueSaturated;;
+    }
+    @media(max-width: $size380px) {
+      margin: 10px;
+      width: 40px;
+      height: 40px;
+      padding: 6px;
+      margin-right: 10px;
+    }
+  }
+  &__statistic {
+    display: flex;
+    flex-direction: column;
+    background: $colorWhite;
+    width: 100%;
+    height: 100vh;
+    @media (max-width: $size480px) {
+      margin-bottom: 25px;
+      height: auto;
+    }
+  }
+  &__statistic-percent--words,
+  &__statistic-words,
+  &__statistic-correct,
+  &__statistic-wrong,
+  &__statistic-percent {
+    text-align: center;
+    width: 50%;
+    margin: 0 auto;
+    margin-bottom: 25px;
+  }
+  &__statistic-title {
+    width: 100%;
+    margin: 0 auto;
+    max-width: 350px;
+    margin-top: 200px;
+    margin-bottom: 50px;
+    text-align: center;
+    font-family: $fontMontserrat;
+    font-size: $size31px;
+    font-weight: bold;
+    font-style: italic;
+    @media (max-width:$size480px) {
+      margin-top: 25px;
+    }
+  }
+  &__statistic-buttons{
+    display: flex;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    // margin-top: 100px;
+    margin-bottom: 25px;
+  }
+  &__btn-close--stat-main,
+  &__btn-close--stat-preload{
+    display: block;
+    text-align: center;
+    width: 40%;
+    margin: 0 auto;
+    background: #000;
+    padding: 10px 5px;
+    color: $colorWhite;
+    margin-bottom: 15px;
+    &:hover{
+      background-color: $colorWhite;
+      border: 1px solid $colorBlack;
+      box-shadow: 0 0 5px $colorBlueSaturated;
+      color: $colorBlueSaturated
+    }
+
+  }
+  &__statistic-percent--words{
+    @media (max-width:$size480px) {
+      margin-bottom: 150px;
+    }
+    @media (max-width:$size380px) {
+      margin-bottom: 50px;
+    }
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.game {
+  position: relative;
+  width: 80%;
+  height: 80vh;
+  margin: 0 auto;
+  margin-top: 50px;
+  background: #d8d8d8;
+  border-radius: 15px;
+  box-shadow: 0 0  15px 10px $colorWhite;
+  @media(max-width: $size480px){
+    height: auto;
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+  &__timer {
+    position: relative;
+    width: 80px;
+    height: 40px;
+    margin: 0 auto;
+    margin-top: 50px;
+    border: 3px solid blue;
+    border-radius: 25px;
+    border-top-width: 3px;
+    margin-bottom: 50px;
+    text-align: center;
+    padding: 5px;
+    background-color: red;
+    border-color: $colorWhite $colorRed $colorWhite;
+    box-shadow: 0 0 3px $colorRed;
+    color: #fffbfe;
+    font-size: $size19px;
+    font-weight: bold;
+  }
+  &__audio {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  &__img-block {
+    width: 150px;
+    height: 150px;
+    margin: 0 auto;
+    margin-bottom: 50px;
+    overflow: hidden;
+    border-radius: 25px;
+    box-shadow: 0 0 15px #000;
+    .game__img{
+      width: 100%;
+      border: 3px solid $colorWhite;
+      border-radius: 25px;
+      object-fit:cover;
+    }
+  }
+  &__dotted{
+    display: flex;
+    justify-content: space-around;
+    width: 60%;
+    max-width: 180px;
+    height: 20px;
+    margin: 0 auto 15px;
+    .dotted{
+      height: 100%;
+      width: 20px;
+      background-color: $colorWhite;
+      border-radius: 50%;
+      border-width: 2px;
+      border-style: solid;
+      border-color: $colorRed;
+      transition:
+      background-color .1s linear,
+      border-color .1s linear,
+      box-shadow .1s linear;
+    }
+    .dotted.active{
+      background-color: $colorRed;
+      border-color: $colorWhite;
+      box-shadow: 0 0 10px $colorRed;
+    }
+  }
+  &__word-en,
+  &__word-ru {
+    height: 50px;
+    background: #9796967a;
+    color: $colorBlueSaturated;
+    margin: 0 auto;
+    margin-bottom: 30px;
+    text-align: center;
+    font-family:$fontMontserrat;
+    font-size: $size25px;
+    padding: 5px;
+  }
+  &__btns-choise {
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    @media (max-width: $size480px) {
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+    }
+  }
+  &__btns-choise--false,
+  &__btns-choise--true {
+    display: block;
+    width: 127px;
+    height: 50px;
+    border-radius: 15px;
+    font-family: $fontRoboto;
+    font-size: $size19px;
+    font-weight: bold;
+    color: $colorWhite;
+    margin-bottom: 15px;
+    border: 1px solid $colorWhite;
+    transition: background-color .2s linear;
+    @media (max-width: $size480px) {
+      width: 190px;
+    }
+
+
+  }
+  &__btns-choise--false {
+    background-color: $colorRed;
+    &:hover {
+      background-color: #b81414;
+      box-shadow: 0 0 2px $colorBlack;
+    }
+    &:active {
+      border: 1px solid $colorWhite;
+      box-shadow: 0 0 5px $colorBlueSaturated;
+    }
+  }
+  &__btns-choise--true {
+    background-color: $colorSalat;
+    &:hover {
+      background-color: #1aa115;
+      box-shadow: 0 0 2px $colorBlack;
+    }
+    &:active {
+      border: 1px solid $colorWhite;
+      box-shadow: 0 0 5px $colorBlueSaturated;
+    }
+  }
+  &__btns-choise--true.active{
+      border: 1px solid $colorWhite;
+      box-shadow: 0 0 5px $colorBlueSaturated;
+      background-color: #1aa115;
+  }
+  &__btns-choise--false.active {
+    border: 1px solid $colorWhite;
+      box-shadow: 0 0 5px $colorBlueSaturated;
+      background-color: #b81414;
+  }
+}
+
+.no__words {
+  width: 80%;
+  margin: 0 auto;
+  padding-top: 50px;
+  &-text{
+    width: 50%;
+    margin: 0 auto;
+    margin-top: 100px;
+    text-align: center;
+    font-size: $size21px;
+    font-family: $fontMontserrat;
+    font-weight: bold;
+    line-height: 1.5;
+    color: $colorBlueSaturated;
+  }
+}

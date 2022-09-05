@@ -1,0 +1,67 @@
+@import "../../../scss/base/_settings";
+.header__burger {
+  right: 110px;
+  top: 47px;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  border-radius: 15px;
+  &:focus{
+   border: 1px solid $colorFocusHeader;
+  }
+  span {
+    display: flex;
+    position: relative;
+    top: 50%;
+    left: 12%;
+    width: 80%;
+    height: 2px;
+    background-color: $colorWhite;
+    transition: background-color 0.2s ease-out, transform 0.5s linear,
+    width .5s linear;
+    &:hover{
+      background-color: $colorText;
+    }
+  }
+  span::after,
+  span::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background-color: $colorWhite;
+    transition: background-color 0.2s ease-out;
+  }
+  span::after {
+    bottom: 10px;
+  }
+  span::before {
+    top: 10px;
+  }
+  span.active {
+    transform: rotate(970deg);
+    left: 23%;
+    width: 0;
+  }
+  &:hover{
+    span,
+    span::after,
+    span::before{
+    background-color: $colorText;
+  }
+  }
+}
+
+.burger__shadow {
+  position: absolute;
+  background-color: $backgroundShadow;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  transition: left .3s linear;
+  &.active{
+    left: 0;
+  }
+}

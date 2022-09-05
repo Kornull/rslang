@@ -1,0 +1,10 @@
+@mixin learned-word {
+  color: $colorLearnWord;
+  font-style: italic;
+}
+
+@mixin hard-word {
+  color: $colorHardWord;
+  font-style: italic;
+  text-decoration: underline;
+}
