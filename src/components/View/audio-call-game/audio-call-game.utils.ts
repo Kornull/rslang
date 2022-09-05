@@ -93,3 +93,28 @@ export function fillNewStepGame() {
     ruWords[count].innerText = word;
   });
 }
+
+export function isAnswerCorrect(event: Event) {
+  let currentStep = Number(getLocalStorage(KeysWords.CurrentStep));
+  const mainGameArray = getLocalStorage(KeysWords.MainGameArray);
+  let correctNum = Number(getLocalStorage(KeysWords.CorrectWord));
+  let wrongNum = Number(getLocalStorage(KeysWords.WrongWord));
+  let guessedNum = Number(getLocalStorage(KeysWords.GuessedWord));
+
+  if ((event.target as HTMLElement).classList.contains('btn-choice')) {
+    if (mainGameArray[currentStep].word.wordTranslate === (event.target as HTMLElement).innerText) {
+      console.log('------super win----------');
+      correctNum += 1;
+      guessedNum += 1;
+    } else {
+      wrongNum += 1;
+      guessedNum += 1;
+    }
+    currentStep += 1;
+    setLocalStorage(KeysWords.CurrentStep, `${currentStep}`);
+    setLocalStorage(KeysWords.CorrectWord, `${correctNum}`);
+    setLocalStorage(KeysWords.WrongWord, `${wrongNum}`);
+    setLocalStorage(KeysWords.GuessedWord, `${guessedNum}`);
+    fillNewStepGame();
+  }
+}
