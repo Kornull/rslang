@@ -5,20 +5,21 @@ import { MainGameElement, NumberOf, KeysWords } from '../../Controller/audio-gam
 import { App } from '../../App/App';
 import { urlLink } from '../../Templates/serve';
 
-const audio = new Audio();
+const answerSound = new Audio();
+const audioWord = new Audio();
 let guessWordLengthGame = 0;
 
 function soundCorrectAnswer(): void {
-  audio.src = './assets/audio/correct.mp3';
+  answerSound.src = './assets/audio/correct.mp3';
   setTimeout(() => {
-    audio.play();
+    answerSound.play();
   });
 }
 
 function soundWrongAnswer(): void {
-  audio.src = './assets/audio/wrong3.mp3';
+  answerSound.src = './assets/audio/wrong3.mp3';
   setTimeout(() => {
-    audio.play();
+    answerSound.play();
   });
 }
 
@@ -105,14 +106,14 @@ export function fillNewStepGame() {
   const image = <HTMLImageElement>document.querySelector('.image-container img');
   const enWord = <HTMLElement>document.querySelector('.english-word');
   const ruWords = <NodeListOf<HTMLElement>>document.querySelectorAll('.btn-choice');
-  console.log('image ========', mainGameArray[currentStep]);
 
   image.src = `${urlLink}${mainGameArray[currentStep].word.image}`;
   enWord.innerText = `${mainGameArray[currentStep].word.word}`;
   mainGameArray[currentStep].falseWords.forEach((word: string, count: number) => {
-    console.log('word number ', count, ': ', word);
     ruWords[count].innerText = word;
   });
+  audioWord.src = `${urlLink}${mainGameArray[currentStep].word.audio}`;
+  audioWord.autoplay = true;
 }
 
 export function isAnswerCorrect(event: Event) {
