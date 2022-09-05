@@ -76,9 +76,11 @@
     padding-top: 50px;
     margin: 0 auto;
     margin-bottom: 80px;
-    @media(max-width: $size480px){
+    @media(max-width: $size380px){
       margin-bottom: 20px;
+      width: 65%;
     }
+
   }
   &__regulation {
     width: 80%;
