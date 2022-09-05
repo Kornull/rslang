@@ -18,39 +18,42 @@ export function App(idPage: string | null): void {
   const footer = <HTMLElement>document.querySelector('.footer');
   if (idPage !== null) {
     main.innerHTML = '';
+
     if (idPage === IdPages.SprintID || idPage === IdPages.PreloaSprintID) {
       footer.style.display = 'none';
     } else {
       footer.style.display = 'flex';
     }
-    switch (idPage) {
-      case IdPages.MainID:
-        createMainPage();
-        break;
-      case IdPages.PreloaSprintID:
-        createPreSprintGamePage();
-        break;
-      case IdPages.SprintID:
-        createSprintGame();
-        break;
-      case IdPages.SprintStatiD:
-        statisticGame();
-        break;
-      case IdPages.BookID:
-        createPage();
-        break;
-      case IdPages.StatisticId:
-        createStatisticPage();
-        break;
-      case IdPages.NoWords:
-        notWords();
-        break;
-      default:
-        break;
-    }
-    window.location.hash = idPage;
+    if (idPage !== 'title-team') {
+      switch (idPage) {
+        case IdPages.MainID:
+          createMainPage();
+          break;
+        case IdPages.PreloaSprintID:
+          createPreSprintGamePage();
+          break;
+        case IdPages.SprintID:
+          createSprintGame();
+          break;
+        case IdPages.SprintStatiD:
+          statisticGame();
+          break;
+        case IdPages.BookID:
+          createPage();
+          break;
+        case IdPages.StatisticId:
+          createStatisticPage();
+          break;
+        case IdPages.NoWords:
+          notWords();
+          break;
+        default:
+          break;
+      }
+      window.location.hash = idPage;
 
-    setLocalStorage(PageKey.userPage, idPage);
+      setLocalStorage(PageKey.userPage, idPage);
+    }
   } else {
     App(IdPages.MainID);
   }
@@ -73,7 +76,8 @@ export function App(idPage: string | null): void {
 
 window.addEventListener('hashchange', () => {
   const hash = window.location.hash.slice(1);
-  setTimeout(() => {
-    App(hash);
-  }, 100);
+  if (hash === 'title-team' || hash === 'main-subtitle') {
+    return;
+  }
+  App(hash);
 });
