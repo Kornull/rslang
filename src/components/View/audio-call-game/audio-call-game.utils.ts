@@ -30,16 +30,17 @@ export function fillStatisticAudio(block: HTMLElement): void {
   const wrongNum = Number(getLocalStorage(KeysWords.WrongWord));
   const guessedNum = Number(getLocalStorage(KeysWords.GuessedWord));
   const allCountWords = correctNum + wrongNum;
-  const correct = <HTMLElement>block.querySelector('.sprint__statistic-correct');
-  const wrong = <HTMLElement>block.querySelector('.sprint__statistic-wrong');
-  const words = <HTMLElement>block.querySelector('.sprint__statistic-words');
-  const percent = <HTMLElement>block.querySelector('.sprint__statistic-percent');
-  const percentWord = <HTMLElement>block.querySelector('.sprint__statistic-percent--words');
+  console.log('fillStatisticAudio-------------------');
+  const correct = <HTMLElement>block.querySelector('.audio__statistic-correct');
+  const wrong = <HTMLElement>block.querySelector('.audio__statistic-wrong');
+  const words = <HTMLElement>block.querySelector('.audio__statistic-words');
+  // const percent = <HTMLElement>block.querySelector('.audio__statistic-percent');
+  const percentWord = <HTMLElement>block.querySelector('.audio__statistic-percent--words');
   correct.innerHTML = `Правильных ответов - ${correctNum}`;
   wrong.innerHTML = `Неправильных ответов - ${wrongNum}`;
-  words.innerHTML = `Угадано слов - ${guessedNum}`;
-  percent.innerHTML = `Количество ответов без ошибок - ${guessWordLengthGame}`;
-  percentWord.innerHTML = `Процент отгаданных слов - ${Math.trunc((guessedNum / allCountWords) * 100)}%`;
+  words.innerHTML = `Всего ответов - ${guessedNum}`;
+  // percent.innerHTML = `Количество ответов без ошибок - ${guessWordLengthGame}`;
+  percentWord.innerHTML = `Процент отгаданных слов - ${Math.trunc((correctNum / allCountWords) * 100)}%`;
 }
 
 function getRandomNumber(limit: number): number {
@@ -137,7 +138,7 @@ export function buttonsEvenHandler(event: Event) {
   let correctNum = Number(getLocalStorage(KeysWords.CorrectWord));
   let wrongNum = Number(getLocalStorage(KeysWords.WrongWord));
   let guessedNum = Number(getLocalStorage(KeysWords.GuessedWord));
-  const buttonFiled = <HTMLElement>document.querySelector('.audio-game');
+  const buttonFiled = <HTMLElement>document.querySelector('.btn-field');
 
   if ((event.target as HTMLElement).classList.contains('btn-choice')) {
     showEnglishWord(true);

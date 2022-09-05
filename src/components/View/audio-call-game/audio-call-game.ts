@@ -111,11 +111,11 @@ export function createStatisticAudioGame(): void {
   main.innerHTML = '';
   const audioPageStat = <HTMLElement>createEl('div', main, ['audio__statistic'], { id: 'audio-statistic' });
   const title = <HTMLElement>createEl('h1', audioPageStat, ['audio__statistic-title']);
-  title.innerHTML = 'Statistic - Sprint game';
+  title.innerHTML = 'Статистика - Аудиовызов';
   <HTMLElement>createEl('div', audioPageStat, ['audio__statistic-correct']);
   <HTMLElement>createEl('div', audioPageStat, ['audio__statistic-wrong']);
   <HTMLElement>createEl('div', audioPageStat, ['audio__statistic-words']);
-  <HTMLElement>createEl('div', audioPageStat, ['audio__statistic-percent']);
+  // <HTMLElement>createEl('div', audioPageStat, ['audio__statistic-percent']);
   <HTMLElement>createEl('div', audioPageStat, ['audio__statistic-percent--words']);
   const buttonsStat = <HTMLElement>createEl('div', audioPageStat, ['audio__statistic-buttons']);
 
@@ -123,8 +123,8 @@ export function createStatisticAudioGame(): void {
   const statisticBtnMainPage = <HTMLLinkElement>createEl('a', buttonsStat, ['audio__btn-close--stat-main']);
   statisticBtnPreGame.href = `#${IdPages.AudioGamePreload}`;
   statisticBtnMainPage.href = `#${IdPages.MainID}`;
-  statisticBtnPreGame.innerHTML = 'Закрыть';
-  statisticBtnMainPage.innerHTML = 'Главная страница';
+  statisticBtnPreGame.innerHTML = 'закрыть';
+  statisticBtnMainPage.innerHTML = 'главная';
   statisticBtnPreGame.addEventListener('click', () => {
     App(IdPages.PreloaSprintID);
   });
