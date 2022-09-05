@@ -83,7 +83,7 @@ export async function createStatisticPage() {
     const percentTrue: number = Math.round(((audioResult[0] + sprintResult[0]) / (audioResult[3] + sprintResult[3])) * 100);
     const wordsStat: HTMLElement = createStatisticItem(titleStatistic[2], rowStatisticWords, [
       audioResult[0] + sprintResult[0],
-      (stat.learnedWords ? stat.learnedWords : 0) + countLernWords,
+      countLernWords,
       percentTrue,
     ]);
     statistic.append(wordsStat);
