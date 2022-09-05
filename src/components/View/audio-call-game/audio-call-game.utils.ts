@@ -51,7 +51,7 @@ export function getMainGameArray(allListWords: WordSettings[]): MainGameElement[
         answersArray.push(currentAnswer);
       }
     } while (answersArray.length < NumberOf.answersOnPage);
-    result.push({ word: currentWord, falseWords: answersArray });
+    result.push({ word: currentWord, falseWords: answersArray.sort(() => Math.random() - 0.5) });
   }
   console.log('mainGameArray =', result);
   return result;
@@ -74,11 +74,16 @@ export const ClickAudio = (id: number, num?: number): void => {
   }, 6000);
 };
 
+function sendStatistic() {
+  // -------------------------------------------statistic--------------------------------
+}
+
 export function fillNewStepGame() {
   const currentStep = Number(getLocalStorage(KeysWords.CurrentStep));
   const mainGameArray = getLocalStorage(KeysWords.MainGameArray);
 
   if (currentStep >= mainGameArray.length) {
+    sendStatistic();
     App(IdPages.AudioGameStatistic);
   }
   const image = <HTMLImageElement>document.querySelector('.image-container img');
