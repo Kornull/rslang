@@ -5,7 +5,7 @@ import { createEl } from '../../Controller/createTagBlock';
 // import { createListWords, createAllListWords, getMainGameArray } from '../../Controller/audio-game/audio-game';
 import { IdPages } from '../../Types/types';
 // eslint-disable-next-line import/no-cycle
-import { fillStatisticAudio, ClickAudio, fillNewStepGame, isAnswerCorrect, audioWord } from './audio-call-game.utils';
+import { fillStatisticAudio, ClickAudio, fillNewStepGame, buttonsEvenHandler, audioWord } from './audio-call-game.utils';
 // eslint-disable-next-line import/no-cycle
 import { App } from '../../App/App';
 // eslint-disable-next-line import/no-cycle
@@ -64,9 +64,9 @@ export function createAudioGame() {
   const buttonFiled = <HTMLElement>document.querySelector('.btn-field');
 
   setLocalStorage(KeysWords.CurrentStep, '0');
-  buttonFiled.addEventListener('click', (event) => isAnswerCorrect(event));
+  gameField.addEventListener('click', (event) => buttonsEvenHandler(event));
   audioButton.addEventListener('click', () => audioWord.play());
-  nextSkipBtn.addEventListener('click', () => fillNewStepGame());
+  // nextSkipBtn.addEventListener('click', () => fillNewStepGame());
   fillNewStepGame();
 }
 
