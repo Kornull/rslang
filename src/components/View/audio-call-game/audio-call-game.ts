@@ -37,7 +37,7 @@ function createButtons(parentElement: HTMLElement, count: number): void {
 function createChoiceGroupButtons(parentElement: HTMLElement, count: number): void {
   const buttonsField = createEl('div', parentElement, ['btn-field']);
   for (let i = 1; i < count + 1; i++) {
-    const btnChoice = <HTMLLinkElement>createEl('a', buttonsField, ['btn-choice-group']);
+    const btnChoice = <HTMLLinkElement>createEl('a', buttonsField, ['btn-choice-group', `group-${i}`]);
     btnChoice.innerHTML = `${i}`;
     btnChoice.href = `#${IdPages.AudioGame}`;
   }

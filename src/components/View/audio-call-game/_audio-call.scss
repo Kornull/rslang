@@ -1,4 +1,5 @@
 @import "../../../../src/scss/base/settings";
+
 .audio-game {
   display: flex;
   flex-direction: column;
@@ -142,7 +143,8 @@
   align-items: center;
 
   .preload-message {
-    font-size: $size21px;
+    font-size: $size25px;
+    color: $colorText;
   }
 
   .btn-field {
@@ -154,21 +156,57 @@
     justify-content: space-around;
 
 
-    .btn-choice {
+    .btn-choice-group {
       height: 70px;
       width: 70px;
       display: flex;
       align-items: center;
       justify-content: center;
       border-radius: 50%;
-      font-size: $size25px;
+      font-size: $size31px;
+      transition-duration: 1s;
+      border: 2px solid transparent;
 
-      background-color: darkgrey;
+      &.group-1 {
+        background-color: $colorGroup1;
+      }
+      
+      &.group-2 {
+        background-color: $colorGroup2;
+      }
+      
+      &.group-3 {
+        background-color: $colorGroup3;
+      }
+      
+      &.group-4 {
+        background-color: $colorGroup4;
+      }
+      
+      &.group-5 {
+        background-color: $colorGroup5;
+      }
+      
+      &.group-6 {
+        background-color: $colorGroup6;
+      }
+      
+      &:hover {
+        box-shadow: 0px 0px 30px 10px #918c8c;
+        background-color: #ffffff;
+        border-color: $colorMediaHover;
+        color: $colorText;
+        transition-duration: .4s;
+      }
     }
   }
 
   .game-rules {
     font-size: $size21px;
     text-align: center;
+
+    span {
+      font-weight: bold;
+    }
   }
 }
