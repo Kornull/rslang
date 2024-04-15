@@ -1,2 +1,2 @@
-export const urlLink = 'https://rs-lang-team53.herokuapp.com/';
+export const urlLink = 'https://react-rslang-be-c8fb.onrender.com/';
 export const words = `${urlLink}words`;
